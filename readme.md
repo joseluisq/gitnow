@@ -1,5 +1,5 @@
 # gitnow
-> Easy and fast git pull, push and more in [Fish Shell](https://fishshell.com/).
+> :tropical_fish: Easy and fast git pull, push and more in [Fish Shell](https://fishshell.com/).
 
 #### Commands:
 
