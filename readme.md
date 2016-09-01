@@ -1,5 +1,5 @@
 # gitnow
-> :tropical_fish: Easy and fast git pull, push and more in [Fish Shell](https://fishshell.com/).
+> :octocat: Easy and fast git pull, push and more in [Fish Shell](https://fishshell.com/). :tropical_fish:
 
 *This repository is inspired by [git-friendly](https://github.com/jamiew/git-friendly).*
 
