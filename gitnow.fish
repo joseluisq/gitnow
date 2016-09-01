@@ -10,20 +10,21 @@ function commit -d "`git add` + `git commit`"
   git commit -S .
 end
 
-# git pull --rebase and git stash
+# git pull --rebase and git stash built-in
 # Shortcut inspired from https://github.com/jamiew/git-friendly
 function pull -d "git pull --rebase + git stash built-in"
   set -l stash (git stash)
-
   echo
 
   git stash
-  eval (echo git pull --rebase (__gf_args $argv))
+  eval (echo git pull --rebase (gargs $argv))
+  echo
 
-  if test $stash -eq "No local changes to save"
-    echo "* No stashed changes, not popping"
+  if test "$stash" = "No local changes to save"
+    echo "* No stashed changes, not popping."
   else
     echo "* Popping stash..."
+    echo
     git stash pop
   end
 
@@ -34,14 +35,14 @@ end
 # Shortcut inspired from https://github.com/jamiew/git-friendly
 function push -d "git push with upstream"
   echo
-  eval (echo git push --set-upstream (__gf_args $argv))
   set -l exit_code $status
-
-  echo
+  eval (echo git push --set-upstream (gargs $argv))
 
   if test $status -eq 0
+    echo
     echo "Git says everything is up-to-date!"
   else
+    echo
     echo -e "Ouch, push failed!"
   end
 
@@ -76,7 +77,7 @@ function gh -d "git clone shortcut for GitHub repos"
     end
 
     if test $ecode -eq 1
-      __gf_clone git@github.com:$user/$repo.git
+      gclone git@github.com:$user/$repo.git
     else
       echo
       echo "Username is required!"
@@ -93,12 +94,12 @@ function gh -d "git clone shortcut for GitHub repos"
 end
 
 # Git clone shortcut
-function __gf_clone -d "Git clone shortcut"
+function gclone -d "Git clone shortcut"
   eval (echo git clone $argv)
 end
 
-# Processing the git arguments
-function __gf_args -d "Processing the git arguments"
+# Processing and return the git arguments
+function gargs -d "Processing the git arguments"
   set -l len (count $argv)
   set -l bran (git symbolic-ref --short HEAD ^/dev/null)
   set -l orig (git config "branch.$bran.remote"; or echo origin)
