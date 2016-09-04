@@ -87,7 +87,7 @@ function gh -d "git clone shortcut for GitHub repos"
       echo
       echo '  b) gh gh-repo-name'
       echo '     It\'s necessary to set the Github login to global config before:'
-      echo '     git config --global user.github "gh-username"'
+      echo '     git config --global user.github "your-github-username"'
       echo
     end
   end
