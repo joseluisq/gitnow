@@ -16,7 +16,7 @@ Simply type some these commands:
 
 - **pull** : *`git stash` and `git pull --rebase`*
 - **push** :  *`git push --set-upstream`*
-- **commit** : *`git add -A` and `git commit -S .`*
+- **commit** : *`git add -A` and `git commit .`*
 - **upstream** : *`commit` and `push` commands.*
 - **gh** : *`git clone` shortcut for Github repos.*
   - *Usage: `gh gh-repo-name` or `gh gh-username gh-repo-name`*

@@ -7,7 +7,7 @@ end
 # `git add` and `git commit` for all changes on current branch
 function commit -d "`git add` + `git commit`"
   git add -A
-  git commit -S .
+  git commit .
 end
 
 # git pull --rebase and git stash built-in
