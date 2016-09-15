@@ -1,3 +1,7 @@
+# Fish 2.2.0 doesn't include native snippet support.
+# Upgrade to Fish >= 2.3.0 or append the following code
+# to your ~/.config/fish/config.fish
+
 # Commit and Push commands
 function upstream -d "Add, commit and push commands"
   commit
