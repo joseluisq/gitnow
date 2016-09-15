@@ -4,14 +4,22 @@
 
 # Commit and Push commands
 function upstream -d "Add, commit and push commands"
-  commit
+  set -l S ""
+
+  if test (count $argv) -eq 1
+    if test "$argv[1]" = "-S"
+      set S "-S"
+    end
+  end
+
+  commit $S
   push
 end
 
 # `git add` and `git commit` for all changes on current branch
 function commit -d "`git add` + `git commit`"
   git add -A
-  git commit .
+  git commit $argv
 end
 
 # git pull --rebase and git stash built-in

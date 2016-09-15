@@ -11,13 +11,15 @@ With [fisherman](https://github.com/fisherman/fisherman)
 fisher joseluisq/gitnow
 ```
 
+*__Note:__ Fish 2.2.0 doesn't include native snippet support. Upgrade to Fish >= 2.3.0 or append the `gitnow.fish` to your `~/.config/fish/config.fish` file.*
+
 ### Commands
 Simply type some these commands:
 
 - **pull** : *`git stash` and `git pull --rebase`*
 - **push** :  *`git push --set-upstream`*
 - **commit** : *`git add -A` and `git commit .`*
-- **upstream** : *`commit` and `push` commands.*
+- **upstream** : *`commit` and `push` commands. `-S` option for GPG-sign commit.*
 - **gh** : *`git clone` shortcut for Github repos.*
   - *Usage: `gh gh-repo-name` or `gh gh-username gh-repo-name`*
 
