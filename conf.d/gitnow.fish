@@ -29,7 +29,7 @@ function pull -d "git pull --rebase + git stash built-in"
   echo
 
   git stash
-  eval (echo git pull --rebase (gargs $argv))
+  eval (echo git pull --rebase (__gitnow_args $argv))
   echo
 
   if test "$stash" = "No local changes to save"
@@ -48,7 +48,7 @@ end
 function push -d "git push with upstream"
   echo
   set -l exit_code $status
-  eval (echo git push --set-upstream (gargs $argv))
+  eval (echo git push --set-upstream (__gitnow_args $argv))
 
   if test $status -eq 0
     echo
@@ -89,7 +89,7 @@ function gh -d "git clone shortcut for GitHub repos"
     end
 
     if test $ecode -eq 1
-      gclone git@github.com:$user/$repo.git
+      __gitnow_clone git@github.com:$user/$repo.git
     else
       echo
       echo "Username is required!"
@@ -105,16 +105,14 @@ function gh -d "git clone shortcut for GitHub repos"
   end
 end
 
-# Git clone shortcut
-function gclone -d "Git clone shortcut"
+function __gitnow_clone -d "Git clone shortcut"
   eval (echo git clone $argv)
 end
 
-# Processing and return the git arguments
-function gargs -d "Processing the git arguments"
+function __gitnow_args -d "Processing the git arguments"
   set -l len (count $argv)
-  set -l bran (git symbolic-ref --short HEAD ^/dev/null)
-  set -l orig (git config "branch.$bran.remote"; or echo origin)
+  set -l bran (__gitnow_current_branch_name)
+  set -l orig (__gitnow_current_remote)
 
   if set -q argv
     if test $len -gt 0
@@ -127,4 +125,23 @@ function gargs -d "Processing the git arguments"
   end
 
   echo $orig $bran
+end
+
+function branch -d "Get branch operations"
+  set -l bran (__gitnow_current_branch_name)
+
+  if test (count $argv) -eq 1
+    set bran $argv[1]
+  end
+
+  git checkout $bran
+end
+
+function __gitnow_current_branch_name -d "Get current branch name"
+  git symbolic-ref --short HEAD ^/dev/null
+end
+
+function __gitnow_current_remote -d "Get current origin name"
+  set -l branch_name (__gitnow_current_branch_name)
+  git config "branch.$branch_name.remote"; or echo origin
 end
