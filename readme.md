@@ -3,7 +3,7 @@
 
 _**gitnow** is a [Fish](https://fishshell.com/) alternative  inspired by [git-friendly](https://github.com/jamiew/git-friendly)._
 
-### Install
+## Install
 
 With [fisherman](https://github.com/fisherman/fisherman)
 
@@ -13,7 +13,7 @@ fisher joseluisq/gitnow
 
 *__Note:__ Fish 2.2.0 doesn't include native snippet support. Upgrade to Fish >= 2.3.0 or append the `gitnow.fish` to your `~/.config/fish/config.fish` file.*
 
-### CLI
+## CLI
 
 `pull`, `push`, `commit` and `upstream` support git arguments. For example: `push origin --tags`
 
@@ -25,7 +25,7 @@ Command | Description
 **upstream** | Equivalent to `commit` and `push` commands. `-S` (optional) for GPG-sign commit.
 **gh** | `git clone` shortcut for Github repos.
 
-##### **gh**
+### **gh**
 You can try these alternatives:
 
 - `gh username/repo`
@@ -34,11 +34,11 @@ You can try these alternatives:
 
 **Tip:** Skip the password request creating a SSH key for your Github or Bitbucket account.
 
-### Contributions
+## Contributions
 
 [Pull requests](https://github.com/joseluisq/gitnow/pulls) and [issues](https://github.com/joseluisq/gitnow/issues) are welcome.
 
-### License
+## License
 MIT license
 
 © 2016 [José Luis Quintana](http://git.io/joseluisq)
