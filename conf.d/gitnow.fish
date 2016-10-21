@@ -48,7 +48,7 @@ end
 function push -d "git push with upstream"
   echo
   set -l exit_code $status
-  eval (echo git push --set-upstream (__gitnow_args $argv))
+  eval (echo git push (__gitnow_args $argv))
 
   if test $status -eq 0
     echo
@@ -69,7 +69,7 @@ function gh -d "git clone shortcut for GitHub repos"
   set -l len (count $argv)
   set -l user (git config --global user.github)
   set -l repo ""
-  set -l ecode 1
+  set -l ecode 0
 
   if test $len -lt 1
     echo
@@ -77,28 +77,36 @@ function gh -d "git clone shortcut for GitHub repos"
     echo '  gh gh-repo-name'
     echo
   else
-    if test $len -gt 1
-      set user $argv[1]
-      set repo $argv[2]
-    else
-      set repo $argv[1]
+    set repo $argv[1]
 
-      if test -z $user
-        set ecode 0
+    if test $len -gt 1
+      set ecode 1
+      set repo $argv[1]/$argv[2]
+    else
+      if echo "$repo" | grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
+        set ecode 1
+      else
+        if test -z $user
+          set ecode 0
+        else
+          set ecode 1
+        end
       end
     end
 
     if test $ecode -eq 1
-      __gitnow_clone git@github.com:$user/$repo.git
+      __gitnow_clone git@github.com:$repo.git
     else
       echo
-      echo "Username is required!"
-      echo
       echo 'Usages:'
-      echo '  a) gh gh-username gh-repo-name'
       echo
-      echo '  b) gh gh-repo-name'
-      echo '     It\'s necessary to set the Github login to global config before:'
+      echo '  a) gh username/repo-name'
+      echo
+      echo '  b) gh username repo-name'
+      echo
+      echo '  c) gh repo-name'
+      echo '     It\'s necessary to set your Github username (login)'
+      echo '     to global config before, type: '
       echo '     git config --global user.github "your-github-username"'
       echo
     end
