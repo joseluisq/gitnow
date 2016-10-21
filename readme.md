@@ -13,17 +13,26 @@ fisher joseluisq/gitnow
 
 *__Note:__ Fish 2.2.0 doesn't include native snippet support. Upgrade to Fish >= 2.3.0 or append the `gitnow.fish` to your `~/.config/fish/config.fish` file.*
 
-### Commands
-Simply type some these commands:
+### CLI
 
-- **pull** : *`git stash` and `git pull --rebase`*
-- **push** :  *`git push --set-upstream`*
-- **commit** : *`git add -A` and `git commit .`*
-- **upstream** : *`commit` and `push` commands. `-S` option for GPG-sign commit.*
-- **gh** : *`git clone` shortcut for Github repos.*
-  - *Usage: `gh gh-repo-name` or `gh gh-username gh-repo-name`*
+`pull`, `push`, `commit` and `upstream` support git arguments. For example: `push origin --tags`
 
-_**Tip:** For example, you could create an SSH key in your Github or Bitbucket account for skip the password request._
+Command | Description
+--- | ---
+**pull** | Equivalent to `git stash` and `git pull --rebase`
+**push** | Equivalent to `git push`
+**commit** | Equivalent to `git add -A` and `git commit .`
+**upstream** | Equivalent to `commit` and `push` commands. `-S` (optional) for GPG-sign commit.
+**gh** | `git clone` shortcut for Github repos.
+
+##### **gh**
+You can try these alternatives:
+
+- `gh username/repo`
+- `gh username repo`
+- `gh repo` : It's necessary to set your Github username (globaly). For this works, type: `git config --global user.github "your-github-username"`
+
+**Tip:** Skip the password request creating a SSH key for your Github or Bitbucket account.
 
 ### Contributions
 
