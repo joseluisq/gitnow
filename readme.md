@@ -15,7 +15,7 @@ fisher joseluisq/gitnow
 
 ## CLI
 
-`pull`, `push`, `commit` and `upstream` support git arguments. For example: `push origin --tags`
+`pull`, `push`, `commit` and `upstream` support git arguments. For example: `push origin --tags` or `pull origin --tags`
 
 Command | Description
 --- | ---
@@ -23,7 +23,7 @@ Command | Description
 **push** | Equivalent to `git push`
 **commit** | Equivalent to `git add -A` and `git commit .`
 **upstream** | Equivalent to `commit` and `push` commands. `-S` (optional) for GPG-sign commit.
-**gh** | `git clone` shortcut for Github repos.
+**gh** | `git clone` shortcut for Github repositories.
 
 ### **gh**
 You can try these alternatives:
