@@ -24,12 +24,18 @@ end
 
 # git pull --rebase and git stash built-in
 # Shortcut inspired from https://github.com/jamiew/git-friendly
-function pull -d "git pull --rebase + git stash built-in"
-  set -l stash (git stash)
+function pull -d "git pull git stash built-in"
+  set -l r
+
+  if test (__gitnow_is_git_repository)
+    set r "--rebase"
+  end
+
   echo
 
   git stash
-  eval (echo git pull --rebase (__gitnow_args $argv))
+  eval (echo git pull $r (__gitnow_args $argv))
+
   echo
 
   if test "$stash" = "No local changes to save"
@@ -62,54 +68,34 @@ function push -d "git push with upstream"
 end
 
 # git clone shortcut for Github repos
-# Usages:
-#  gh gh-repo-name
-#  gh gh-username gh-repo-name
 function gh -d "git clone shortcut for GitHub repos"
-  set -l len (count $argv)
-  set -l user (git config --global user.github)
-  set -l repo ""
-  set -l ecode 0
+  set -l repo
 
-  if test $len -lt 1
+  if count $argv > /dev/null
+    if test (count $argv) -gt 1
+      set repo $argv[1]/$argv[2]
+    else if echo $argv | grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
+      set repo $argv
+    else
+      set user (git config --global user.github)
+      set repo $user/$argv
+    end
+
+    __gitnow_clone git@github.com:$repo.git
+  else
     echo
     echo "Repository name is required!"
-    echo '  gh gh-repo-name'
+    echo "E.g: gh your-repo-name"
     echo
-  else
-    set repo $argv[1]
-
-    if test $len -gt 1
-      set ecode 1
-      set repo $argv[1]/$argv[2]
-    else
-      if echo "$repo" | grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
-        set ecode 1
-      else
-        if test -z $user
-          set ecode 0
-        else
-          set ecode 1
-        end
-      end
-    end
-
-    if test $ecode -eq 1
-      __gitnow_clone git@github.com:$repo.git
-    else
-      echo
-      echo 'Usages:'
-      echo
-      echo '  a) gh username/repo-name'
-      echo
-      echo '  b) gh username repo-name'
-      echo
-      echo '  c) gh repo-name'
-      echo '     It\'s necessary to set your Github username (login)'
-      echo '     to global config before, type: '
-      echo '     git config --global user.github "your-github-username"'
-      echo
-    end
+    echo "Usages:"
+    echo
+    echo "  a) gh username/repo-name"
+    echo "  b) gh username repo-name"
+    echo "  c) gh repo-name"
+    echo "     For this, it's necessary to set your Github username (login)"
+    echo "     to global config before. You can type: "
+    echo "     git config --global user.github \"your-github-username\""
+    echo
   end
 end
 
@@ -152,4 +138,12 @@ end
 function __gitnow_current_remote -d "Get current origin name"
   set -l branch_name (__gitnow_current_branch_name)
   git config "branch.$branch_name.remote"; or echo origin
+end
+
+function __gitnow_current_path -d "Get current git path repository"
+  git rev-parse --show-toplevel ^ /dev/null
+end
+
+function __gitnow_is_git_repository -d "Checks if the current path is a git path"
+  git rev-parse --git-dir ^ /dev/null
 end
