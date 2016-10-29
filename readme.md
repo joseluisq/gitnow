@@ -22,7 +22,7 @@ Command | Description
 **pull** | Equivalent to `git stash` and `git pull --rebase` (--rebase option is used only if repository was not rebased yet)
 **push** | Equivalent to `git push`
 **commit** | Equivalent to `git add -A` and `git commit .`
-**upstream** | Equivalent to `commit` and `push` commands. `-S` (optional) for GPG-sign commit.
+**upstream** | Equivalent to `commit` and `push` commands. (`-S` optional for GPG-sign commits)
 **gh** | `git clone` shortcut for Github repositories.
 
 ### **gh**
