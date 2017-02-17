@@ -13,7 +13,7 @@ function upstream -d "Add, commit and push commands"
   end
 
   commit $S
-  push -u
+  push --set-upstream
 end
 
 # `git add` and `git commit` for all changes on current branch
@@ -33,6 +33,7 @@ function pull -d "git pull git stash built-in"
 
   echo
 
+  echo "💾 Saving your local changes before..."
   git stash
   eval (echo git pull $r (__gitnow_args $argv))
 
@@ -46,6 +47,11 @@ function pull -d "git pull git stash built-in"
     git stash pop
   end
 
+  set bran __gitnow_current_branch_name
+  set comm __gitnow_current_commit_short
+
+  echo
+  echo "✨ Your local '$bran' branch is updated! ($comm)"
   echo
 end
 
@@ -58,13 +64,16 @@ function push -d "git push"
 
   if test $status -eq 0
     echo
-    echo "Git says everything is up-to-date!"
+    echo "🍺 Git says everything is up-to-date!"
   else
     echo
     echo -e "Ouch, push failed!"
   end
 
-  echo
+  (git rev-parse --short HEAD)
+
+  echo "🚀 Your remote refs for '$bran' branch was updated! ($comm)"
+  echo ""
 end
 
 # git clone shortcut for Github repos
@@ -146,4 +155,8 @@ end
 
 function __gitnow_is_git_repository -d "Checks if the current path is a git path"
   git rev-parse --git-dir ^ /dev/null
+end
+
+function __gitnow_current_commit_short -d "Get current commit in short format"
+  git rev-parse --short HEAD ^ /dev/null
 end
