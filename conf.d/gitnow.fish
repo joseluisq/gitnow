@@ -70,7 +70,7 @@ function push -d "git push"
     echo -e "Ouch, push failed!"
   end
 
-  (git rev-parse --short HEAD)
+  set comm __gitnow_current_commit_short
 
   echo "🚀 Your remote refs for '$bran' branch was updated! ($comm)"
   echo ""
