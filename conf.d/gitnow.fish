@@ -47,8 +47,8 @@ function pull -d "git pull git stash built-in"
     git stash pop
   end
 
-  set bran __gitnow_current_branch_name
-  set comm __gitnow_current_commit_short
+  set -l bran __gitnow_current_branch_name
+  set -l comm __gitnow_current_commit_short
 
   echo
   echo "✨ Your local '$bran' branch is updated! ($comm)"
@@ -70,7 +70,7 @@ function push -d "git push"
     echo -e "Ouch, push failed!"
   end
 
-  set comm __gitnow_current_commit_short
+  set -l comm __gitnow_current_commit_short
 
   echo "🚀 Your remote refs for '$bran' branch was updated! ($comm)"
   echo ""
@@ -86,7 +86,7 @@ function gh -d "git clone shortcut for GitHub repos"
     else if echo $argv | grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
       set repo $argv
     else
-      set user (git config --global user.github)
+      set -l user (git config --global user.github)
       set repo $user/$argv
     end
 
