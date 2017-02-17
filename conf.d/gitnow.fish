@@ -2,7 +2,7 @@
 # Upgrade to Fish >= 2.3.0 or append the following code
 # to your ~/.config/fish/config.fish
 
-# Commit and Push commands
+# "Commit" and "Push --set-upstream" commands
 function upstream -d "Add, commit and push commands"
   set -l S ""
 
@@ -13,7 +13,7 @@ function upstream -d "Add, commit and push commands"
   end
 
   commit $S
-  push
+  push -u
 end
 
 # `git add` and `git commit` for all changes on current branch
@@ -49,9 +49,9 @@ function pull -d "git pull git stash built-in"
   echo
 end
 
-# Git push with upstream
+# Git push
 # Shortcut inspired from https://github.com/jamiew/git-friendly
-function push -d "git push with upstream"
+function push -d "git push"
   echo
   set -l exit_code $status
   eval (echo git push (__gitnow_args $argv))
