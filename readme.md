@@ -15,17 +15,56 @@ fisher joseluisq/gitnow
 
 ## CLI
 
-`pull`, `push`, `commit` and `upstream` support git arguments. For example: `push origin --tags` or `pull origin --tags`
-
 Command | Description
 --- | ---
-**pull** | Equivalent to `git stash` and `git pull --rebase` (--rebase option is used only if repository was not rebased yet)
-**push** | Equivalent to `git push [arguments...]`
-**commit** | Equivalent to `git add -A` and `git commit .`
-**upstream** | Equivalent to `commit` and `push --set-upstream` commands. (`-S` optional for GPG-sign commits)
-**gh** | `git clone` shortcut for Github repositories.
+**commit** | Equivalent to `git add -A ; git commit [your arguments...]`.
+**pull** | Equivalent to `git stash ; git pull --rebase [your arguments...]` (--rebase option is used only if repository was not rebased yet).
+**push** | Equivalent to `git push --set-upstream [your arguments...]`.
+**upstream** | Equivalent to `commit ; push` commands. (`-S` is optional for GPG-sign commits)
+**gh** | Equivalent to `git clone` for Github repositories.
 
-### **gh**
+_`pull`, `push` and `commit` support git arguments._
+
+#### commit
+
+Examples:
+```sh
+commit
+commit -S
+commit . -m "my awesome commit"
+```
+
+#### pull
+
+`pull` contains `--rebase` option by default.
+
+Examples:
+```sh
+pull
+pull my_origin my_branch
+pull my_origin --tags
+```
+
+#### push
+`push` contains `--set-upstream` option by default.
+
+Examples:
+```sh
+push
+push my_origin my_branch
+push my_origin --tags
+```
+
+#### upstream
+Equivalent to `commit ; push` commands. Very useful for send your changes quickly. 
+
+Examples:
+```sh
+upstream
+upstream -S
+```
+
+#### **gh**
 You can try these alternatives:
 
 - `gh username/repo`
