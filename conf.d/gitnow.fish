@@ -13,7 +13,7 @@ function upstream -d "Add, commit and push commands"
   end
 
   commit $S
-  push --set-upstream
+  push
 end
 
 # `git add` and `git commit` for all changes on current branch
@@ -31,49 +31,66 @@ function pull -d "git pull git stash built-in"
     set r "--rebase"
   end
 
+  set -l stash (git stash)
   echo
 
-  echo "💾 Saving your local changes before..."
-  git stash
+  set -l nochanges "No local changes to save"
+
+  if test "$stash" != "$nochanges"
+    echo "💾 Your local changes are saved."
+    echo
+  end
+
   eval (echo git pull $r (__gitnow_args $argv))
-
   echo
 
-  if test "$stash" = "No local changes to save"
+  if test "$stash" = "$nochanges"
     echo "* No stashed changes, not popping."
-  else
+  end
+
+  if test "$stash" != "$nochanges"
     echo "* Popping stash..."
     echo
     git stash pop
   end
 
-  set -l bran __gitnow_current_branch_name
-  set -l comm __gitnow_current_commit_short
+  set -l bran (__gitnow_current_branch_name)
+  set -l commi (__gitnow_current_commit_short)
 
   echo
-  echo "✨ Your local '$bran' branch is updated! ($comm)"
+  echo "✨ Your local '$bran' branch is updated! ($commi)"
   echo
 end
 
-# Git push
+# Git push with --set-upstream
 # Shortcut inspired from https://github.com/jamiew/git-friendly
 function push -d "git push"
-  echo
-  set -l exit_code $status
-  eval (echo git push (__gitnow_args $argv))
+  set -l bran (__gitnow_current_branch_name)
+  set -l orig (__gitnow_current_remote)
+  set -l comi (__gitnow_current_commit_short)
+  set -l opts $argv
+
+  if test (count $argv) -eq 0
+    set opts $orig $bran
+  end
+
+  set -l pushr (git push -u $opts 2>&1)
 
   if test $status -eq 0
     echo
-    echo "🍺 Git says everything is up-to-date!"
+
+    if echo $pushr | grep -q -E 'Everything up\-to\-date'
+      echo "🍺 Git says everything is up-to-date!"
+    else
+      echo "🚀 Your remote refs ('$orig/$bran') was updated! ($comi)"
+    end
   else
     echo
-    echo -e "Ouch, push failed!"
+    echo "⚠ Ouch, push failed!"
+    echo -e $pushr
   end
 
-  set -l comm __gitnow_current_commit_short
-
-  echo "🚀 Your remote refs for '$bran' branch was updated! ($comm)"
-  echo ""
+  echo
 end
 
 # git clone shortcut for Github repos
@@ -127,7 +144,7 @@ function __gitnow_args -d "Processing the git arguments"
     end
   end
 
-  echo $orig $bran
+  echo -n $orig $bran
 end
 
 function branch -d "Get branch operations"
