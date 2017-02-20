@@ -25,7 +25,10 @@ Command | Description
 
 _`pull`, `push` and `commit` support git arguments._
 
+> **Tip:** :bulb: Skip the password request creating a SSH key for your Github or Bitbucket account.
+
 #### commit
+`commit` adds all files `git addd .` and then it performs `git commit`.
 
 Examples:
 ```sh
@@ -36,7 +39,7 @@ commit . -m "my awesome commit"
 
 #### pull
 
-`pull` contains `--rebase` option by default.
+`pull` saves your local changes with `git stash` and then it performs `git pull --rebase`.
 
 Examples:
 ```sh
@@ -65,13 +68,15 @@ upstream -S
 ```
 
 #### **gh**
-You can try these alternatives:
+`git clone` shortcut for Github repositories.
+
+Examples:
 
 - `gh username/repo`
 - `gh username repo`
 - `gh repo` : It's necessary to set your Github username (globaly). For this works, type: `git config --global user.github "your-github-username"`
 
-**Tip:** Skip the password request creating a SSH key for your Github or Bitbucket account.
+_**Note:** You need a [SSH key for your Github account](https://help.github.com/articles/connecting-to-github-with-ssh/)._
 
 ## Contributions
 
