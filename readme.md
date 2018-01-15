@@ -28,7 +28,7 @@ _`pull`, `push` and `commit` support git arguments._
 > **Tip:** :bulb: Skip the password request creating a SSH key for your Github or Bitbucket account.
 
 #### commit
-`commit` adds all files `git addd .` and then it performs `git commit`.
+`commit` adds all files `git add .` and then it performs `git commit`.
 
 Examples:
 ```sh
