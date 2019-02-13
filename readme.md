@@ -1,17 +1,17 @@
 # gitnow
 > Simple and fast commands for your git workflow. :tropical_fish: + :octocat:
 
-_**gitnow** is a [Fish](https://fishshell.com/) alternative  inspired by [git-friendly](https://github.com/jamiew/git-friendly)._
+**gitnow** is a [Fish](https://fishshell.com/) alternative  inspired by [git-friendly](https://github.com/jamiew/git-friendly).
 
 ## Install
 
-With [fisherman](https://github.com/fisherman/fisherman)
+With [Fisher](https://github.com/jorgebucaran/fisherman):
 
 ```sh
-fisher joseluisq/gitnow
+fisher add joseluisq/gitnow
 ```
 
-*__Note:__ Fish 2.2.0 doesn't include native snippet support. Upgrade to Fish >= 2.3.0 or append the `gitnow.fish` to your `~/.config/fish/config.fish` file.*
+> __Note:__ Fish 2.2.0 doesn't include native snippet support. Upgrade to Fish >= 2.3.0 or append the `gitnow.fish` to your `~/.config/fish/config.fish` file.
 
 ## CLI
 
