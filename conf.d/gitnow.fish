@@ -22,44 +22,44 @@ function commit -d "`git add` + `git commit`"
   git commit $argv
 end
 
-# git pull --rebase and git stash built-in
-# Shortcut inspired from https://github.com/jamiew/git-friendly
-function pull -d "git pull git stash built-in"
-  set -l r
+function pull -d "Gitnow: Pull changes from remote server but saving uncommitted changes"
+  set -l len (count $argv)
+  set -l xorigin (__gitnow_current_remote)
+  set -l xbranch (__gitnow_current_branch_name)
+  set -l xcmd ""
+  
+  echo "Pulling"
 
-  if test (__gitnow_is_git_repository)
-    set r "--rebase"
-  end
+  set -l xdefaults --rebase --autostash
 
-  set -l stash (git stash)
-  echo
+  if test $len -gt 2 
+    set xcmd $argv
 
-  set -l nochanges "No local changes to save"
+    echo "Arguments mode: Manual"
+    echo "Default arguments: $xdefaults"
+    echo
+  else
+    echo "Arguments mode: Auto"
+    echo "Default arguments: $xdefaults"
 
-  if test "$stash" != "$nochanges"
-    echo "💾 Your local changes are saved."
+    if test $len -eq 1
+      set xbranch $argv[1]
+    end
+
+    if test $len -eq 2
+      set xorigin $argv[1]
+      set xbranch $argv[2]
+    end
+
+    set xcmd $xorigin $xbranch
+    set -l xremote (git config --get "remote.$xorigin.url")
+
+    echo "Remote: $xorigin ($xremote)"
+    echo "Branch: $xbranch"
     echo
   end
 
-  eval (echo git pull $r (__gitnow_args $argv))
-  echo
-
-  if test "$stash" = "$nochanges"
-    echo "* No stashed changes, not popping."
-  end
-
-  if test "$stash" != "$nochanges"
-    echo "* Popping stash..."
-    echo
-    git stash pop
-  end
-
-  set -l bran (__gitnow_current_branch_name)
-  set -l commi (__gitnow_current_commit_short)
-
-  echo
-  echo "✨ Your local '$bran' branch is updated! ($commi)"
-  echo
+  git pull $xcmd $xdefaults
 end
 
 # Git push with --set-upstream
