@@ -2,24 +2,45 @@
 # Upgrade to Fish >= 2.3.0 or append the following code
 # to your ~/.config/fish/config.fish
 
-# "Commit" and "Push --set-upstream" commands
-function upstream -d "Add, commit and push commands"
-  set -l S ""
-
-  if test (count $argv) -eq 1
-    if test "$argv[1]" = "-S"
-      set S "-S"
-    end
-  end
-
-  commit $S
-  push
+function state -d "Gitnow: Show the working tree status in compact way"
+  git status -sb
 end
 
-# `git add` and `git commit` for all changes on current branch
-function commit -d "`git add` + `git commit`"
-  git add -A
-  git commit $argv
+function stage -d "Gitnow: Stage files in current working directory"
+  set -l len (count $argv)
+  set -l opts .
+
+  if test $len -gt 0
+    set opts $argv
+  end
+
+  git add $opts
+end
+
+function unstage -d "Gitnow: Unstage files in current working directory"
+  set -l len (count $argv)
+  set -l opts .
+
+  if test $len -gt 0
+    set opts $argv
+  end
+
+  git reset $opts
+end
+
+function commit -d "Gitnow: Commit changes to the repository"
+  set -l len (count $argv)
+
+  if test $len -gt 0
+    git commit $argv
+  else
+    git commit
+  end
+end
+
+function commit-all -d "Gitnow: Add and commit all changes to the repository"
+  stage
+  commit .
 end
 
 function pull -d "Gitnow: Pull changes from remote server but saving uncommitted changes"
@@ -28,7 +49,7 @@ function pull -d "Gitnow: Pull changes from remote server but saving uncommitted
   set -l xbranch (__gitnow_current_branch_name)
   set -l xcmd ""
   
-  echo "Pulling"
+  echo "📥 Pulling changes"
 
   set -l xdefaults --rebase --autostash
 
@@ -64,17 +85,19 @@ end
 
 # Git push with --set-upstream
 # Shortcut inspired from https://github.com/jamiew/git-friendly
-function push -d "git push"
+function push -d "Gitnow: Push commit changes to remote repository"
   set -l bran (__gitnow_current_branch_name)
   set -l orig (__gitnow_current_remote)
   set -l comi (__gitnow_current_commit_short)
   set -l opts $argv
 
+  echo "📤 Pushing changes"
+
   if test (count $argv) -eq 0
     set opts $orig $bran
   end
 
-  set -l pushr (git push -u $opts 2>&1)
+  set -l pushr (git push --set-upstream $opts 2>&1)
 
   if test $status -eq 0
     echo
@@ -93,8 +116,76 @@ function push -d "git push"
   echo
 end
 
-# git clone shortcut for Github repos
-function gh -d "git clone shortcut for GitHub repos"
+function upstream -d "Gitnow: Commit all changes and push them to remote server"
+  commit-all
+  push
+end
+
+function github -d "Gitnow: Clone a GitHub repository using SSH"
+  set -l repo (__gitnow_clone_params $argv)
+  __gitnow_clone_repo $repo "github"
+end
+
+function bitbucket -d "Gitnow: Clone a Bitbucket Cloud repository using SSH"
+  set -l repo (__gitnow_clone_params $argv)
+  __gitnow_clone_repo $repo "bitbucket"
+end
+
+function __gitnow_clone_repo
+  set -l repo $argv[1]
+  set -l platform $argv[2]
+
+  if test -n "$repo"
+    set -l ok 1
+
+    if echo $repo | grep -q -E '^[\%S].+'
+      set -l user (git config --global user.$platform)
+
+      if test -n "$user"
+        set -l repor (echo $repo | sed -e "s/^%S/$user/")
+        set repo $repor
+      else
+        set ok 0
+      end
+    end
+
+    if test $ok -eq 1
+      if [ "$platform" = "github" ]
+        set url github.com
+      end
+
+      if [ "$platform" = "bitbucket" ]
+        set url bitbucket.org
+      end
+
+      set -l repo_url git@$url:$repo.git
+      
+      echo "📦 Remote repository: $repo_url"
+      git clone $repo_url
+    else
+      __gitnow_clone_msg $platform
+    end
+  else
+    __gitnow_clone_msg $platform
+  end
+end
+
+function __gitnow_clone_msg
+  set -l msg $argv[1]
+
+  echo "Repository name is required!"
+  echo "Example: $msg your-repo-name"
+  echo "Usages:"
+  echo "  a) $msg username/repo-name"
+  echo "  b) $msg username repo-name"
+  echo "  c) $msg repo-name"
+  echo "     For this, it's necessary to set your $msg username (login)"
+  echo "     to global config before like: "
+  echo "     git config --global user.$msg \"your-username\""
+  echo
+end
+
+function __gitnow_clone_params
   set -l repo
 
   if count $argv > /dev/null
@@ -103,33 +194,14 @@ function gh -d "git clone shortcut for GitHub repos"
     else if echo $argv | grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
       set repo $argv
     else
-      set -l user (git config --global user.github)
-      set repo $user/$argv
+      set repo "%S/$argv"
     end
-
-    __gitnow_clone git@github.com:$repo.git
-  else
-    echo
-    echo "Repository name is required!"
-    echo "E.g: gh your-repo-name"
-    echo
-    echo "Usages:"
-    echo
-    echo "  a) gh username/repo-name"
-    echo "  b) gh username repo-name"
-    echo "  c) gh repo-name"
-    echo "     For this, it's necessary to set your Github username (login)"
-    echo "     to global config before. You can type: "
-    echo "     git config --global user.github \"your-github-username\""
-    echo
   end
+
+  echo $repo
 end
 
-function __gitnow_clone -d "Git clone shortcut"
-  eval (echo git clone $argv)
-end
-
-function __gitnow_args -d "Processing the git arguments"
+function __gitnow_args -d "Gitnow: Processing the git arguments"
   set -l len (count $argv)
   set -l bran (__gitnow_current_branch_name)
   set -l orig (__gitnow_current_remote)
@@ -147,33 +219,23 @@ function __gitnow_args -d "Processing the git arguments"
   echo -n $orig $bran
 end
 
-function branch -d "Get branch operations"
-  set -l bran (__gitnow_current_branch_name)
-
-  if test (count $argv) -eq 1
-    set bran $argv[1]
-  end
-
-  git checkout $bran
-end
-
-function __gitnow_current_branch_name -d "Get current branch name"
+function __gitnow_current_branch_name -d "Gitnow: Get current branch name"
   git symbolic-ref --short HEAD ^/dev/null
 end
 
-function __gitnow_current_remote -d "Get current origin name"
+function __gitnow_current_remote -d "Gitnow: Get current origin name"
   set -l branch_name (__gitnow_current_branch_name)
   git config "branch.$branch_name.remote"; or echo origin
 end
 
-function __gitnow_current_path -d "Get current git path repository"
+function __gitnow_current_path -d "Gitnow: Get current git path repository"
   git rev-parse --show-toplevel ^ /dev/null
 end
 
-function __gitnow_is_git_repository -d "Checks if the current path is a git path"
+function __gitnow_is_git_repository -d "Gitnow: Checks if the current path is a git path"
   git rev-parse --git-dir ^ /dev/null
 end
 
-function __gitnow_current_commit_short -d "Get current commit in short format"
+function __gitnow_current_commit_short -d "Gitnow: Get current commit in short format"
   git rev-parse --short HEAD ^ /dev/null
 end
