@@ -15,20 +15,18 @@ fisher add joseluisq/gitnow
 
 ## Commands
 
-Command | Description
---- | ---
-**state** | Show the working tree status in compact way.
-**stage** | Stage files in current working directory.
-**unstage** | Unstage files in current working directory.
-**commit** | Commit changes to the repository.
-**commit-all** | Add and commit all changes to the repository.
-**pull** | Pull changes from remote server but saving uncommitted changes.
-**push** | Push commit changes to remote repository.
-**upstream** | Commit all changes and push them to remote server.
-**feature** | Creates a new feature ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
-**hotfix** | Creates a new hotfix ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
-**github** | Clone a GitHub repository using SSH.
-**bitbucket** | Clone a Bitbucket Cloud repository using SSH.
+- [state](#state) — Show the working tree status in compact way.
+- [stage](#stage) — Stage files in current working directory.
+- [unstage](#unstage) — Unstage files in current working directory.
+- [commit](#commit) — Commit changes to the repository.
+- [commit](#commit) — Add and commit all changes to the repository.
+- [pull](#pull) — Pull changes from remote server but saving uncommitted changes.
+- [push](#push) — Push commit changes to remote repository.
+- [upstream](#upstream) — Commit all changes and push them to remote server.
+- [feature](#feature) — Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+- [hotfix](#hotfix) — Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+- [github](#github) — Clone a _GitHub_ repository using SSH.
+- [bitbucket](#bitbucket) — Clone a _Bitbucket Cloud_ repository using SSH.
 
 **Tips:**
 
@@ -161,8 +159,6 @@ __Note:__ This command does `commit-all` and then `push`. No flags supported.
 ```sh
 upstream
 ```
-**feature** | Creates a new feature ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
-**hotfix** | Creates a new hotfix ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 
 ### feature
 
@@ -178,6 +174,8 @@ feature "This is my New FEATURE Branch"
 ```
 
 ### hotfix
+
+Creates a new hotfix ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 
 __Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
 
