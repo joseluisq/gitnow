@@ -1,7 +1,7 @@
 # GitNow
 > Speed up your Git workflow. :tropical_fish: + :octocat:
 
-**gitnow** is a [Fish](https://fishshell.com/) alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly) but with more pluses.
+**GitNow** is a [Fish](https://fishshell.com/) alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly) but with more pluses.
 
 ## Install
 
@@ -169,7 +169,7 @@ Examples:
 ```sh
 github username/repo-name
 github username repo-name
-github repo-name # required a `user.github` username setted
+github repo-name # requires a `user.github` username setted
 ```
 
 ### bitbucket
@@ -181,17 +181,22 @@ Examples:
 ```sh
 github username/repo-name
 github username repo-name
-github repo-name # required a `user.bitbucket` username setted
+github repo-name # requires a `user.bitbucket` username setted
 ```
 
 __Note:__ For cloning some repo only, it's necessary to set your Github or Bitbucket username to global config before like:
 
 ```sh
 # a) GitHub
-git config --global user.github \"your-username\"
+git config --global user.github "your_username"
 # b) Bitbucket
-git config --global user.bitbucket \"your-username\"
+git config --global user.bitbucket "your_username"
 ```
+
+## Bonus
+
+- [Git Cheat Sheet](https://github.com/joseluisq/git-cheat-sheet/) — Another Git cheat sheet yet.
+- [Git useful aliases](https://github.com/joseluisq/git-useful-aliases) — Set of useful Git aliases.
 
 ## Contributions
 
