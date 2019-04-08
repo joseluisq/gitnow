@@ -150,7 +150,7 @@ function __gitnow_new_branch -d "GitNow: Creates a new feature (Gitflow) branch 
 
   if test (count $argv) -eq 2
     set branch_name $argv[2]
-    set -l branch_name (__gitnow_slug $branch_name)
+    set -l branch_name (__gitnow_slugify $branch_name)
 
     git checkout -b feature/$branch_name
   else
