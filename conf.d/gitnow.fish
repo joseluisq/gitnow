@@ -3,6 +3,7 @@
 # to your ~/.config/fish/config.fish
 
 function state -d "Gitnow: Show the working tree status in compact way"
+  echo "Current working tree status:"
   git status -sb
 end
 
