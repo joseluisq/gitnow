@@ -1,5 +1,5 @@
-# gitnow
-> Simple and fast commands for your git workflow. :tropical_fish: + :octocat:
+# GitNow
+> Speed up your Git workflow. :tropical_fish: + :octocat:
 
 **gitnow** is a [Fish](https://fishshell.com/) alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly) but with more pluses.
 
