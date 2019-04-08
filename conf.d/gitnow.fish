@@ -122,6 +122,18 @@ function upstream -d "Gitnow: Commit all changes and push them to remote server"
   push
 end
 
+function feature -d "GitNow: Creates a new feature (Gitflow) branch from current branch"
+  git stash
+  __gitnow_new_branch "feature" $argv
+  git stash pop
+end
+
+function hotfix -d "GitNow: Creates a new hotfix (Gitflow) branch from current branch"
+  git stash
+  __gitnow_new_branch "hotfix" $argv
+  git stash pop
+end
+
 function github -d "Gitnow: Clone a GitHub repository using SSH"
   set -l repo (__gitnow_clone_params $argv)
   __gitnow_clone_repo $repo "github"
@@ -130,6 +142,25 @@ end
 function bitbucket -d "Gitnow: Clone a Bitbucket Cloud repository using SSH"
   set -l repo (__gitnow_clone_params $argv)
   __gitnow_clone_repo $repo "bitbucket"
+end
+
+function __gitnow_new_branch -d "GitNow: Creates a new feature (Gitflow) branch from current branch"
+  set -l cmd $argv[1]
+  set -l branch_name $argv[2]
+
+  if test (count $argv) -eq 2
+    set branch_name $argv[2]
+    set -l branch_name (__gitnow_slug $branch_name)
+
+    git checkout -b feature/$branch_name
+  else
+    echo "Provide a feature branch name."
+  end
+end
+
+# adapted from https://gist.github.com/oneohthree/f528c7ae1e701ad990e6
+function __gitnow_slugify
+  echo $argv | iconv -t ascii//TRANSLIT | sed -E 's/[^a-zA-Z0-9]+/_/g' | sed -E 's/^(-|_)+|(-|_)+$//g' | tr A-Z a-z
 end
 
 function __gitnow_clone_repo

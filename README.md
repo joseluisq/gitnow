@@ -25,6 +25,8 @@ Command | Description
 **pull** | Pull changes from remote server but saving uncommitted changes.
 **push** | Push commit changes to remote repository.
 **upstream** | Commit all changes and push them to remote server.
+**feature** | Creates a new feature ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+**hotfix** | Creates a new hotfix ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 **github** | Clone a GitHub repository using SSH.
 **bitbucket** | Clone a Bitbucket Cloud repository using SSH.
 
@@ -159,6 +161,32 @@ __Note:__ This command does `commit-all` and then `push`. No flags supported.
 ```sh
 upstream
 ```
+**feature** | Creates a new feature ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+**hotfix** | Creates a new hotfix ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+
+### feature
+
+Creates a new feature ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+
+__Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
+
+```sh
+feature feat1
+# > feature/feat1
+feature "This is my New FEATURE Branch"
+# > feature/this_is_my_new_feature_branch
+```
+
+### hotfix
+
+__Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
+
+```sh
+hotfix fix1
+# > hotfix/fix1
+hotfix "This is my New FIX Branch"
+# > hotfix/this_is_my_new_fix_branch
+```
 
 ### github
 
@@ -197,6 +225,7 @@ git config --global user.bitbucket "your_username"
 
 - [Git Cheat Sheet](https://github.com/joseluisq/git-cheat-sheet/) — Another Git cheat sheet yet.
 - [Git useful aliases](https://github.com/joseluisq/git-useful-aliases) — Set of useful Git aliases.
+- [Gitflow](https://github.com/nvie/gitflow)
 
 ## Contributions
 
