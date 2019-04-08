@@ -32,6 +32,7 @@ fisher add joseluisq/gitnow
 
 - Skip the password request creating a SSH key for your [Github](https://help.github.com/en/articles/connecting-to-github-with-ssh) or [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html) account.
 - SSH setup is required for using `github` and `bitbucket` commands.
+- Configure your [custom keybindings](https://github.com/joseluisq/dotfiles/blob/08ffca3c7e89b686fef334630c5f122ce9793358/.config/fish/config.fish#L27-L36).
 
 ## Usage
 
