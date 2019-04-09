@@ -34,7 +34,23 @@ fisher add joseluisq/gitnow
 
 - Skip the password request creating a SSH key for your [Github](https://help.github.com/en/articles/connecting-to-github-with-ssh) or [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html) account.
 - SSH setup is required for using `github` and `bitbucket` commands.
-- Configure your [custom keybindings](https://github.com/joseluisq/dotfiles/blob/08ffca3c7e89b686fef334630c5f122ce9793358/.config/fish/config.fish#L27-L36).
+- Take adventage of [keybindings](#keybindings) in order to get faster operations.
+
+## Keybindings
+
+| Command      | Shortcut  |
+| ------------- |:-------------:|
+| state        |  Alt + S  |
+| stage        |  Alt + E  |
+| unstage      |  Ctrl + E |
+| commit-all   |  Alt + C  |
+| pull         |  Alt + D  |
+| push         |  Alt + P  |
+| upstream     |  Alt + U  |
+| feature (1)  |  Alt + F  |
+| hotfix (1)   |  Alt + H  |
+
+_(1) This command key binding will creates a new branch taking as name some text of the clipboard._
 
 ## Usage
 
