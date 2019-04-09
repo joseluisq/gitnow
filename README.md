@@ -15,6 +15,7 @@ fisher add joseluisq/gitnow
 
 ## Commands
 
+- [gitnow](#gitnow) — Show available commands and version info.
 - [state](#state) — Show the working tree status in compact way.
 - [stage](#stage) — Stage files in current working directory.
 - [unstage](#unstage) — Unstage files in current working directory.
@@ -23,6 +24,7 @@ fisher add joseluisq/gitnow
 - [pull](#pull) — Pull changes from remote server but saving uncommitted changes.
 - [push](#push) — Push commit changes to remote repository.
 - [upstream](#upstream) — Commit all changes and push them to remote server.
+- [move](#move) — Moves from current branch to another but stashing your changes.
 - [feature](#feature) — Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 - [hotfix](#hotfix) — Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 - [github](#github) — Clone a _GitHub_ repository using SSH.
@@ -35,6 +37,14 @@ fisher add joseluisq/gitnow
 - Configure your [custom keybindings](https://github.com/joseluisq/dotfiles/blob/08ffca3c7e89b686fef334630c5f122ce9793358/.config/fish/config.fish#L27-L36).
 
 ## Usage
+
+### gitnow
+
+Show available commands and version info
+
+```sh
+gitnow
+```
 
 ### state
 
@@ -159,6 +169,20 @@ __Note:__ This command does `commit-all` and then `push`. No flags supported.
 
 ```sh
 upstream
+```
+
+### move
+
+Switch from current branch to another but stashing uncommitted changes
+
+__Note:__ This command does `git stash` then `git checkout <other_branch>` and finally `git stash pop`. 
+It also will make sure first that `<other_branch>` matchs with your existing branches. No flags supported.
+
+```sh
+move other_branch
+# ...
+move ghost_branch
+# Branch `ghost_branch` was not found. No possible to switch.
 ```
 
 ### feature
