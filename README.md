@@ -1,7 +1,7 @@
 # GitNow
 > Speed up your Git workflow. :tropical_fish: + :octocat:
 
-**GitNow** is a [Fish](https://fishshell.com/) alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly) but with more pluses.
+GitNow contains a command set that provides high-level operations on the top of Git. A Fish shell alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
 
 ## Install
 
@@ -56,7 +56,7 @@ _(1) This command key binding will creates a new branch taking as name some text
 
 ### gitnow
 
-Show available commands and version info
+Show available commands and version info.
 
 ```sh
 gitnow
@@ -174,7 +174,7 @@ __Note:__ This command is equivalent to `git push --set-upstream [your arguments
 # Auto mode (current origin and branch)
 push
 # Manual mode
-push <origin_name> <branch_name>
+push <origin_name> <branch_name> <--some_other_flags>
 ```
 
 ### upstream
@@ -246,9 +246,9 @@ Clone a Bitbucket Cloud repository using SSH.
 Examples:
 
 ```sh
-github username/repo-name
-github username repo-name
-github repo-name # requires a `user.bitbucket` username setted
+bitbucket username/repo-name
+bitbucket username repo-name
+bitbucket repo-name # requires a `user.bitbucket` username setted
 ```
 
 __Note:__ For cloning some repo only, it's necessary to set your Github or Bitbucket username to global config before like:
