@@ -5,9 +5,22 @@
 #   Fish 2.2.0 doesn't include native snippet support.
 #   Upgrade to Fish >= 2.3.0 or append the following code to your ~/.config/fish/config.fish
 
+set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+set -q fish_config; or set -g fish_config $XDG_CONFIG_HOME/fish
+set -q gitnow_path; or set -g gitnow_path $fish_config
+
+source "$gitnow_path/functions/__gitnow_functions.fish"
+source "$gitnow_path/functions/__gitnow_manual.fish"
+
+function gitnow -d "Gitnow: Speed up your Git workflow. 🐠"
+  __gitnow_manual | less -r
+
+  commandline -f repaint;
+end
+
 function state -d "Gitnow: Show the working tree status in compact way"
   echo "Current working tree status:"
-  git status -sb
+  command git status -sb
   commandline -f repaint;
 end
 
@@ -19,7 +32,7 @@ function stage -d "Gitnow: Stage files in current working directory"
     set opts $argv
   end
 
-  git add $opts
+  command git add $opts
   commandline -f repaint;
 end
 
@@ -31,7 +44,7 @@ function unstage -d "Gitnow: Unstage files in current working directory"
     set opts $argv
   end
 
-  git reset $opts
+  command git reset $opts
   commandline -f repaint;
 end
 
@@ -39,9 +52,9 @@ function commit -d "Gitnow: Commit changes to the repository"
   set -l len (count $argv)
 
   if test $len -gt 0
-    git commit $argv
+    command git commit $argv
   else
-    git commit
+    command git commit
   end
 
   commandline -f repaint;
@@ -54,8 +67,8 @@ end
 
 function pull -d "Gitnow: Pull changes from remote server but saving uncommitted changes"
   set -l len (count $argv)
-  set -l xorigin (_gitnow_current_remote)
-  set -l xbranch (_gitnow_current_branch_name)
+  set -l xorigin (__gitnow_current_remote)
+  set -l xbranch (__gitnow_current_branch_name)
   set -l xcmd ""
   
   echo "📥 Pulling changes..."
@@ -82,23 +95,23 @@ function pull -d "Gitnow: Pull changes from remote server but saving uncommitted
     end
 
     set xcmd $xorigin $xbranch
-    set -l xremote (git config --get "remote.$xorigin.url")
+    set -l xremote (command git config --get "remote.$xorigin.url")
 
     echo "Remote: $xorigin ($xremote)"
     echo "Branch: $xbranch"
     echo
   end
 
-  git pull $xcmd $xdefaults
+  command git pull $xcmd $xdefaults
   commandline -f repaint;
 end
 
 # Git push with --set-upstream
 # Shortcut inspired from https://github.com/jamiew/git-friendly
 function push -d "Gitnow: Push commit changes to remote repository"
-  set -l bran (_gitnow_current_branch_name)
-  set -l orig (_gitnow_current_remote)
-  set -l comi (_gitnow_current_commit_short)
+  set -l bran (__gitnow_current_branch_name)
+  set -l orig (__gitnow_current_remote)
+  set -l comi (__gitnow_current_commit_short)
   set -l opts $argv
 
   echo "📤 Pushing changes..."
@@ -107,7 +120,7 @@ function push -d "Gitnow: Push commit changes to remote repository"
     set opts $orig $bran
   end
 
-  set -l pushr (git push --set-upstream $opts 2>&1)
+  set -l pushr (command git push --set-upstream $opts 2>&1)
 
   if test $status -eq 0
     echo
@@ -134,16 +147,16 @@ end
 
 function feature -d "GitNow: Creates a new feature (Gitflow) branch from current branch"
   set -l xprefix "feature"
-  set -l xbranch (_gitnow_slugify $argv[1])
+  set -l xbranch (__gitnow_slugify $argv[1])
   set -l xbranch_full "$xprefix/$xbranch"
-  set -l xfound (_gitnow_check_if_branch_exist $xbranch_full)
+  set -l xfound (__gitnow_check_if_branch_exist $xbranch_full)
 
   if test $xfound -eq 1
     echo "Branch `$xbranch_full` already exists. Nothing to do."
   else
-    git stash
-    _gitnow_new_branch_switch "$xbranch_full"
-    git stash pop
+    command git stash
+    __gitnow_new_branch_switch "$xbranch_full"
+    command git stash pop
   end
 
   commandline -f repaint;
@@ -151,16 +164,16 @@ end
 
 function hotfix -d "GitNow: Creates a new hotfix (Gitflow) branch from current branch"
   set -l xprefix "hotfix"
-  set -l xbranch (_gitnow_slugify $argv[1])
+  set -l xbranch (__gitnow_slugify $argv[1])
   set -l xbranch_full "$xprefix/$xbranch"
-  set -l xfound (_gitnow_check_if_branch_exist $xbranch_full)
+  set -l xfound (__gitnow_check_if_branch_exist $xbranch_full)
 
   if test $xfound -eq 1
     echo "Branch `$xbranch_full` already exists. Nothing to do."
   else
-    git stash
-    _gitnow_new_branch_switch "$xbranch_full"
-    git stash pop
+    command git stash
+    __gitnow_new_branch_switch "$xbranch_full"
+    command git stash pop
   end
 
   commandline -f repaint;
@@ -169,12 +182,16 @@ end
 function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes"
   if test (count $argv) -gt 0
     set -l xbranch $argv[1]
-    set -l xfound (_gitnow_check_if_branch_exist $xbranch)
+    set -l xfound (__gitnow_check_if_branch_exist $xbranch)
 
     if test $xfound -eq 1
-      git stash
-      git checkout $xbranch
-      git stash pop
+      if [ "$xbranch" = (__gitnow_current_branch_name) ]
+        echo "Branch `$xbranch` is the same like current branch. Nothing to do."
+      else
+        command git stash
+        command git checkout $xbranch
+        command git stash pop
+      end
     else
       echo "Branch `$xbranch` was not found. No possible to switch."
     end
@@ -186,21 +203,15 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
 end
 
 function github -d "Gitnow: Clone a GitHub repository using SSH"
-  set -l repo (_gitnow_clone_params $argv)
-  _gitnow_clone_repo $repo "github"
+  set -l repo (__gitnow_clone_params $argv)
+  __gitnow_clone_repo $repo "github"
 
   commandline -f repaint;
 end
 
 function bitbucket -d "Gitnow: Clone a Bitbucket Cloud repository using SSH"
-  set -l repo (_gitnow_clone_params $argv)
-  _gitnow_clone_repo $repo "bitbucket"
-
-  commandline -f repaint;
-end
-
-function gitnow -d "Gitnow: Speed up your Git workflow. 🐠"
-  _gitnow_manual | less -r
+  set -l repo (__gitnow_clone_params $argv)
+  __gitnow_clone_repo $repo "bitbucket"
 
   commandline -f repaint;
 end

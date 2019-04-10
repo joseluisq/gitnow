@@ -5,7 +5,7 @@
 #   Fish 2.2.0 doesn't include native snippet support.
 #   Upgrade to Fish >= 2.3.0 or append the following code to your ~/.config/fish/config.fish
 
-function _gitnow_manual -d "Gitnow: Manual page like"
+function __gitnow_manual -d "Gitnow: Manual page like"
   set -l gitnow_version "v2.0.2"
 
   echo (set_color white --bold)"NAME"(set_color normal)

@@ -5,35 +5,35 @@
 #   Fish 2.2.0 doesn't include native snippet support.
 #   Upgrade to Fish >= 2.3.0 or append the following code to your ~/.config/fish/config.fish
 
-function _gitnow_new_branch_switch
+function __gitnow_new_branch_switch
   set -l branch_name $argv[1]
 
   if test (count $argv) -eq 1
     set branch_name $branch_name
 
-    git checkout -b $branch_name
+    command git checkout -b $branch_name
   else
     echo "Provide a branch name."
   end
 end
 
 # adapted from https://gist.github.com/oneohthree/f528c7ae1e701ad990e6
-function _gitnow_slugify
-  echo $argv | iconv -t ascii//TRANSLIT | sed -E 's/[^a-zA-Z0-9]+/_/g' | sed -E 's/^(-|_)+|(-|_)+$//g' | tr A-Z a-z
+function __gitnow_slugify
+  echo $argv | command iconv -t ascii//TRANSLIT | command sed -E 's/[^a-zA-Z0-9]+/_/g' | command sed -E 's/^(-|_)+|(-|_)+$//g' | command tr A-Z a-z
 end
 
-function _gitnow_clone_repo
+function __gitnow_clone_repo
   set -l repo $argv[1]
   set -l platform $argv[2]
 
   if test -n "$repo"
     set -l ok 1
 
-    if echo $repo | grep -q -E '^[\%S].+'
-      set -l user (git config --global user.$platform)
+    if echo $repo | command grep -q -E '^[\%S].+'
+      set -l user (command git config --global user.$platform)
 
       if test -n "$user"
-        set -l repor (echo $repo | sed -e "s/^%S/$user/")
+        set -l repor (echo $repo | command sed -e "s/^%S/$user/")
         set repo $repor
       else
         set ok 0
@@ -52,16 +52,16 @@ function _gitnow_clone_repo
       set -l repo_url git@$url:$repo.git
       
       echo "📦 Remote repository: $repo_url"
-      git clone $repo_url
+      command git clone $repo_url
     else
-      _gitnow_clone_msg $platform
+      __gitnow_clone_msg $platform
     end
   else
-    _gitnow_clone_msg $platform
+    __gitnow_clone_msg $platform
   end
 end
 
-function _gitnow_clone_msg
+function __gitnow_clone_msg
   set -l msg $argv[1]
 
   echo "Repository name is required!"
@@ -76,10 +76,10 @@ function _gitnow_clone_msg
   echo
 end
 
-function _gitnow_check_if_branch_exist
+function __gitnow_check_if_branch_exist
   if test (count $argv) -eq 1
     set -l xbranch $argv[1]
-    set -l xbranch_list (_gitnow_current_branch_list)
+    set -l xbranch_list (__gitnow_current_branch_list)
     set -l xfound 0
 
     for b in $xbranch_list
@@ -95,13 +95,13 @@ function _gitnow_check_if_branch_exist
   end
 end
 
-function _gitnow_clone_params
+function __gitnow_clone_params
   set -l repo
 
   if count $argv > /dev/null
     if test (count $argv) -gt 1
       set repo $argv[1]/$argv[2]
-    else if echo $argv | grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
+    else if echo $argv | command grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
       set repo $argv
     else
       set repo "%S/$argv"
@@ -111,19 +111,19 @@ function _gitnow_clone_params
   echo $repo
 end
 
-function _gitnow_current_branch_name
-  git symbolic-ref --short HEAD ^ /dev/null
+function __gitnow_current_branch_name
+  command git symbolic-ref --short HEAD 2>/dev/null
 end
 
-function _gitnow_current_branch_list
-  git branch --list --no-color | sed -E "s/^(\*?[ \t]*)//g" ^ /dev/null
+function __gitnow_current_branch_list
+  command git branch --list --no-color | sed -E "s/^(\*?[ \t]*)//g" 2>/dev/null
 end
 
-function _gitnow_current_remote -d "Gitnow: Get current origin name"
-  set -l branch_name (_gitnow_current_branch_name)
-  git config "branch.$branch_name.remote"; or echo origin
+function __gitnow_current_remote -d "Gitnow: Get current origin name"
+  set -l branch_name (__gitnow_current_branch_name)
+  command git config "branch.$branch_name.remote" 2>/dev/null; or echo origin
 end
 
-function _gitnow_current_commit_short
-  git rev-parse --short HEAD ^ /dev/null
+function __gitnow_current_commit_short
+  command git rev-parse --short HEAD 2>/dev/null
 end
