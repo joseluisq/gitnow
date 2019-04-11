@@ -1,4 +1,5 @@
-# GitNow
+# GitNow [![Build Status](https://travis-ci.org/joseluisq/gitnow.svg?branch=master)](https://travis-ci.org/joseluisq/gitnow) [![Releases](https://img.shields.io/github/release/joseluisq/gitnow.svg?label=latest)](https://github.com/joseluisq/gitnow/releases)
+
 > Speed up your Git workflow. :tropical_fish:
 
 GitNow contains a command set that provides high-level operations on the top of Git. A Fish shell alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
@@ -6,6 +7,16 @@ GitNow contains a command set that provides high-level operations on the top of 
 ## Install
 
 With [Fisher](https://github.com/jorgebucaran/fisherman):
+
+__Stable:__
+
+```sh
+fisher add joseluisq/gitnow@2.0.4
+```
+
+_**Note:** Replace the number above with your preferred release._
+
+__Ustable:__
 
 ```sh
 fisher add joseluisq/gitnow
