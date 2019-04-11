@@ -117,14 +117,13 @@ function push -d "Gitnow: Push commit changes to remote repository"
 
   if test (count $opts) -eq 0
     set opts $xorigin $xbranch
-
-    echo "Mode: Manual"
-  else
     set -l xremote_url (command git config --get "remote.$xorigin.url")
 
     echo "Mode: Auto"
     echo "Remote URL: $xorigin ($xremote_url)"
     echo "Remote branch: $xbranch"
+  else
+    echo "Mode: Manual"
   end
 
   echo
