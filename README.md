@@ -1,5 +1,5 @@
 # GitNow
-> Speed up your Git workflow. :tropical_fish: + :octocat:
+> Speed up your Git workflow. :tropical_fish:
 
 GitNow contains a command set that provides high-level operations on the top of Git. A Fish shell alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
 
@@ -16,17 +16,18 @@ fisher add joseluisq/gitnow
 ## Commands
 
 - [gitnow](#gitnow) — Show available commands and version info.
-- [state](#state) — Show the working tree status in compact way.
+- [state](#state) — Show the working tree status in a compact way.
 - [stage](#stage) — Stage files in current working directory.
 - [unstage](#unstage) — Unstage files in current working directory.
 - [commit](#commit) — Commit changes to the repository.
-- [commit](#commit) — Add and commit all changes to the repository.
+- [commit-all](#commit-all) — Add and commit all changes to the repository.
 - [pull](#pull) — Pull changes from remote server but saving uncommitted changes.
 - [push](#push) — Push commit changes to remote repository.
 - [upstream](#upstream) — Commit all changes and push them to remote server.
 - [move](#move) — Moves from current branch to another but stashing your changes.
 - [feature](#feature) — Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 - [hotfix](#hotfix) — Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+- [logs](#logs) — Shows logs in a fancy way.
 - [github](#github) — Clone a _GitHub_ repository using SSH.
 - [bitbucket](#bitbucket) — Clone a _Bitbucket Cloud_ repository using SSH.
 
@@ -49,6 +50,7 @@ fisher add joseluisq/gitnow
 | upstream     |  Alt + U  |
 | feature (1)  |  Alt + F  |
 | hotfix (1)   |  Alt + H  |
+| logs         |  Alt + L  |
 
 _(1) This command key binding will creates a new branch taking as name some text of the clipboard._
 
@@ -225,6 +227,21 @@ hotfix fix1
 # > hotfix/fix1
 hotfix "This is my New FIX Branch"
 # > hotfix/this_is_my_new_fix_branch
+```
+
+### logs
+
+Shows logs in a fancy way.
+
+__Note:__ This command does `git log HEAD` by default using a pretty format. Add your `git log` flags as usual to overwrite it.
+
+```sh
+# shows all logs (default)
+logs
+
+# shows logs using git log parameters and flags (custom)
+logs 8b09088
+logs --before "yesterday" --after="1 week ago"
 ```
 
 ### github

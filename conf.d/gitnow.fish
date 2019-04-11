@@ -71,19 +71,19 @@ function pull -d "Gitnow: Pull changes from remote server but saving uncommitted
   set -l xbranch (__gitnow_current_branch_name)
   set -l xcmd ""
   
-  echo "📥 Pulling changes..."
+  echo "⚡️ Pulling changes..."
 
   set -l xdefaults --rebase --autostash
 
   if test $len -gt 2 
     set xcmd $argv
 
-    echo "Arguments mode: Manual"
-    echo "Default arguments: $xdefaults"
+    echo "Mode: Manual"
+    echo "Default flags: $xdefaults"
     echo
   else
-    echo "Arguments mode: Auto"
-    echo "Default arguments: $xdefaults"
+    echo "Mode: Auto"
+    echo "Default flags: $xdefaults"
 
     if test $len -eq 1
       set xbranch $argv[1]
@@ -95,10 +95,10 @@ function pull -d "Gitnow: Pull changes from remote server but saving uncommitted
     end
 
     set xcmd $xorigin $xbranch
-    set -l xremote (command git config --get "remote.$xorigin.url")
+    set -l xremote_url (command git config --get "remote.$xorigin.url")
 
-    echo "Remote: $xorigin ($xremote)"
-    echo "Branch: $xbranch"
+    echo "Remote URL: $xorigin ($xremote_url)"
+    echo "Remote branch: $xbranch"
     echo
   end
 
@@ -109,34 +109,27 @@ end
 # Git push with --set-upstream
 # Shortcut inspired from https://github.com/jamiew/git-friendly
 function push -d "Gitnow: Push commit changes to remote repository"
-  set -l bran (__gitnow_current_branch_name)
-  set -l orig (__gitnow_current_remote)
-  set -l comi (__gitnow_current_commit_short)
   set -l opts $argv
+  set -l xorigin (__gitnow_current_remote)
+  set -l xbranch (__gitnow_current_branch_name)
 
-  echo "📤 Pushing changes..."
+  echo "🚀 Pushing changes..."
 
-  if test (count $argv) -eq 0
-    set opts $orig $bran
-  end
+  if test (count $opts) -eq 0
+    set opts $xorigin $xbranch
 
-  set -l pushr (command git push --set-upstream $opts 2>&1)
-
-  if test $status -eq 0
-    echo
-
-    if echo $pushr | grep -q -E 'Everything up\-to\-date'
-      echo "🍺 Git says everything is up-to-date!"
-    else
-      echo "🚀 Your remote refs ('$orig/$bran') was updated! ($comi)"
-    end
+    echo "Mode: Manual"
   else
-    echo
-    echo "⚠ Ouch, push failed!"
-    echo -e $pushr
+    set -l xremote_url (command git config --get "remote.$xorigin.url")
+
+    echo "Mode: Auto"
+    echo "Remote URL: $xorigin ($xremote_url)"
+    echo "Remote branch: $xbranch"
   end
 
   echo
+
+  command git push --set-upstream $opts
   commandline -f repaint;
 end
 
@@ -198,6 +191,18 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
   else
     echo "Provide a branch name to move."
   end
+
+  commandline -f repaint;
+end
+
+function logs -d "Gitnow: Shows logs in a fancy way"
+  set -l args HEAD
+
+  if test -n "$argv"
+    set args $argv
+  end
+
+  command git log $args --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit | command less -r
 
   commandline -f repaint;
 end

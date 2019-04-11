@@ -35,7 +35,7 @@ function __gitnow_manual -d "Gitnow: Manual page like"
   echo "      "(set_color white --bold)"commit"(set_color normal)
   echo "        Commit changes to the repository."
   echo
-  echo "      "(set_color white --bold)"commit"(set_color normal)
+  echo "      "(set_color white --bold)"commit-all"(set_color normal)
   echo "        Add and commit all changes to the repository."
   echo
   echo "      "(set_color white --bold)"pull"(set_color normal)
@@ -56,6 +56,9 @@ function __gitnow_manual -d "Gitnow: Manual page like"
   echo "      "(set_color white --bold)"hotfix"(set_color normal)
   echo "        Creates a new hotfix (Gitflow) branch from current branch."
   echo
+  echo "      "(set_color white --bold)"logs"(set_color normal)
+  echo "        Shows logs in a fancy way."
+  echo
   echo "      "(set_color white --bold)"github"(set_color normal)
   echo "        Clone a GitHub repository using SSH."
   echo
@@ -72,6 +75,7 @@ function __gitnow_manual -d "Gitnow: Manual page like"
   echo "      upstream        Alt + U"
   echo "      feature(1)      Alt + F"
   echo "      hotfix(1)       Alt + H"
+  echo "      logs            Alt + L"
   echo
   echo "      (1) This command key binding will creates a new branch taking as name some text of the clipboard."
   echo

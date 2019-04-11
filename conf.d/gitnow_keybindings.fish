@@ -26,6 +26,9 @@ bind \ep "echo; if push; commandline -f repaint; else ; end"
 # Alt + U
 bind \eu "echo; if upstream; commandline -f repaint; else ; end"
 
+# Alt + L
+bind \eu "echo; if logs; commandline -f repaint; else ; end"
+
 # `feature` & `hotfix` depend on some clipboard program
 
 set -l xpaste
