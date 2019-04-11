@@ -1,6 +1,6 @@
 # GitNow [![Build Status](https://travis-ci.org/joseluisq/gitnow.svg?branch=master)](https://travis-ci.org/joseluisq/gitnow) [![Releases](https://img.shields.io/github/release/joseluisq/gitnow.svg?label=latest)](https://github.com/joseluisq/gitnow/releases)
 
-> Speed up your Git workflow. :tropical_fish:
+> Speed up your Git workflow. 🐠
 
 GitNow contains a command set that provides high-level operations on the top of Git. A Fish shell alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
 
@@ -14,15 +14,13 @@ __Stable:__
 fisher add joseluisq/gitnow@2.0.4
 ```
 
-_**Note:** Replace the number above with your preferred release._
+<small>_**Note:** Replace the number above with your preferred release._</small>
 
 __Ustable:__
 
 ```sh
 fisher add joseluisq/gitnow
 ```
-
-> __Note:__ Fish 2.2.0 doesn't include native snippet support. Upgrade to Fish >= 2.3.0 or append the `gitnow.fish` to your `~/.config/fish/config.fish` file.
 
 ## Commands
 

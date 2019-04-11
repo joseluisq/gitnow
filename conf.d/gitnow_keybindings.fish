@@ -1,9 +1,5 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
-# 
-# NOTE:
-#   Fish 2.2.0 doesn't include native snippet support.
-#   Upgrade to Fish >= 2.3.0 or append the following code to your ~/.config/fish/config.fish
 
 # Alt + S
 bind \es "echo; if state; commandline -f repaint; else ; end"

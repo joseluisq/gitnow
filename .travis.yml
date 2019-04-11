@@ -1,4 +1,8 @@
 sudo: required
+
+env:
+- NODE_ENV=development
+
 before_install:
     - sudo add-apt-repository -y ppa:fish-shell/nightly-master
     - sudo apt-get update
@@ -6,6 +10,13 @@ before_install:
     - fish --version
     - curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
     - fish -c "fisher -v"
+
+git:
+  depth: 1
+
+notifications:
+  email: false
+
 script:
     - fish -c "fisher add joseluisq/gitnow"
     - fish -c "gitnow -v ; gitnow --version"
