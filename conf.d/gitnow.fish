@@ -1,21 +1,17 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
-# 
+#
 # NOTE:
 #   Fish 2.2.0 doesn't include native snippet support.
 #   Upgrade to Fish >= 2.3.0 or append the following code to your ~/.config/fish/config.fish
 
-set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
-set -q fish_config; or set -g fish_config $XDG_CONFIG_HOME/fish
-set -q gitnow_path; or set -g gitnow_path $fish_config
-
-source "$gitnow_path/functions/__gitnow_functions.fish"
-source "$gitnow_path/functions/__gitnow_manual.fish"
-
-function gitnow -d "Gitnow: Speed up your Git workflow. 🐠"
-  __gitnow_manual | less -r
-
-  commandline -f repaint;
+function gitnow -d "Gitnow: Speed up your Git workflow. 🐠" -a xversion
+  if [ "$xversion" = "-v" ]; or [ "$xversion" = "--version" ]
+    echo "GitNow version $gitnow_version"
+  else
+    __gitnow_manual | command less -r
+    commandline -f repaint;
+  end
 end
 
 function state -d "Gitnow: Show the working tree status in compact way"
@@ -201,7 +197,7 @@ function logs -d "Gitnow: Shows logs in a fancy way"
     set args $argv
   end
 
-  command git log $args --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit | command less -r
+  command git log $args --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit | command less -r
 
   commandline -f repaint;
 end
