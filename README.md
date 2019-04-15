@@ -203,13 +203,16 @@ upstream
 Switch from current branch to another but stashing uncommitted changes
 
 __Note:__ This command does `git stash` then `git checkout <other_branch>` and finally `git stash pop`. 
-It also will make sure first that `<other_branch>` matchs with your existing branches. No flags supported.
+It also will make sure first that `<other_branch>` matchs with your existing branches. Use also `-u` (or `--upstream`) flag to fetch a remote branch.
 
 ```sh
 move other_branch
-# ...
-move ghost_branch
+
 # Branch `ghost_branch` was not found. No possible to switch.
+move ghost_branch
+
+# With -u flag the branch will be fetched from remote origin
+move -u feature/new_remote_branch
 ```
 
 ### feature

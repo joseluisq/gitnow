@@ -163,21 +163,33 @@ function hotfix -d "GitNow: Creates a new hotfix (Gitflow) branch from current b
   commandline -f repaint;
 end
 
-function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes"
-  if test (count $argv) -gt 0
-    set -l xbranch $argv[1]
-    set -l xfound (__gitnow_check_if_branch_exist $xbranch)
+function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes" -a xupstream -a xbranch
+  if [ "$xupstream" != "-u" ]; and [ "$xupstream" != "--upstream" ]
+    set xbranch $xupstream
+    set xupstream ""
+  end
 
-    if test $xfound -eq 1
-      if [ "$xbranch" = (__gitnow_current_branch_name) ]
-        echo "Branch `$xbranch` is the same like current branch. Nothing to do."
-      else
-        command git stash
-        command git checkout $xbranch
-        command git stash pop
-      end
+  if test -n "$xbranch"
+    if [ "$xupstream" = "-u" ]; or [ "$xupstream" = "--upstream" ]
+      command git stash
+      command git fetch (__gitnow_current_remote) $xbranch
+      command git checkout $xbranch
+      command git stash pop
     else
-      echo "Branch `$xbranch` was not found. No possible to switch."
+      set -l xfound (__gitnow_check_if_branch_exist $xbranch)
+
+      if test $xfound -eq 1
+        if [ "$xbranch" = (__gitnow_current_branch_name) ]
+          echo "Branch `$xbranch` is the same like current branch. Nothing to do."
+        else
+          command git stash
+          command git checkout $xbranch
+          command git stash pop
+        end
+      else
+        echo "Branch `$xbranch` was not found. No possible to switch."
+        echo "Tip: Use -u (--upstream) flag to fetch a remote branch."
+      end
     end
   else
     echo "Provide a branch name to move."
