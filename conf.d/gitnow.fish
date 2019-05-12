@@ -129,37 +129,23 @@ function upstream -d "Gitnow: Commit all changes and push them to remote server"
   push
 end
 
-function feature -d "GitNow: Creates a new feature (Gitflow) branch from current branch"
-  set -l xprefix "feature"
-  set -l xbranch (__gitnow_slugify $argv[1])
-  set -l xbranch_full "$xprefix/$xbranch"
-  set -l xfound (__gitnow_check_if_branch_exist $xbranch_full)
-
-  if test $xfound -eq 1
-    echo "Branch `$xbranch_full` already exists. Nothing to do."
-  else
-    command git stash
-    __gitnow_new_branch_switch "$xbranch_full"
-    command git stash pop
-  end
-
+function feature -d "GitNow: Creates a new Gitflow feature branch from current branch" -a xbranch
+  __gitnow_gitflow_branch "feature" $xbranch
   commandline -f repaint;
 end
 
-function hotfix -d "GitNow: Creates a new hotfix (Gitflow) branch from current branch"
-  set -l xprefix "hotfix"
-  set -l xbranch (__gitnow_slugify $argv[1])
-  set -l xbranch_full "$xprefix/$xbranch"
-  set -l xfound (__gitnow_check_if_branch_exist $xbranch_full)
+function hotfix -d "GitNow: Creates a new Gitflow hotfix branch from current branch" -a xbranch
+  __gitnow_gitflow_branch "hotfix" $xbranch
+  commandline -f repaint;
+end
 
-  if test $xfound -eq 1
-    echo "Branch `$xbranch_full` already exists. Nothing to do."
-  else
-    command git stash
-    __gitnow_new_branch_switch "$xbranch_full"
-    command git stash pop
-  end
+function bugfix -d "GitNow: Creates a new Gitflow bugfix branch from current branch" -a xbranch
+  __gitnow_gitflow_branch "bugfix" $xbranch
+  commandline -f repaint;
+end
 
+function release -d "GitNow: Creates a new Gitflow release branch from current branch" -a xbranch
+  __gitnow_gitflow_branch "release" $xbranch
   commandline -f repaint;
 end
 

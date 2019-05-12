@@ -24,44 +24,46 @@ fisher add joseluisq/gitnow
 
 ## Commands
 
-- [gitnow](#gitnow) — Show available commands and version info.
-- [state](#state) — Show the working tree status in a compact way.
-- [stage](#stage) — Stage files in current working directory.
-- [unstage](#unstage) — Unstage files in current working directory.
-- [commit](#commit) — Commit changes to the repository.
-- [commit-all](#commit-all) — Add and commit all changes to the repository.
-- [pull](#pull) — Pull changes from remote server but saving uncommitted changes.
-- [push](#push) — Push commit changes to remote repository.
-- [upstream](#upstream) — Commit all changes and push them to remote server.
-- [move](#move) — Moves from current branch to another but stashing your changes.
-- [feature](#feature) — Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
-- [hotfix](#hotfix) — Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
-- [logs](#logs) — Shows logs in a fancy way.
-- [github](#github) — Clone a _GitHub_ repository using SSH.
-- [bitbucket](#bitbucket) — Clone a _Bitbucket Cloud_ repository using SSH.
+| Command | Shortcut | Description |
+|---|---|---|
+| [gitnow](#gitnow) | | Show available commands and version info.
+| __Git__ | | |
+| [state](#state) | Alt + S | Show the working tree status in a compact way. |
+| [stage](#stage) | Alt + E | Stage files in current working directory. |
+| [unstage](#unstage) | Ctrl + S | Unstage files in current working directory. |
+| [commit](#commit) | | Commit changes to the repository. |
+| [commit-all](#commit-all) | Ctrl + C | Add and commit all changes to the repository. |
+| [pull](#pull) | Alt + D | Pull changes from remote server but saving uncommitted changes. |
+| [push](#push) | Alt + P | Push commit changes to remote repository. |
+| [upstream](#upstream) | Alt + U | Commit all changes and push them to remote server. |
+| [move](#move) | | Moves from current branch to another but stashing your changes. |
+| [logs](#logs) | Alt + L | Shows logs in a fancy way. |
+| __Gitflow__ | | |
+| [feature](#feature) (1) | Alt + F | Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
+| [hotfix](#hotfix) (1) | Alt + H | Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
+| [bugfix](#bugfix) | | Creates a new _bugfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
+| [release](#release) | | Creates a new _release_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
+| __Bonus__ | | |
+| [github](#github) | | Clone a _GitHub_ repository using SSH. |
+| [bitbucket](#bitbucket) | | Clone a _Bitbucket Cloud_ repository using SSH. |
 
-**Tips:**
+- (1) This command key binding will creates a new branch taking as name some text of the clipboard.
+
+## Tips
 
 - Skip the password request creating a SSH key for your [Github](https://help.github.com/en/articles/connecting-to-github-with-ssh) or [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html) account.
 - SSH setup is required for using `github` and `bitbucket` commands.
-- Take adventage of [keybindings](#keybindings) in order to get faster operations.
+- Take adventage of keybindings in order to get faster operations.
 
-## Keybindings
+## Configuration
 
-| Command      | Shortcut  |
-| ------------- |:-------------:|
-| state        |  Alt + S  |
-| stage        |  Alt + E  |
-| unstage      |  Ctrl + E |
-| commit-all   |  Alt + C  |
-| pull         |  Alt + D  |
-| push         |  Alt + P  |
-| upstream     |  Alt + U  |
-| feature (1)  |  Alt + F  |
-| hotfix (1)   |  Alt + H  |
-| logs         |  Alt + L  |
+For a custom configuration (for example keybindings) place a [.gitnow](./conf.d/.gitnow) file in your home directory `~/.gitflow`.
 
-_(1) This command key binding will creates a new branch taking as name some text of the clipboard._
+### Keybindings
+
+[.gitnow](./conf.d/.gitnow) file contains a _[ keybindings ]_ section with default shortcuts (key-value pairs).
+
+You can add, edit or remove shortcuts on demand. For custom keys run the built-in function `fish_key_reader` in your terminal then press the key (or key's combinations) to get the right sequence bind char(s). Finally set it to your preferred command in `~/.gitflow` file.
 
 ## Usage
 
@@ -239,6 +241,32 @@ hotfix fix1
 # > hotfix/fix1
 hotfix "This is my New FIX Branch"
 # > hotfix/this_is_my_new_fix_branch
+```
+
+### bugfix
+
+Creates a new bugfix ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+
+__Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
+
+```sh
+bugfix fix1
+# > bugfix/fix1
+bugfix "This is my New bugFIX Branch"
+# > bugfix/this_is_my_new_bugfix_branch
+```
+
+### release
+
+Creates a new release ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
+
+__Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
+
+```sh
+release fix1
+# > release/fix1
+release "This is my New release Branch"
+# > release/this_is_my_new_bugfix_branch
 ```
 
 ### logs

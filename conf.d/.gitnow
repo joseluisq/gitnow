@@ -1,0 +1,31 @@
+[ keybindings ]
+
+# Alt + S
+state = \es
+
+# Alt + E
+stage = \ee
+
+# Ctrl + E
+unstage = \ce
+
+# Alt + C
+commit-all = \ec
+
+# Alt + D
+pull = \ed
+
+# Alt + P
+push = \ep
+
+# Alt + U
+upstream = \eu
+
+# Alt + L
+logs = \el
+
+# Alt + F
+feature = \ef
+
+# Alt + H
+hotfix = \eh
