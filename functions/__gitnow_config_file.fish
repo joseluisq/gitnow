@@ -13,7 +13,7 @@ function __gitnow_read_config -d "Reads a GitNow config file"
     # download .gitnow example file
     if not test -e $config_file        
         echo "GitNow: Downloading default configuration..."
-        curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/conf.d/.gitnow
+        curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/.gitnow
         echo "GitNow: Configured and ready to use!"
     end
 

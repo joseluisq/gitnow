@@ -82,7 +82,7 @@ function __gitnow_manual -d "Gitnow: Manual page like"
   echo (set_color white --bold)"CONFIGURATION"(set_color normal)
   echo "      For a custom configuration (for example keybindings) place a "(set_color white --bold)"~/.gitflow"(set_color normal)" file (1) in your home directory."
   echo
-  echo "      (1) An example file it can be found on "(set_color white --bold)https://github.com/joseluisq/gitnow/tree/master/conf.d/.gitnow(set_color normal)
+  echo "      (1) An example file it can be found on "(set_color white --bold)https://github.com/joseluisq/gitnow/tree/master/.gitnow(set_color normal)
   echo
   echo (set_color white --bold)"FURTHER DOCUMENTATION"(set_color normal)
   echo "      For more details and examples check out "(set_color white --bold)https://github.com/joseluisq/gitnow/blob/master/README.md(set_color normal)
