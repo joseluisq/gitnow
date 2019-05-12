@@ -7,9 +7,17 @@ function __gitnow_read_config -d "Reads a GitNow config file"
     # sets a clipboard program
     set gitnow_xpaste (__gitnow_get_clip_program)
 
-    # config file definition
+    # config file definition by default
     set -l config_file "$fish_snippets/.gitnow"
 
+    # download .gitnow example file
+    if not test -e $config_file        
+        echo "GitNow: Downloading default configuration..."
+        curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/conf.d/.gitnow
+        echo "GitNow: Configured and ready to use!"
+    end
+
+    # otherwise prefer custom config file
     if test -e $GITNOW_CONFIG_FILE; set config_file $GITNOW_CONFIG_FILE; end
 
     set -l has_keybindings false
