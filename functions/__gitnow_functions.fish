@@ -121,6 +121,10 @@ function __gitnow_gitflow_branch -a xprefix -a xbranch
   end
 end
 
+function __gitnow_msg_not_valid_repository -a cmd
+  echo "Gitnow ($cmd): Current directory is not a valid Git repository."
+end
+
 function __gitnow_current_branch_name
   command git symbolic-ref --short HEAD 2>/dev/null
 end
@@ -134,6 +138,6 @@ function __gitnow_current_remote
   command git config "branch.$branch_name.remote" 2>/dev/null; or echo origin
 end
 
-function __gitnow_current_commit_short
-  command git rev-parse --short HEAD 2>/dev/null
+function __gitnow_is_git_repository
+  command git rev-parse --git-dir > /dev/null 2>&1
 end

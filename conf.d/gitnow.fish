@@ -11,12 +11,15 @@ function gitnow -d "Gitnow: Speed up your Git workflow. 🐠" -a xversion
 end
 
 function state -d "Gitnow: Show the working tree status in compact way"
-  echo "Current working tree status:"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "state"; return; end
+
   command git status -sb
   commandline -f repaint;
 end
 
 function stage -d "Gitnow: Stage files in current working directory"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "stage"; return; end
+
   set -l len (count $argv)
   set -l opts .
 
@@ -29,6 +32,8 @@ function stage -d "Gitnow: Stage files in current working directory"
 end
 
 function unstage -d "Gitnow: Unstage files in current working directory"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "unstage"; return; end
+
   set -l len (count $argv)
   set -l opts .
 
@@ -41,6 +46,8 @@ function unstage -d "Gitnow: Unstage files in current working directory"
 end
 
 function commit -d "Gitnow: Commit changes to the repository"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "commit"; return; end
+
   set -l len (count $argv)
 
   if test $len -gt 0
@@ -53,11 +60,15 @@ function commit -d "Gitnow: Commit changes to the repository"
 end
 
 function commit-all -d "Gitnow: Add and commit all changes to the repository"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "commit-all"; return; end
+
   stage
   commit .
 end
 
 function pull -d "Gitnow: Pull changes from remote server but saving uncommitted changes"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "pull"; return; end
+
   set -l len (count $argv)
   set -l xorigin (__gitnow_current_remote)
   set -l xbranch (__gitnow_current_branch_name)
@@ -101,6 +112,8 @@ end
 # Git push with --set-upstream
 # Shortcut inspired from https://github.com/jamiew/git-friendly
 function push -d "Gitnow: Push commit changes to remote repository"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "push"; return; end
+
   set -l opts $argv
   set -l xorigin (__gitnow_current_remote)
   set -l xbranch (__gitnow_current_branch_name)
@@ -125,31 +138,43 @@ function push -d "Gitnow: Push commit changes to remote repository"
 end
 
 function upstream -d "Gitnow: Commit all changes and push them to remote server"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "upstream"; return; end
+
   commit-all
   push
 end
 
 function feature -d "GitNow: Creates a new Gitflow feature branch from current branch" -a xbranch
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "feature"; return; end
+
   __gitnow_gitflow_branch "feature" $xbranch
   commandline -f repaint;
 end
 
 function hotfix -d "GitNow: Creates a new Gitflow hotfix branch from current branch" -a xbranch
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "hotfix"; return; end
+
   __gitnow_gitflow_branch "hotfix" $xbranch
   commandline -f repaint;
 end
 
 function bugfix -d "GitNow: Creates a new Gitflow bugfix branch from current branch" -a xbranch
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "bugfix"; return; end
+
   __gitnow_gitflow_branch "bugfix" $xbranch
   commandline -f repaint;
 end
 
 function release -d "GitNow: Creates a new Gitflow release branch from current branch" -a xbranch
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "release"; return; end
+
   __gitnow_gitflow_branch "release" $xbranch
   commandline -f repaint;
 end
 
 function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes" -a xupstream -a xbranch
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "move"; return; end
+
   if [ "$xupstream" != "-u" ]; and [ "$xupstream" != "--upstream" ]
     set xbranch $xupstream
     set xupstream ""
@@ -185,6 +210,8 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
 end
 
 function logs -d "Gitnow: Shows logs in a fancy way"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "logs"; return; end
+
   set -l args HEAD
 
   if test -n "$argv"
