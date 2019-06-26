@@ -2,7 +2,8 @@
 
 > Speed up your Git workflow. 🐠
 
-GitNow contains a command set that provides high-level operations on the top of Git. A Fish shell alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
+GitNow contains a command set that provides high-level operations on the top of Git. <br>
+A Fish shell alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
 
 ## Install
 
@@ -57,13 +58,13 @@ fisher add joseluisq/gitnow
 
 ## Configuration
 
-For a custom configuration (for example keybindings) place a [.gitnow](./.gitnow) file in your home directory `~/.gitflow`.
+For a custom configuration (for example keybindings) place a [.gitnow](./.gitnow) file in your home directory `~/.gitnow`.
 
 ### Keybindings
 
 [.gitnow](./.gitnow) file contains a _[ keybindings ]_ section with default shortcuts (key-value pairs).
 
-You can add, edit or remove shortcuts on demand. For custom keys run the built-in function `fish_key_reader` in your terminal then press the key (or key's combinations) to get the right sequence bind char(s). Finally set it to your preferred command in `~/.gitflow` file.
+You can add, edit or remove shortcuts on demand. For custom keys run the built-in function `fish_key_reader` in your terminal then press the key (or key's combinations) to get the right sequence bind char(s). Finally set it to your preferred command in `~/.gitnow` file.
 
 ## Usage
 
