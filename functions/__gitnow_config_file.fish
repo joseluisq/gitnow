@@ -52,7 +52,7 @@ function __gitnow_is_section_line -d "Checks if one line is a valid section" -a 
 end
 
 function __gitnow_is_key_value_pair -d "Checks if one line is a valid key-value pair" -a line
-    echo -n $line | command grep -qE '^[[:space:]]?[a-z]+([-][a-z])?[[:space:]]?\\=[[:space:]]?\\\\[a-zA-Z0-9].+[[:space:]]?$'
+    echo -n $line | command grep -qE '^[[:space:]]?[a-z]+([-][a-z]+)?[[:space:]]?\\=[[:space:]]?\\\\[a-zA-Z0-9].+[[:space:]]?$'
 end
 
 function __gitnow_is_keybinding -d "Checks if one line is a valid keybinding char" -a line
