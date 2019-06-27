@@ -222,7 +222,7 @@ move -u feature/new_remote_branch
 
 Creates a new feature ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 
-__Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
+__Note:__ Your new branch will always be lowercase without special characters or whitespaces (underscores instead).
 
 ```sh
 feature feat1
@@ -235,7 +235,7 @@ feature "This is my New FEATURE Branch"
 
 Creates a new hotfix ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 
-__Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
+__Note:__ Your new branch will always be lowercase without special characters or whitespaces (underscores instead).
 
 ```sh
 hotfix fix1
@@ -248,7 +248,7 @@ hotfix "This is my New FIX Branch"
 
 Creates a new bugfix ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 
-__Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
+__Note:__ Your new branch will always be lowercase without special characters or whitespaces (underscores instead).
 
 ```sh
 bugfix fix1
@@ -261,7 +261,7 @@ bugfix "This is my New bugFIX Branch"
 
 Creates a new release ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
 
-__Note:__ Your new branch will always be lowercase without special or whitespaces (underscores instead).
+__Note:__ Your new branch will always be lowercase without special characters or whitespaces (underscores instead).
 
 ```sh
 release fix1
