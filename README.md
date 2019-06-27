@@ -12,7 +12,7 @@ With [Fisher](https://github.com/jorgebucaran/fisherman):
 __Stable:__
 
 ```sh
-fisher add joseluisq/gitnow@2.1.0
+fisher add joseluisq/gitnow@2.1.1
 ```
 
 <small>_**Note:** Replace the number above with your preferred release._</small>
