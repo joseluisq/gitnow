@@ -17,7 +17,7 @@ fisher add joseluisq/gitnow@2.1.1
 
 <small>_**Note:** Replace the number above with your preferred release._</small>
 
-__Ustable:__
+__Unstable:__
 
 ```sh
 fisher add joseluisq/gitnow
