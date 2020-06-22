@@ -26,6 +26,9 @@ function __gitnow_manual -d "Gitnow: Manual page like"
   echo "      "(set_color --bold)"unstage"(set_color normal)
   echo "        Unstage files in current working directory."
   echo
+  echo "      "(set_color --bold)"show"(set_color normal)
+  echo "        Show commit detail objects."
+  echo
   echo "      "(set_color --bold)"commit"(set_color normal)
   echo "        Commit changes to the repository."
   echo
@@ -69,6 +72,7 @@ function __gitnow_manual -d "Gitnow: Manual page like"
   echo "      state           Alt + S"
   echo "      stage           Alt + E"
   echo "      unstage         Ctrl + E"
+  echo "      show            Alt + M"
   echo "      commit-all      Alt + C"
   echo "      pull            Alt + D"
   echo "      push            Alt + P"

@@ -32,6 +32,7 @@ fisher add joseluisq/gitnow
 | [state](#state) | Alt + S | Show the working tree status in a compact way. |
 | [stage](#stage) | Alt + E | Stage files in current working directory. |
 | [unstage](#unstage) | Ctrl + S | Unstage files in current working directory. |
+| [show](#show) | Alt + M | Show commit detail objects. |
 | [commit](#commit) | | Commit changes to the repository. |
 | [commit-all](#commit-all) | Ctrl + C | Add and commit all changes to the repository. |
 | [pull](#pull) | Alt + D | Pull changes from remote server but saving uncommitted changes. |
@@ -116,6 +117,19 @@ unstage
 unstage README.md LICENSE.md
 # c) custom 2
 unstage --soft HEAD
+```
+
+### show
+
+Show commit detail objects.
+
+__Note:__ This command does `git show --compact-summary HEAD` by default. Add your `git show` flags as usual to overwrite it.
+
+```sh
+# a) Default
+show
+# b) Custom flags
+show --compact-summary HEAD~1
 ```
 
 ### commit

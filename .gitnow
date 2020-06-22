@@ -9,6 +9,9 @@ stage = \ee
 # Ctrl + E
 unstage = \ce
 
+# Alt + M
+show = \em
+
 # Alt + C
 commit-all = \ec
 
