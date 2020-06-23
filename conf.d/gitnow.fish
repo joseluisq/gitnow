@@ -59,6 +59,14 @@ function show -d "Gitnow: Show commit detail objects"
   commandline -f repaint;
 end
 
+function untracked -d "Gitnow: Check for untracked files and directories on current working directory"
+  if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "untracked"; return; end
+
+  command git clean --dry-run -d
+
+  commandline -f repaint;
+end
+
 function commit -d "Gitnow: Commit changes to the repository"
   if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "commit"; return; end
 

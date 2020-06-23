@@ -29,6 +29,9 @@ function __gitnow_manual -d "Gitnow: Manual page like"
   echo "      "(set_color --bold)"show"(set_color normal)
   echo "        Show commit detail objects."
   echo
+  echo "      "(set_color --bold)"untracked"(set_color normal)
+  echo "        Check for untracked files and directories that could be removed."
+  echo
   echo "      "(set_color --bold)"commit"(set_color normal)
   echo "        Commit changes to the repository."
   echo

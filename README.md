@@ -33,6 +33,7 @@ fisher add joseluisq/gitnow
 | [stage](#stage) | Alt + E | Stage files in current working directory. |
 | [unstage](#unstage) | Ctrl + S | Unstage files in current working directory. |
 | [show](#show) | Alt + M | Show commit detail objects. |
+| [untracked](#untracked) | | Check for untracked files and directories. |
 | [commit](#commit) | | Commit changes to the repository. |
 | [commit-all](#commit-all) | Ctrl + C | Add and commit all changes to the repository. |
 | [pull](#pull) | Alt + D | Pull changes from remote server but saving uncommitted changes. |
@@ -130,6 +131,23 @@ __Note:__ This command does `git show --compact-summary HEAD` by default. Add yo
 show
 # b) Custom flags
 show --compact-summary HEAD~1
+```
+
+### untracked
+
+Check for untracked files and directories that could be removed of current working directory.
+
+__Notes:__
+
+- This command does `git clean --dry-run -d` only.
+- It doesn't remove anything, just makes a clean checking of files and directories that could be removed.
+- No flags are supported.
+
+```sh
+untracked
+# Would remove .file1
+# Would remove dir1/
+# Would remove file2
 ```
 
 ### commit
