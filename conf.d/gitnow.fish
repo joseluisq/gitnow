@@ -194,38 +194,64 @@ function release -d "GitNow: Creates a new Gitflow release branch from current b
   commandline -f repaint;
 end
 
-function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes" -a xupstream -a xbranch
+function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes"
   if not __gitnow_is_git_repository; __gitnow_msg_not_valid_repository "move"; return; end
 
-  if [ "$xupstream" != "-u" ]; and [ "$xupstream" != "--upstream" ]
-    set xbranch $xupstream
-    set xupstream ""
+  set -l v_upstream
+  set -l v_no_apply_stash
+  set -l v_branch
+
+  for v in $argv
+    switch $v
+      case -u --upstream
+          set v_upstream $v
+      case -n --no-apply-stash
+          set v_no_apply_stash $v
+      case '*'
+          set v_branch $v
+    end
   end
 
-  if test -n "$xbranch"
-    if [ "$xupstream" = "-u" ]; or [ "$xupstream" = "--upstream" ]
-      command git stash
-      command git fetch (__gitnow_current_remote) $xbranch
-      command git checkout $xbranch
-      command git stash pop
-    else
-      set -l xfound (__gitnow_check_if_branch_exist $xbranch)
+  # No branch defined
+  if not test -n "$v_branch"
+    echo "Provide a valid branch name to switch to."
 
-      if test $xfound -eq 1
-        if [ "$xbranch" = (__gitnow_current_branch_name) ]
-          echo "Branch `$xbranch` is the same like current branch. Nothing to do."
-        else
-          command git stash
-          command git checkout $xbranch
-          command git stash pop
-        end
-      else
-        echo "Branch `$xbranch` was not found. No possible to switch."
-        echo "Tip: Use -u (--upstream) flag to fetch a remote branch."
-      end
-    end
+    commandline -f repaint;
+    return
+  end
+
+  set -l v_found (__gitnow_check_if_branch_exist $v_branch)
+
+  # Branch was not found 
+  if not test $v_found -eq 1
+    echo "Branch `$v_branch` was not found. No possible to switch."
+    echo "Tip: Use -u (--upstream) flag to fetch a remote branch."
+
+    commandline -f repaint;
+    return
+  end
+
+  # Prevent same branch switching
+  if [ "$v_branch" = (__gitnow_current_branch_name) ]
+    echo "Branch `$v_branch` is the same as current branch. Nothing to do."
+    commandline -f repaint;
+    return
+  end
+
+  command git stash
+
+  if test -n "$v_upstream"
+    command git fetch (__gitnow_current_remote) $v_branch
+  end
+
+  command git checkout $v_branch
+
+  # --no-apply-stash
+  if test -n "$v_no_apply_stash"
+    echo "Stashed changes were not applied. Use `git stash pop` to apply them."
   else
-    echo "Provide a branch name to move."
+    command git stash pop
+    echo "Stashed changes applied."
   end
 
   commandline -f repaint;
