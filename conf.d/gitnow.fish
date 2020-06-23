@@ -207,6 +207,9 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
           set v_upstream $v
       case -n --no-apply-stash
           set v_no_apply_stash $v
+      case -nu -un
+          set v_upstream "-u"
+          set v_no_apply_stash "-n"
       case '*'
           set v_branch $v
     end
@@ -218,6 +221,10 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
 
     commandline -f repaint;
     return
+  end
+
+  if test -n "$v_upstream"
+    command git fetch (__gitnow_current_remote) $v_branch
   end
 
   set -l v_found (__gitnow_check_if_branch_exist $v_branch)
@@ -239,11 +246,6 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
   end
 
   command git stash
-
-  if test -n "$v_upstream"
-    command git fetch (__gitnow_current_remote) $v_branch
-  end
-
   command git checkout $v_branch
 
   # --no-apply-stash
