@@ -10,33 +10,40 @@ function __gitnow_read_config -d "Reads a GitNow config file"
     # config file definition by default
     set -l config_file "$fish_snippets/.gitnow"
 
-    # download .gitnow example file
-    echo "GitNow: Downloading default configuration file..."
-    curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/.gitnow
-    echo "GitNow: Configured and ready to use!"
+    # default .gitnow file download used as workaround
+    if not test -e $config_file
+        curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/.gitnow
+    end
 
     # otherwise prefer custom config file
-    if test -e $GITNOW_CONFIG_FILE; set config_file $GITNOW_CONFIG_FILE; end
+    if test -e $GITNOW_CONFIG_FILE
+        set config_file $GITNOW_CONFIG_FILE
+    end
 
-    set -l has_keybindings false
+    # checks if .gitnow file exists
+    if test -e $config_file
+        # reads the .gitnow file line by line
+        set -l has_keybindings false
 
-    # reads a .gitnow file line by line
-    for line in (command cat $config_file)
-        # comments: skip out comment lines
-        if __gitnow_is_comment_line $line; continue; end
+        for line in (command cat $config_file)
+            # comments: skip out comment lines
+            if __gitnow_is_comment_line $line
+                continue
+            end
 
-        # section: keybindings (START)
-        if __gitnow_is_section_line $line "keybindings"
-            set has_keybindings
-            continue
-        end
+            # section: keybindings (START)
+            if __gitnow_is_section_line $line "keybindings"
+                set has_keybindings
+                continue
+            end
 
-        # section: read keybinding line
-        if test has_keybindings
-            __gitnow_read_keybinding_line $line
-        end
+            # section: read keybinding line
+            if test has_keybindings
+                __gitnow_read_keybinding_line $line
+            end
 
-        # TODO: continue reading other sections
+            # TODO: continue reading other sections
+        end 
     end
 end
 
@@ -61,7 +68,9 @@ function __gitnow_read_keybinding_line -d "Reads a keybinding line" -a line
     set -l pairs (echo -n $line | command sed 's/^ *//;s/ *$//')
 
     # skip out if line is not a valid keybinding
-    if not __gitnow_is_key_value_pair $pairs; return; end
+    if not __gitnow_is_key_value_pair $pairs
+        return
+    end
 
     # TODO: continue processing keybindings
     set -l values (echo -n $line | command tr '=' '\n' | command sed 's/^ *//;s/ *$//')
@@ -69,10 +78,14 @@ function __gitnow_read_keybinding_line -d "Reads a keybinding line" -a line
     set -l seq $values[2]
 
     # skip out if key is not a valid command
-    if not type --quiet "$cmd"; return; end
+    if not type --quiet "$cmd"
+        return
+    end
 
     # skip out if value is not a valid keybinding
-    if not __gitnow_is_keybinding $seq; return; end
+    if not __gitnow_is_keybinding $seq
+        return
+    end
 
     # finally bind corresponding keybinding
     set -l execmd
@@ -95,10 +108,15 @@ end
 function __gitnow_get_clip_program -d "Gets the current clip installed program"
     set -l cpaste
 
-    if type -q xclip; set cpaste "xclip -selection clipboard -o";
+    if type -q xclip
+        set cpaste "xclip -selection clipboard -o"
     else
-        if type -q xsel; set cpaste "xsel --clipboard --output"; end
-        if type -q pbpaste; set cpaste "pbpaste"; end
+        if type -q xsel
+            set cpaste "xsel --clipboard --output"
+        end
+        if type -q pbpaste
+            set cpaste "pbpaste"
+        end
     end
 
     echo -n $cpaste
