@@ -31,11 +31,11 @@ fisher add joseluisq/gitnow
 | __Git__ | | |
 | [state](#state) | Alt + S | Show the working tree status in a compact way. |
 | [stage](#stage) | Alt + E | Stage files in current working directory. |
-| [unstage](#unstage) | Ctrl + S | Unstage files in current working directory. |
+| [unstage](#unstage) | Ctrl + E | Unstage files in current working directory. |
 | [show](#show) | Alt + M | Show commit detail objects. |
 | [untracked](#untracked) | | Check for untracked files and directories. |
 | [commit](#commit) | | Commit changes to the repository. |
-| [commit-all](#commit-all) | Ctrl + C | Add and commit all changes to the repository. |
+| [commit-all](#commit-all) | Alt + C | Add and commit all changes to the repository. |
 | [pull](#pull) | Alt + D | Pull changes from remote server but saving uncommitted changes. |
 | [push](#push) | Alt + P | Push commit changes to remote repository. |
 | [upstream](#upstream) | Alt + U | Commit all changes and push them to remote server. |
