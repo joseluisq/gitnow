@@ -310,13 +310,21 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
         return
     end
 
-    command git stash
+    set -l v_stashed (__gitnow_has_uncommited_changes)
+
+    # Stash changes before checkout for uncommited changes only
+    if test $v_stashed
+        command git stash
+    end
+
     command git checkout $v_branch
 
     # --no-apply-stash
     if test -n "$v_no_apply_stash"
         echo "Stashed changes were not applied. Use `git stash pop` to apply them."
-    else
+    end
+
+    if begin test $v_stashed; and not test -n "$v_no_apply_stash"; end
         command git stash pop
         echo "Stashed changes applied."
     end
