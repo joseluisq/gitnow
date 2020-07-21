@@ -7,7 +7,7 @@ set -q fish_snippets; or set -g fish_snippets "$fish_config/conf.d"
 set -q fish_functions; or set -g fish_functions "$fish_config/functions"
 set -q GITNOW_CONFIG_FILE; or set -g GITNOW_CONFIG_FILE ~/.gitnow
 
-set -g gitnow_version 2.3.1
+set -g gitnow_version 2.4.0
 
 source "$fish_functions/__gitnow_functions.fish"
 source "$fish_functions/__gitnow_manual.fish"
