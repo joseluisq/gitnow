@@ -40,6 +40,7 @@ fisher add joseluisq/gitnow
 | [push](#push) | Alt + P | Push commit changes to remote repository. |
 | [upstream](#upstream) | Alt + U | Commit all changes and push them to remote server. |
 | [move](#move) | | Moves from current branch to another but stashing your changes. |
+| [assume](#assume) | | Ignores changes in certain files temporarily. |
 | [logs](#logs) | Alt + L | Shows logs in a fancy way. |
 | __Gitflow__ | | |
 | [feature](#feature) (1) | Alt + F | Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
@@ -258,6 +259,25 @@ move -n feature/new_remote_branch
 
 # Possible to combine two option flags
 move -un feature/another_remote_branch
+```
+
+### assume
+
+Ignore changes in certain files temporarily.
+
+__Note:__ This command performs `git update-index --[no-]assume-unchanged` to ignore changes in certain files temporarily or revert those changes back.
+
+__Options:__
+
+- `-n` `--no-assume`: No assume unchanged files to be ignored (revert option)
+- `-h` `--help`: Show information about the options for this command
+
+```sh
+# a) Ignore files temporarily
+assume Cargo.toml README.md
+
+# b) Revert file ignored changes
+assume -n Cargo.toml README.md
 ```
 
 ### feature
