@@ -284,17 +284,19 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
         return
     end
 
+    set -l v_fetched 0
+
+    # Fetch branch from remote
     if test -n "$v_upstream"
         command git fetch (__gitnow_current_remote) $v_branch
+        set v_fetched 1
     end
 
     set -l v_found (__gitnow_check_if_branch_exist $v_branch)
 
-    # Branch was not found 
-    # Branch was not found 
-    # Branch was not found 
-    if not test $v_found -eq 1
-        echo "Branch `$v_branch` was not found. No possible to switch."
+    # Branch was not found
+    if begin test $v_found -eq 0; and test $v_fetched -eq 0; end
+        echo "Branch `$v_branch` was not found locally. No possible to switch."
         echo "Tip: Use -u (--upstream) flag to fetch a remote branch."
 
         commandline -f repaint
