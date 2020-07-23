@@ -15,7 +15,7 @@ end
 
 # adapted from https://gist.github.com/oneohthree/f528c7ae1e701ad990e6
 function __gitnow_slugify
-    echo $argv | command iconv -t ascii//TRANSLIT | command sed -E 's/[^a-zA-Z0-9]+/_/g' | command sed -E 's/^(-|_)+|(-|_)+$//g' | command tr A-Z a-z
+    echo $argv | command iconv -t ascii//TRANSLIT | command sed -E 's/[^a-zA-Z0-9\-]+/_/g' | command sed -E 's/^(-|_)+|(-|_)+$//g'
 end
 
 function __gitnow_clone_repo
