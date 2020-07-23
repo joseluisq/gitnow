@@ -17,11 +17,13 @@ fisher add joseluisq/gitnow@2.4.0
 
 <small>_**Note:** Replace the number above with your preferred release._</small>
 
-__Unstable:__
+__Latest changes:__
 
 ```sh
 fisher add joseluisq/gitnow
 ```
+
+<small>_**Note:** Use that method if you don't want to wait for a new release._</small>
 
 ## Commands
 
