@@ -81,7 +81,7 @@ function show -d "Gitnow: Show commit detail objects"
     if test $len -gt 0
         command git show $argv
     else
-        command git show --compact-summary HEAD
+        command git show --compact-summary --patch HEAD
     end
 
     commandline -f repaint
