@@ -271,6 +271,16 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
             case -nu -un
                 set v_upstream "-u"
                 set v_no_apply_stash "-n"
+            case -h --help
+                echo "NAME"
+                echo "      Gitnow: move - Switch from current branch to another but stashing uncommitted changes"
+                echo "EXAMPLES"
+                echo "      move <branch to switch to>"
+                echo "OPTIONS:"
+                echo "      -n --no-apply-stash     Switch to a local branch but without applying current stash"
+                echo "      -u --upstream           Fetch a remote branch and switch to it applying current stash. It can be combined with --no-apply-stash"
+                echo "      -h --help               Show information about the options for this command"
+                return
             case -\*
             case '*'
                 set v_branch $v
