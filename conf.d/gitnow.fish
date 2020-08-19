@@ -360,6 +360,99 @@ function logs -d "Gitnow: Shows logs in a fancy way"
     commandline -f repaint
 end
 
+function tag -d "Gitnow: Tag commits following Semver"
+    if not __gitnow_is_git_repository
+        __gitnow_msg_not_valid_repository "tag"
+        return
+    end
+
+    set -l v_major
+    set -l v_minor
+    set -l v_patch
+    set -l v_premajor
+    set -l v_preminor
+    set -l v_prepatch
+    set -l v_latest (__gitnow_get_latest_tag)
+
+    for v in $argv
+        switch $v
+            case -x --major
+                set v_major $v
+            case -y --minor
+                set v_minor $v
+            case -z --patch
+                set v_patch $v
+            case -a --premajor
+                set v_premajor $v
+            case -b --preminor
+                set v_preminor $v
+            case -c --prepatch
+                set v_prepatch $v
+            case -l --latest
+                if not test -n "$v_latest"
+                    echo "There is no any tag created yet."
+                else
+                    echo $v_latest
+                end
+
+                return
+            case -h --help
+                echo "NAME"
+                echo "      Gitnow: tag - Tag commits following The Semantic Versioning 2.0.0 (Semver) [1]"
+                echo "      [1] https://semver.org/"
+                echo "EXAMPLES"
+                echo "      Custom: tag <my tag name>"
+                echo "      Semver: tag --major"
+                echo "OPTIONS:"
+                echo "      -x --major         Tag auto-incrementing a major version number"
+                echo "      -y --minor         Tag auto-incrementing a minor version number"
+                echo "      -z --patch         Tag auto-incrementing a patch version number"
+                echo "      -a --premajor      Tag auto-incrementing a premajor version number"
+                echo "      -b --preminor      Tag auto-incrementing a preminor version number"
+                echo "      -c --prepatch      Tag auto-incrementing a prepatch version number"
+                echo "      -l --latest        Show the latest tag version"
+                echo "      -h --help          Show information about the options for this command"
+                return
+            case -\*
+            case '*'
+                return
+        end
+    end
+
+    # Major tags
+    if test -n "$v_major"
+        if not test -n "$v_latest"
+            command git tag v1.0.0
+            echo "First major tag \"v1.0.0\" was created."
+            return
+        else
+            # Validate Semver format before to proceed
+            if not echo $v_latest | grep -qE '^([a-zA-Z-]+)?([0-9]+).([0-9]+).([a-zA-Z-]+)?'
+                echo "The latest tag \"$v_latest\" has no a valid Semver format."
+                return
+            end
+
+            set -l vstr (echo $v_latest | sed -n 's/\\(^[a-zA-Z\-]*\\)\\([}]*\\)/\\2/p')
+            set -l x (echo $vstr | awk -F '.' '{print $1}')
+            set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
+            set x (echo $x | __gitnow_increment_number)
+            set -l xyz "$prefix$x.0.0"
+
+            command git tag $xyz
+            echo "Major tag \"$xyz\" was created."
+            return
+        end
+    end
+
+    # TODO: Minor tags
+    # TODO: Patch tags
+    # TODO: Premajor tags
+    # TODO: Preminor tags
+    # TODO: Prepatch tags
+
+    commandline -f repaint
+end
+
 function assume -d "Gitnow: Ignore files temporarily"
     if not __gitnow_is_git_repository
         __gitnow_msg_not_valid_repository "assume"

@@ -145,3 +145,17 @@ end
 function __gitnow_has_uncommited_changes
     command git diff-index --quiet HEAD -- || echo "1" 2>&1
 end
+
+function __gitnow_get_latest_tag
+    command git describe --tags (git rev-list --tags --max-count=1) 2>/dev/null
+end
+
+function __gitnow_increment_number
+    command awk '
+        function increment(val) {
+            if (val ~ /[0-9]+/) { return val + 1 }
+            return val
+        }
+        { print increment($0) }
+    ' 2>/dev/null
+end

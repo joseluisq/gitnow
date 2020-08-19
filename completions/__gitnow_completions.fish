@@ -17,3 +17,40 @@ complete -f -x -c move \
     -s u -l upstream \
     -a '(__fish_git_branches)' \
     -d "Fetch a remote branch and switch to it applying current stash"
+
+
+# Tag command
+
+complete -f -x -c tag -a '(__fish_git_tags)'
+
+complete -f -x -c tag \
+    -s h -l help \
+    -d "Show information about the options for this command"
+
+complete -f -x -c tag \
+    -s l -l latest \
+    -d "Show the latest tag version"
+
+complete -f -x -c tag \
+    -s x -l major \
+    -d "Tag auto-incrementing a major version number"
+
+complete -f -x -c tag \
+    -s y -l minor \
+    -d "Tag auto-incrementing a minor version number"
+
+complete -f -x -c tag \
+    -s z -l patch \
+    -d "Tag auto-incrementing a patch version number"
+
+complete -f -x -c tag \
+    -s a -l premajor \
+    -d "Tag auto-incrementing a premajor version number"
+
+complete -f -x -c tag \
+    -s b -l preminor \
+    -d "Tag auto-incrementing a preminor version number"
+
+complete -f -x -c tag \
+    -s c -l prepatch \
+    -d "Tag auto-incrementing a prepatch version number"
