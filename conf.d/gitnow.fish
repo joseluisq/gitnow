@@ -125,7 +125,7 @@ function commit-all -d "Gitnow: Add and commit all changes to the repository"
     commit .
 end
 
-function pull -d "Gitnow: Pull changes from remote server but saving uncommitted changes"
+function pull -d "Gitnow: Pull changes from remote server but stashing uncommitted changes"
     if not __gitnow_is_git_repository
         __gitnow_msg_not_valid_repository "pull"
         return
