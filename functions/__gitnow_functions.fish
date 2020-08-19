@@ -145,3 +145,25 @@ end
 function __gitnow_has_uncommited_changes
     command git diff-index --quiet HEAD -- || echo "1" 2>&1
 end
+
+function __gitnow_get_latest_tag
+    command git tag --sort=-creatordate | head -n1 2>/dev/null
+end
+
+function __gitnow_increment_number -a strv
+    command echo $strv | awk '
+        function increment(val) {
+            if (val ~ /[0-9]+/) { return val + 1 }
+            return val
+        }
+        { print increment($0) }
+    ' 2>/dev/null
+end
+
+function __gitnow_is_valid_semver_value -a tagv
+    command echo $tagv | grep -qE '^([a-zA-Z-]+)?([0-9]+).([0-9]+).([a-zA-Z-]+)?' >/dev/null 2>&1
+end
+
+function __gitnow_get_semver_value -a tagv
+    command echo $tagv | sed -n 's/\\(^[a-zA-Z\-]*\\)\\([}]*\\)/\\2/p' 2>/dev/null
+end
