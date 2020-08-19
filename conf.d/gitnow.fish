@@ -427,15 +427,15 @@ function tag -d "Gitnow: Tag commits following Semver"
             return
         else
             # Validate Semver format before to proceed
-            if not echo $v_latest | grep -qE '^([a-zA-Z-]+)?([0-9]+).([0-9]+).([a-zA-Z-]+)?'
+            if not __gitnow_is_valid_semver_value $v_latest
                 echo "The latest tag \"$v_latest\" has no a valid Semver format."
                 return
             end
 
-            set -l vstr (echo $v_latest | sed -n 's/\\(^[a-zA-Z\-]*\\)\\([}]*\\)/\\2/p')
+            set -l vstr (__gitnow_get_semver_value $v_latest)
             set -l x (echo $vstr | awk -F '.' '{print $1}')
             set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
-            set x (echo $x | __gitnow_increment_number)
+            set x (__gitnow_increment_number $x)
             set -l xyz "$prefix$x.0.0"
 
             command git tag $xyz
@@ -444,7 +444,32 @@ function tag -d "Gitnow: Tag commits following Semver"
         end
     end
 
-    # TODO: Minor tags
+    # Minor tags
+    if test -n "$v_minor"
+        if not test -n "$v_latest"
+            command git tag v0.1.0
+            echo "First minor tag \"v0.1.0\" was created."
+            return
+        else
+            # Validate Semver format before to proceed
+            if not __gitnow_is_valid_semver_value $v_latest
+                echo "The latest tag \"$v_latest\" has no a valid Semver format."
+                return
+            end
+
+            set -l vstr (__gitnow_get_semver_value $v_latest)
+            set -l x (echo $vstr | awk -F '.' '{print $1}')
+            set -l y (echo $vstr | awk -F '.' '{print $2}')
+            set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
+            set y (__gitnow_increment_number $y)
+            set -l xyz "$prefix$x.$y.0"
+
+            command git tag $xyz
+            echo "Minor tag \"$xyz\" was created."
+            return
+        end
+    end
+    
     # TODO: Patch tags
     # TODO: Premajor tags
     # TODO: Preminor tags
