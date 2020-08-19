@@ -470,7 +470,33 @@ function tag -d "Gitnow: Tag commits following Semver"
         end
     end
     
-    # TODO: Patch tags
+    # Patch tags
+    if test -n "$v_patch"
+        if not test -n "$v_latest"
+            command git tag v0.0.1
+            echo "First patch tag \"v0.1.0\" was created."
+            return
+        else
+            # Validate Semver format before to proceed
+            if not __gitnow_is_valid_semver_value $v_latest
+                echo "The latest tag \"$v_latest\" has no a valid Semver format."
+                return
+            end
+
+            set -l vstr (__gitnow_get_semver_value $v_latest)
+            set -l x (echo $vstr | awk -F '.' '{print $1}')
+            set -l y (echo $vstr | awk -F '.' '{print $2}')
+            set -l z (echo $vstr | awk -F '.' '{print $3}')
+            set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
+            set z (__gitnow_increment_number $z)
+            set -l xyz "$prefix$x.$y.$z"
+
+            command git tag $xyz
+            echo "Patch tag \"$xyz\" was created."
+            return
+        end
+    end
+
     # TODO: Premajor tags
     # TODO: Preminor tags
     # TODO: Prepatch tags
