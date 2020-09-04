@@ -355,7 +355,20 @@ function logs -d "Gitnow: Shows logs in a fancy way"
         set args $argv
     end
 
-    command git log $args --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit | command less -r
+    command git log $args --color --graph \
+        --pretty=format:"%Cred%h%C(reset) -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%C(reset) %C(brightmagenta dim)###%GK###%C(reset)%C(brightblack)@@%G?@@%C(reset)" --abbrev-commit \
+        | command sed -E 's/@@@@//' \
+        | command sed -E 's/@@([^"]*)@@/ (\1)/' \
+        | command sed -E "s/###([^\"]*)###([^\"]*)\(G\)/"(command tput setaf 2)"\1/" \
+        | command sed -E 's/###([^"]*)###/\1/' \
+        | command sed -E 's/\(B\)/(bad signature)/' \
+        | command sed -E 's/\(U\)/(good unknown validity signature)/' \
+        | command sed -E 's/\(X\)/(good expired signature)/' \
+        | command sed -E 's/\(Y\)/(good signature with expired key)/' \
+        | command sed -E 's/\(R\)/(good signature with revoked key)/' \
+        | command sed -E 's/\(E\)/(No checked signature)/' \
+        | command sed -E 's/\(N\)//' \
+        | command less -R
 
     commandline -f repaint
 end
