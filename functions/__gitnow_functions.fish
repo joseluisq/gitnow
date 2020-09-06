@@ -150,6 +150,21 @@ function __gitnow_get_latest_tag
     command git tag --sort=-creatordate | head -n1 2>/dev/null
 end
 
+# lexicographic order and tag names treated as versions
+# https://stackoverflow.com/a/52680984/2510591
+function __gitnow_get_tags_ordered
+    command git -c 'versionsort.suffix=-' tag --list --sort=-version:refname
+end
+
+function __gitnow_get_latest_semver_release_tag
+    for tg in (__gitnow_get_tags_ordered)
+        if echo $tg | grep -qE '^v?([0-9]+).([0-9]+).([0-9]+)$'
+            echo $tg 2>/dev/null
+            break
+        end
+    end
+end
+
 function __gitnow_increment_number -a strv
     command echo $strv | awk '
         function increment(val) {
@@ -160,10 +175,14 @@ function __gitnow_increment_number -a strv
     ' 2>/dev/null
 end
 
-function __gitnow_is_valid_semver_value -a tagv
-    command echo $tagv | grep -qE '^([a-zA-Z-]+)?([0-9]+).([0-9]+).([a-zA-Z-]+)?' >/dev/null 2>&1
+function __gitnow_get_valid_semver_release_value -a tagv
+    command echo $tagv | command sed -n 's/^v\\{0,1\\}\([0-9].[0-9].[0-9]*\)\([}]*\)/\1/p' 2>/dev/null
 end
 
-function __gitnow_get_semver_value -a tagv
-    command echo $tagv | sed -n 's/\\(^[a-zA-Z\-]*\\)\\([}]*\\)/\\2/p' 2>/dev/null
+function __gitnow_get_valid_semver_prerelease_value -a tagv
+    command echo $tagv | command sed -n 's/^v\\{0,1\\}\([0-9].[0-9].[0-9]-[a-zA-Z0-9\-_.]*\)\([}]*\)/\1/p' 2>/dev/null
+end
+
+function __gitnow_is_number -a strv
+    command echo -n $strv | command grep -qE '^([0-9]+)$'
 end

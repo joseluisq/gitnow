@@ -21,6 +21,9 @@ complete -f -x -c move \
 
 # Tag command
 
+complete -f -x -c tag \
+    -d "List all tags in a lexicographic order and treating tag names as versions"
+
 complete -f -x -c tag -a '(__fish_git_tags)'
 
 complete -f -x -c tag \
@@ -29,7 +32,7 @@ complete -f -x -c tag \
 
 complete -f -x -c tag \
     -s l -l latest \
-    -d "Show the latest tag version"
+    -d "Show only the latest Semver release tag version (no suffixed ones or others)"
 
 complete -f -x -c tag \
     -s x -l major \

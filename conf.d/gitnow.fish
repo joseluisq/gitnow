@@ -385,7 +385,9 @@ function tag -d "Gitnow: Tag commits following Semver"
     set -l v_premajor
     set -l v_preminor
     set -l v_prepatch
-    set -l v_latest (__gitnow_get_latest_tag)
+
+    # NOTE: this function only gets the latest *Semver release version* but no suffixed ones or others
+    set -l v_latest (__gitnow_get_latest_semver_release_tag)
 
     for v in $argv
         switch $v
@@ -411,19 +413,21 @@ function tag -d "Gitnow: Tag commits following Semver"
                 return
             case -h --help
                 echo "NAME"
-                echo "      Gitnow: tag - Tag commits following The Semantic Versioning 2.0.0 (Semver) [1]"
+                echo "      Gitnow: tag - List or tag commits following The Semantic Versioning 2.0.0 (Semver) [1]"
                 echo "      [1] https://semver.org/"
                 echo "EXAMPLES"
-                echo "      Custom: tag <my tag name>"
-                echo "      Semver: tag --major"
+                echo "      List tags: tag"
+                echo "      Custom tag: tag <my tag name>"
+                echo "      Semver tag: tag --major"
                 echo "OPTIONS:"
+                echo "      Without options all tags are listed in a lexicographic order and tag names are treated as versions"
                 echo "      -x --major         Tag auto-incrementing a major version number"
                 echo "      -y --minor         Tag auto-incrementing a minor version number"
                 echo "      -z --patch         Tag auto-incrementing a patch version number"
                 echo "      -a --premajor      Tag auto-incrementing a premajor version number"
                 echo "      -b --preminor      Tag auto-incrementing a preminor version number"
                 echo "      -c --prepatch      Tag auto-incrementing a prepatch version number"
-                echo "      -l --latest        Show the latest tag version"
+                echo "      -l --latest        Show only the latest Semver release tag version (no suffixed ones or others)"
                 echo "      -h --help          Show information about the options for this command"
                 return
             case -\*
@@ -432,20 +436,27 @@ function tag -d "Gitnow: Tag commits following Semver"
         end
     end
 
-    # Major tags
+    # List all tags in a lexicographic order and treating tag names as versions
+    if test -z $argv
+        __gitnow_get_tags_ordered
+        return
+    end
+
+    # Major version tags
     if test -n "$v_major"
         if not test -n "$v_latest"
             command git tag v1.0.0
             echo "First major tag \"v1.0.0\" was created."
             return
         else
+            set -l vstr (__gitnow_get_valid_semver_release_value $v_latest)
+
             # Validate Semver format before to proceed
-            if not __gitnow_is_valid_semver_value $v_latest
+            if not test -n "$vstr"
                 echo "The latest tag \"$v_latest\" has no a valid Semver format."
                 return
             end
 
-            set -l vstr (__gitnow_get_semver_value $v_latest)
             set -l x (echo $vstr | awk -F '.' '{print $1}')
             set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
             set x (__gitnow_increment_number $x)
@@ -457,20 +468,22 @@ function tag -d "Gitnow: Tag commits following Semver"
         end
     end
 
-    # Minor tags
+
+    # Minor version tags
     if test -n "$v_minor"
         if not test -n "$v_latest"
             command git tag v0.1.0
             echo "First minor tag \"v0.1.0\" was created."
             return
         else
+            set -l vstr (__gitnow_get_valid_semver_release_value $v_latest)
+
             # Validate Semver format before to proceed
-            if not __gitnow_is_valid_semver_value $v_latest
+            if not test -n "$vstr"
                 echo "The latest tag \"$v_latest\" has no a valid Semver format."
                 return
             end
 
-            set -l vstr (__gitnow_get_semver_value $v_latest)
             set -l x (echo $vstr | awk -F '.' '{print $1}')
             set -l y (echo $vstr | awk -F '.' '{print $2}')
             set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
@@ -482,37 +495,48 @@ function tag -d "Gitnow: Tag commits following Semver"
             return
         end
     end
-    
-    # Patch tags
+
+
+    # Patch version tags
     if test -n "$v_patch"
         if not test -n "$v_latest"
             command git tag v0.0.1
             echo "First patch tag \"v0.1.0\" was created."
             return
         else
+            set -l vstr (__gitnow_get_valid_semver_release_value $v_latest)
+
             # Validate Semver format before to proceed
-            if not __gitnow_is_valid_semver_value $v_latest
+            if not test -n "$vstr"
                 echo "The latest tag \"$v_latest\" has no a valid Semver format."
                 return
             end
 
-            set -l vstr (__gitnow_get_semver_value $v_latest)
             set -l x (echo $vstr | awk -F '.' '{print $1}')
             set -l y (echo $vstr | awk -F '.' '{print $2}')
             set -l z (echo $vstr | awk -F '.' '{print $3}')
-            set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
-            set z (__gitnow_increment_number $z)
-            set -l xyz "$prefix$x.$y.$z"
+            set -l s (echo $z | awk -F '-' '{print $1}')
 
-            command git tag $xyz
-            echo "Patch tag \"$xyz\" was created."
+            if __gitnow_is_number $s
+                set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
+                set s (__gitnow_increment_number $s)
+                set -l xyz "$prefix$x.$y.$s"
+
+                command git tag $xyz
+                echo "Patch tag \"$xyz\" was created."
+            else
+                echo "No patch version found."
+            end
+
             return
         end
     end
 
-    # TODO: Premajor tags
-    # TODO: Preminor tags
-    # TODO: Prepatch tags
+
+    # TODO: Premajor version tags
+    # TODO: Preminor version tags
+    # TODO: Prepatch version tags
+
 
     commandline -f repaint
 end
