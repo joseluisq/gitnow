@@ -38,6 +38,7 @@ fisher add joseluisq/gitnow
 | [untracked](#untracked) | | Check for untracked files and directories. |
 | [commit](#commit) | | Commit changes to the repository. |
 | [commit-all](#commit-all) | Alt + C | Add and commit all changes to the repository. |
+| [tag](#tag) | Alt + C | List and create release tag versions following Semver 2.0. |
 | [pull](#pull) | Alt + D | Pull changes from remote server but saving uncommitted changes. |
 | [push](#push) | Alt + P | Push commit changes to remote repository. |
 | [upstream](#upstream) | Alt + U | Commit all changes and push them to remote server. |
@@ -175,6 +176,47 @@ __Note:__ This command does `stage` and then `commit .`. No flags supported.
 ```sh
 # stage && commit .
 commit-all
+```
+
+### tag
+
+List and create release tag versions following [The Semantic Versioning 2.0.0](https://semver.org/).
+
+#### List all avilable tags
+
+Tags are listed in a lexicographic order and tag names are treated as versions.
+
+```sh
+tag
+```
+
+#### Get latest Semver release tag name
+
+> **Note:** This option gets only the latest *Semver release version* tag name but no any suffixed version ones or another kind of version names. The same apply when you create correlative Semver tags. See next sub section.
+
+```sh
+tag --latest
+```
+
+#### Create Semver correlative tag names
+
+> **Note:** Following commands take care about `v` prefixed tag names.
+> So for example if a `v1.0.0` is found as latest major then the next correlative tag name major will be `v2.0.0`.
+> Otherwise for example if a `1.0.0` is found as latest minor then the next correlative tag name minor will be `1.1.0`.
+
+```sh
+# Create a correlative Semver major tag
+tag --major
+# Create a correlative Semver minor tag
+tag --minor
+# Create a correlative Semver patch tag
+tag --patch
+```
+
+__Create custom tag names__
+
+```sh
+tag <some tag name>
 ```
 
 ### pull

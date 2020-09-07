@@ -50,6 +50,9 @@ function __gitnow_manual -d "Gitnow: Manual page like"
     echo "      "(set_color --bold)"move"(set_color normal)
     echo "        Switch from current branch to another but stashing uncommitted changes."
     echo
+    echo "      "(set_color --bold)"tag"(set_color normal)
+    echo "        List and create release tag versions following Semver 2.0."
+    echo
     echo "      "(set_color --bold)"assume"(set_color normal)
     echo "        Ignore changes in certain files temporarily."
     echo

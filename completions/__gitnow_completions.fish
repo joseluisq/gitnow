@@ -46,14 +46,15 @@ complete -f -x -c tag \
     -s z -l patch \
     -d "Tag auto-incrementing a patch version number"
 
-complete -f -x -c tag \
-    -s a -l premajor \
-    -d "Tag auto-incrementing a premajor version number"
+# TODO: pre-release versions are not supported yet
+# complete -f -x -c tag \
+#     -s a -l premajor \
+#     -d "Tag auto-incrementing a premajor version number"
 
-complete -f -x -c tag \
-    -s b -l preminor \
-    -d "Tag auto-incrementing a preminor version number"
+# complete -f -x -c tag \
+#     -s b -l preminor \
+#     -d "Tag auto-incrementing a preminor version number"
 
-complete -f -x -c tag \
-    -s c -l prepatch \
-    -d "Tag auto-incrementing a prepatch version number"
+# complete -f -x -c tag \
+#     -s c -l prepatch \
+#     -d "Tag auto-incrementing a prepatch version number"

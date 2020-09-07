@@ -397,12 +397,15 @@ function tag -d "Gitnow: Tag commits following Semver"
                 set v_minor $v
             case -z --patch
                 set v_patch $v
-            case -a --premajor
-                set v_premajor $v
-            case -b --preminor
-                set v_preminor $v
-            case -c --prepatch
-                set v_prepatch $v
+
+            # TODO: pre-release versions are not supported yet
+            # case -a --premajor
+            #     set v_premajor $v
+            # case -b --preminor
+            #     set v_preminor $v
+            # case -c --prepatch
+            #     set v_prepatch $v
+
             case -l --latest
                 if not test -n "$v_latest"
                     echo "There is no any tag created yet."
@@ -424,11 +427,14 @@ function tag -d "Gitnow: Tag commits following Semver"
                 echo "      -x --major         Tag auto-incrementing a major version number"
                 echo "      -y --minor         Tag auto-incrementing a minor version number"
                 echo "      -z --patch         Tag auto-incrementing a patch version number"
-                echo "      -a --premajor      Tag auto-incrementing a premajor version number"
-                echo "      -b --preminor      Tag auto-incrementing a preminor version number"
-                echo "      -c --prepatch      Tag auto-incrementing a prepatch version number"
                 echo "      -l --latest        Show only the latest Semver release tag version (no suffixed ones or others)"
                 echo "      -h --help          Show information about the options for this command"
+
+                # TODO: pre-release versions are not supported yet
+                # echo "      -a --premajor      Tag auto-incrementing a premajor version number"
+                # echo "      -b --preminor      Tag auto-incrementing a preminor version number"
+                # echo "      -c --prepatch      Tag auto-incrementing a prepatch version number"
+
                 return
             case -\*
             case '*'
@@ -533,6 +539,7 @@ function tag -d "Gitnow: Tag commits following Semver"
     end
 
 
+    # TODO: pre-release versions are not supported yet
     # TODO: Premajor version tags
     # TODO: Preminor version tags
     # TODO: Prepatch version tags
