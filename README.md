@@ -48,11 +48,13 @@ fisher add joseluisq/gitnow
 | __Gitflow__ | | |
 | [feature](#feature) (1) | Alt + F | Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | [hotfix](#hotfix) (1) | Alt + H | Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
-| [bugfix](#bugfix) | | Creates a new _bugfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
-| [release](#release) | | Creates a new _release_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
+| [bugfix](#bugfix) (1) | | Creates a new _bugfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
+| [release](#release) (1) | | Creates a new _release_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | __Bonus__ | | |
 | [github](#github) | | Clone a _GitHub_ repository using SSH. |
 | [bitbucket](#bitbucket) | | Clone a _Bitbucket Cloud_ repository using SSH. |
+
+**Note:**
 
 - (1) This command key binding will creates a new branch taking as name some text of the clipboard.
 
@@ -60,17 +62,13 @@ fisher add joseluisq/gitnow
 
 - Skip the password request creating a SSH key for your [Github](https://help.github.com/en/articles/connecting-to-github-with-ssh) or [Bitbucket](https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html) account.
 - SSH setup is required for using `github` and `bitbucket` commands.
-- Take adventage of keybindings in order to get faster operations.
+- Take advantage of keybindings in order to get faster operations.
 
-## Configuration
+## Keybindings configuration
 
-For a custom configuration (for example keybindings) place a [.gitnow](./.gitnow) file in your home directory `~/.gitnow`.
-
-### Keybindings
-
-[.gitnow](./.gitnow) file contains a _[ keybindings ]_ section with default shortcuts (key-value pairs).
-
-You can add, edit or remove shortcuts on demand. For custom keys run the built-in function `fish_key_reader` in your terminal then press the key (or key's combinations) to get the right sequence bind char(s). Finally set it to your preferred command in `~/.gitnow` file.
+To configure keybindings just place the [.gitnow](./.gitnow) file in your home directory (`~/.gitnow`).
+The [.gitnow](./.gitnow) file contains a _[ keybindings ]_ section with default shortcuts (key-value pairs).
+But you can add, edit or remove keybindings on demand. If you want custom keybindings for your commands just run [fish_key_reader](https://fishshell.com/docs/current/cmds/fish_key_reader.html) in your terminal, then press the key or key's combinations to get the right characters sequence and finally set it to your preferred command in your `~/.gitnow` file.
 
 ## Usage
 
@@ -182,7 +180,7 @@ commit-all
 
 List and create release tag versions following [The Semantic Versioning 2.0.0](https://semver.org/).
 
-#### List all avilable tags
+#### List all available tags
 
 Tags are listed in a lexicographic order and tag names are treated as versions.
 
@@ -200,7 +198,7 @@ tag --latest
 
 #### Create Semver correlative tag names
 
-> **Note:** Following commands take care about `v` prefixed tag names.
+> **Note:** Following commands take care about optional `v` prefixed tag names.
 > So for example if a `v1.0.0` is found as latest major then the next correlative tag name major will be `v2.0.0`.
 > Otherwise for example if a `1.0.0` is found as latest minor then the next correlative tag name minor will be `1.1.0`.
 
@@ -213,7 +211,7 @@ tag --minor
 tag --patch
 ```
 
-__Create custom tag names__
+#### Create custom tag names
 
 ```sh
 tag <some tag name>
@@ -400,7 +398,9 @@ Examples:
 ```sh
 github username/repo-name
 github username repo-name
-github repo-name # requires a `user.github` username setted
+
+# requires a `user.github` username Git config entry
+github repo-name
 ```
 
 ### bitbucket
@@ -412,7 +412,9 @@ Examples:
 ```sh
 bitbucket username/repo-name
 bitbucket username repo-name
-bitbucket repo-name # requires a `user.bitbucket` username setted
+
+# requires a `user.bitbucket` username Git config entry
+bitbucket repo-name
 ```
 
 __Note:__ For cloning some repo only, it's necessary to set your Github or Bitbucket username to global config before like:
