@@ -38,7 +38,7 @@ fisher add joseluisq/gitnow
 | [untracked](#untracked) | | Check for untracked files and directories. |
 | [commit](#commit) | | Commit changes to the repository. |
 | [commit-all](#commit-all) | Alt + C | Add and commit all changes to the repository. |
-| [tag](#tag) | Alt + C | List and create release tag versions following Semver 2.0. |
+| [tag](#tag) | | List and create release tag versions following Semver 2.0. |
 | [pull](#pull) | Alt + D | Pull changes from remote server but saving uncommitted changes. |
 | [push](#push) | Alt + P | Push commit changes to remote repository. |
 | [upstream](#upstream) | Alt + U | Commit all changes and push them to remote server. |
@@ -180,6 +180,26 @@ commit-all
 
 List and create release tag versions following [The Semantic Versioning 2.0.0](https://semver.org/).
 
+#### Show information about Tag options
+
+```sh
+tag -h                                                                                                                                          (13s 251ms)
+# NAME
+#       Gitnow: tag - List or tag commits following The Semantic Versioning 2.0.0 (Semver) [1]
+#       [1] https://semver.org/
+# EXAMPLES
+#       List tags: tag
+#       Custom tag: tag <my tag name>
+#       Semver tag: tag --major
+# OPTIONS:
+#       Without options all tags are listed in a lexicographic order and tag names are treated as versions
+#       -x --major         Tag auto-incrementing a major version number
+#       -y --minor         Tag auto-incrementing a minor version number
+#       -z --patch         Tag auto-incrementing a patch version number
+#       -l --latest        Show only the latest Semver release tag version (no suffixed ones or others)
+#       -h --help          Show information about the options for this command
+```
+
 #### List all available tags
 
 Tags are listed in a lexicographic order and tag names are treated as versions.
@@ -190,7 +210,7 @@ tag
 
 #### Get latest Semver release tag name
 
-> **Note:** This option gets only the latest *Semver release version* tag name but no any suffixed version ones or another kind of version names. The same apply when you create correlative Semver tags. See next sub section.
+> **Note:** This option gets only the latest *Semver release version* tag name but no any suffixed version ones or another kind of version names. The same apply when you create correlative Semver tags. See next section.
 
 ```sh
 tag --latest
