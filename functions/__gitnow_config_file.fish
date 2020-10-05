@@ -33,7 +33,7 @@ function __gitnow_read_config -d "Reads a GitNow config file"
             if test -n "$f" || test -z "$line"
                 continue
             end
-            
+
             # section: keybindings (START)
             set g (__gitnow_is_section_line $line)
             if test -n "$g"
@@ -47,16 +47,16 @@ function __gitnow_read_config -d "Reads a GitNow config file"
             end
 
             # TODO: continue reading other sections
-        end 
+        end
     end
 end
 
 function __gitnow_is_comment_line -d "Checks if one line is a comment" -a line
-    echo -n $line | LC_ALL=C command awk -e '$0 ~ /^#/ {print}'
+    echo -n $line | LC_ALL=C command awk '$0 ~ /^#/ {print}'
 end
 
 function __gitnow_is_section_line -d "Checks if one line is a valid section" -a line
-    echo -n $line | LC_ALL=C command awk -e '$0 ~ /^\[\s?keybindings\s?\]$/ {print}'
+    echo -n $line | LC_ALL=C command awk '$0 ~ /^\[\s?keybindings\s?\]$/ {print}'
 end
 
 function __gitnow_is_keybinding -d "Checks if one line is a valid keybinding char" -a line
@@ -85,7 +85,9 @@ function __gitnow_read_keybinding_line -d "Reads a keybinding line" -a line
         # those commands depend on one clipboard program
 
         # skip out if there is no a valid clipboard program
-        if not test -n $gitnow_xpaste; return; end;
+        if not test -n $gitnow_xpaste
+            return
+        end
 
         set execmd (echo -n "bind $seq \"echo; if $cmd ($gitnow_xpaste); commandline -f repaint; else ; end\"")
     else
