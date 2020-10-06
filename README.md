@@ -7,19 +7,26 @@ A Fish shell alternative inspired by [git-friendly](https://github.com/jamiew/gi
 
 ## Install
 
-With [Fisher](https://github.com/jorgebucaran/fisherman):
-
 __Stable:__
+
+[Paket](https://github.com/joseluisq/paket)
+
+```sh
+paket add joseluisq/gitnow@2.5.1
+```
+
+[Fisher](https://github.com/jorgebucaran/fisherman)
+
 
 ```sh
 fisher add joseluisq/gitnow@2.5.1
 ```
 
-<small>_**Note:** Replace the number above with your preferred release._</small>
-
 __Latest changes:__
 
 ```sh
+paket add joseluisq/gitnow
+# Or
 fisher add joseluisq/gitnow
 ```
 

@@ -1,7 +1,7 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
-function _gitnow_install -e gitnow_install
+function _gitnow_install -e paket_install
     echo "Installing Gitnow..."
 
     # download .gitnow example file
@@ -12,7 +12,7 @@ function _gitnow_install -e gitnow_install
     echo "GitNow: Configured and ready to use!"
 end
 
-function _gitnow_uninstall -e gitnow_uninstall
+function _gitnow_uninstall -e paket_uninstall
     echo "Uninstalling Gitnow..."
     command rm -f $fish_snippets/.gitnow
 end
