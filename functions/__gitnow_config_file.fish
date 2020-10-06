@@ -24,16 +24,20 @@ function __gitnow_read_config -d "Reads a GitNow config file"
     if test -e $config_file
         # reads the .gitnow file line by line
         set -l has_keybindings false
+        set -l f
+        set -l g
 
-        for line in (command cat $config_file)
+        for line in (cat $config_file)
             # comments: skip out comment lines
-            if __gitnow_is_comment_line $line
+            set f (__gitnow_is_comment_line $line)
+            if test -n "$f" || test -z "$line"
                 continue
             end
 
             # section: keybindings (START)
-            if __gitnow_is_section_line $line "keybindings"
-                set has_keybindings
+            set g (__gitnow_is_section_line $line)
+            if test -n "$g"
+                set has_keybindings true
                 continue
             end
 
@@ -43,39 +47,26 @@ function __gitnow_read_config -d "Reads a GitNow config file"
             end
 
             # TODO: continue reading other sections
-        end 
+        end
     end
 end
 
 function __gitnow_is_comment_line -d "Checks if one line is a comment" -a line
-    echo -n $line | command grep -qE '^\#(.+)$'
+    echo -n $line | LC_ALL=C command awk '$0 ~ /^#/ {print}'
 end
 
-function __gitnow_is_section_line -d "Checks if one line is a valid section" -a line -a section
-    set -l regx (echo -n '^\[[[:space:]]?'$section'[[:space:]]?\]$')
-    echo -n $line | command grep -qE $regx
-end
-
-function __gitnow_is_key_value_pair -d "Checks if one line is a valid key-value pair" -a line
-    echo -n $line | command grep -qE '^[[:space:]]?[a-z]+([-][a-z]+)?[[:space:]]?\\=[[:space:]]?\\\\[a-zA-Z0-9].+[[:space:]]?$'
+function __gitnow_is_section_line -d "Checks if one line is a valid section" -a line
+    echo -n $line | LC_ALL=C command awk '$0 ~ /^\[\s?keybindings\s?\]$/ {print}'
 end
 
 function __gitnow_is_keybinding -d "Checks if one line is a valid keybinding char" -a line
-    echo -n $line | command grep -qE '^\\\\[a-zA-Z0-9]{1}[a-zA-Z0-9]?$'
+    echo -n $line | LC_ALL=C command grep -qE '^\\\\[a-zA-Z0-9]{1}[a-zA-Z0-9]?$'
 end
 
 function __gitnow_read_keybinding_line -d "Reads a keybinding line" -a line
-    set -l pairs (echo -n $line | command sed 's/^ *//;s/ *$//')
-
-    # skip out if line is not a valid keybinding
-    if not __gitnow_is_key_value_pair $pairs
-        return
-    end
-
-    # TODO: continue processing keybindings
-    set -l values (echo -n $line | command tr '=' '\n' | command sed 's/^ *//;s/ *$//')
-    set -l cmd $values[1]
-    set -l seq $values[2]
+    set -l values (echo -n $line | LC_ALL=C command tr '=' '\n')
+    set -l cmd (echo -n $values[1] | LC_ALL=C command tr -d '[:space:]')
+    set -l seq (echo -n $values[2] | LC_ALL=C command tr -d '[:space:]')
 
     # skip out if key is not a valid command
     if not type --quiet "$cmd"
@@ -89,13 +80,14 @@ function __gitnow_read_keybinding_line -d "Reads a keybinding line" -a line
 
     # finally bind corresponding keybinding
     set -l execmd
-
-    if echo -n $cmd | command grep -qE '^(release|hotfix|feature|bugfix)$'
+    if echo -n $cmd | LC_ALL=C command grep -qE '^(release|hotfix|feature|bugfix)$'
         # Gitflow: `release`, `hotfix`, `feature`, `bugfix`
         # those commands depend on one clipboard program
 
         # skip out if there is no a valid clipboard program
-        if not test -n $gitnow_xpaste; return; end;
+        if not test -n $gitnow_xpaste
+            return
+        end
 
         set execmd (echo -n "bind $seq \"echo; if $cmd ($gitnow_xpaste); commandline -f repaint; else ; end\"")
     else
