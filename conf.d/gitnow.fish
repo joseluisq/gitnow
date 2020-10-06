@@ -355,19 +355,19 @@ function logs -d "Gitnow: Shows logs in a fancy way"
         set args $argv
     end
 
-    command git log $args --color --graph \
+    LC_ALL=C command git log $args --color --graph \
         --pretty=format:"%Cred%h%C(reset) -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%C(reset) %C(brightmagenta dim)###%GK###%C(reset)%C(brightblack)@@%G?@@%C(reset)" --abbrev-commit \
-        | command sed -E 's/@@@@//' \
-        | command sed -E 's/@@([^"]*)@@/ (\1)/' \
-        | command sed -E "s/###([^\"]*)###([^\"]*)\(G\)/"(command tput setaf 2)"\1/" \
-        | command sed -E 's/###([^"]*)###/\1/' \
-        | command sed -E 's/\(B\)/(bad signature)/' \
-        | command sed -E 's/\(U\)/(good unknown validity signature)/' \
-        | command sed -E 's/\(X\)/(good expired signature)/' \
-        | command sed -E 's/\(Y\)/(good signature with expired key)/' \
-        | command sed -E 's/\(R\)/(good signature with revoked key)/' \
-        | command sed -E 's/\(E\)/(No checked signature)/' \
-        | command sed -E 's/\(N\)//' \
+        | LC_ALL=C command sed -E 's/@@@@//' \
+        | LC_ALL=C command sed -E 's/@@([^"]*)@@/ (\1)/' \
+        | LC_ALL=C command sed -E "s/###([^\"]*)###([^\"]*)\(G\)/"(command tput setaf 2)"\1/" \
+        | LC_ALL=C command sed -E 's/###([^"]*)###/\1/' \
+        | LC_ALL=C command sed -E 's/\(B\)/(bad signature)/' \
+        | LC_ALL=C command sed -E 's/\(U\)/(good unknown validity signature)/' \
+        | LC_ALL=C command sed -E 's/\(X\)/(good expired signature)/' \
+        | LC_ALL=C command sed -E 's/\(Y\)/(good signature with expired key)/' \
+        | LC_ALL=C command sed -E 's/\(R\)/(good signature with revoked key)/' \
+        | LC_ALL=C command sed -E 's/\(E\)/(No checked signature)/' \
+        | LC_ALL=C command sed -E 's/\(N\)//' \
         | command less -R
 
     commandline -f repaint
@@ -463,8 +463,8 @@ function tag -d "Gitnow: Tag commits following Semver"
                 return
             end
 
-            set -l x (echo $vstr | awk -F '.' '{print $1}')
-            set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
+            set -l x (echo $vstr | LC_ALL=C command awk -F '.' '{print $1}')
+            set -l prefix (echo $v_latest | LC_ALL=C command awk -F "$vstr" '{print $1}')
             set x (__gitnow_increment_number $x)
             set -l xyz "$prefix$x.0.0"
 
@@ -490,9 +490,9 @@ function tag -d "Gitnow: Tag commits following Semver"
                 return
             end
 
-            set -l x (echo $vstr | awk -F '.' '{print $1}')
-            set -l y (echo $vstr | awk -F '.' '{print $2}')
-            set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
+            set -l x (echo $vstr | LC_ALL=C command awk -F '.' '{print $1}')
+            set -l y (echo $vstr | LC_ALL=C command awk -F '.' '{print $2}')
+            set -l prefix (echo $v_latest | LC_ALL=C command awk -F "$vstr" '{print $1}')
             set y (__gitnow_increment_number $y)
             set -l xyz "$prefix$x.$y.0"
 
@@ -518,13 +518,13 @@ function tag -d "Gitnow: Tag commits following Semver"
                 return
             end
 
-            set -l x (echo $vstr | awk -F '.' '{print $1}')
-            set -l y (echo $vstr | awk -F '.' '{print $2}')
-            set -l z (echo $vstr | awk -F '.' '{print $3}')
-            set -l s (echo $z | awk -F '-' '{print $1}')
+            set -l x (echo $vstr | LC_ALL=C command awk -F '.' '{print $1}')
+            set -l y (echo $vstr | LC_ALL=C command awk -F '.' '{print $2}')
+            set -l z (echo $vstr | LC_ALL=C command awk -F '.' '{print $3}')
+            set -l s (echo $z | LC_ALL=C command awk -F '-' '{print $1}')
 
             if __gitnow_is_number $s
-                set -l prefix (echo $v_latest | awk -F "$vstr" '{print $1}')
+                set -l prefix (echo $v_latest | LC_ALL=C command awk -F "$vstr" '{print $1}')
                 set s (__gitnow_increment_number $s)
                 set -l xyz "$prefix$x.$y.$s"
 

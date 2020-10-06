@@ -15,7 +15,7 @@ end
 
 # adapted from https://gist.github.com/oneohthree/f528c7ae1e701ad990e6
 function __gitnow_slugify
-    echo $argv | command iconv -t ascii//TRANSLIT | command sed -E 's/[^a-zA-Z0-9\-]+/_/g' | command sed -E 's/^(-|_)+|(-|_)+$//g'
+    echo $argv | LC_ALL=C command iconv -t ascii//TRANSLIT | LC_ALL=C command sed -E 's/[^a-zA-Z0-9\-]+/_/g' | LC_ALL=C command sed -E 's/^(-|_)+|(-|_)+$//g'
 end
 
 function __gitnow_clone_repo
@@ -25,11 +25,11 @@ function __gitnow_clone_repo
     if test -n "$repo"
         set -l ok 1
 
-        if echo $repo | command grep -q -E '^[\%S].+'
+        if echo $repo | LC_ALL=C command grep -q -E '^[\%S].+'
             set -l user (command git config --global user.$platform)
 
             if test -n "$user"
-                set -l repor (echo $repo | command sed -e "s/^%S/$user/")
+                set -l repor (echo $repo | LC_ALL=C command sed -e "s/^%S/$user/")
                 set repo $repor
             else
                 set ok 0
@@ -97,7 +97,7 @@ function __gitnow_clone_params
     if count $argv >/dev/null
         if test (count $argv) -gt 1
             set repo $argv[1]/$argv[2]
-        else if echo $argv | command grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
+        else if echo $argv | LC_ALL=C command grep -q -E '^([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)$'
             set repo $argv
         else
             set repo "%S/$argv"
@@ -130,7 +130,7 @@ function __gitnow_current_branch_name
 end
 
 function __gitnow_current_branch_list
-    command git branch --list --no-color | sed -E "s/^(\*?[ \t]*)//g" 2>/dev/null
+    command git branch --list --no-color | LC_ALL=C command sed -E "s/^(\*?[ \t]*)//g" 2>/dev/null
 end
 
 function __gitnow_current_remote
@@ -158,7 +158,7 @@ end
 
 function __gitnow_get_latest_semver_release_tag
     for tg in (__gitnow_get_tags_ordered)
-        if echo $tg | grep -qE '^v?([0-9]+).([0-9]+).([0-9]+)$'
+        if echo $tg | LC_ALL=C command grep -qE '^v?([0-9]+).([0-9]+).([0-9]+)$'
             echo $tg 2>/dev/null
             break
         end
@@ -166,7 +166,7 @@ function __gitnow_get_latest_semver_release_tag
 end
 
 function __gitnow_increment_number -a strv
-    command echo $strv | awk '
+    command echo $strv | LC_ALL=C command awk '
         function increment(val) {
             if (val ~ /[0-9]+/) { return val + 1 }
             return val
@@ -176,13 +176,13 @@ function __gitnow_increment_number -a strv
 end
 
 function __gitnow_get_valid_semver_release_value -a tagv
-    command echo $tagv | command sed -n 's/^v\\{0,1\\}\([0-9].[0-9].[0-9]*\)\([}]*\)/\1/p' 2>/dev/null
+    command echo $tagv | LC_ALL=C command sed -n 's/^v\\{0,1\\}\([0-9].[0-9].[0-9]*\)\([}]*\)/\1/p' 2>/dev/null
 end
 
 function __gitnow_get_valid_semver_prerelease_value -a tagv
-    command echo $tagv | command sed -n 's/^v\\{0,1\\}\([0-9].[0-9].[0-9]-[a-zA-Z0-9\-_.]*\)\([}]*\)/\1/p' 2>/dev/null
+    command echo $tagv | LC_ALL=C command sed -n 's/^v\\{0,1\\}\([0-9].[0-9].[0-9]-[a-zA-Z0-9\-_.]*\)\([}]*\)/\1/p' 2>/dev/null
 end
 
 function __gitnow_is_number -a strv
-    command echo -n $strv | command grep -qE '^([0-9]+)$'
+    command echo -n $strv | LC_ALL=C command grep -qE '^([0-9]+)$'
 end
