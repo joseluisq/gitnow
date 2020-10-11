@@ -13,7 +13,7 @@ function __gitnow_read_config -d "Reads a GitNow config file"
     # download the default .gitnow file
     # used as workaround for Fisher. see https://github.com/jorgebucaran/fisher/pull/573
     if not test -e $config_file
-        curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/.gitnow
+        curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/conf.d/.gitnow
     end
 
     # prefer custom config file if it exists

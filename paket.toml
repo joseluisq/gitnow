@@ -16,7 +16,7 @@ keywords = [
 ]
 
 include = [
-    ".gitnow"
+    "conf.d/.gitnow"
 ]
 
 [dependencies]
