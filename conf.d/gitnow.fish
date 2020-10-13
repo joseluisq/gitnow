@@ -1,20 +1,13 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
-function _gitnow_install -e gitnow_install
-    echo "Installing Gitnow..."
-
-    # download .gitnow example file
-    set -l config_file "$fish_snippets/.gitnow"
-    
-    echo "GitNow: Downloading default configuration file..."
-    curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/.gitnow
-    echo "GitNow: Configured and ready to use!"
+function __gitnow_install -e paket_install
+    echo (gitnow -v)" is installed and ready to use!"
+    echo "Just run the `gitnow` command if you want explore the API."
 end
 
-function _gitnow_uninstall -e gitnow_uninstall
-    echo "Uninstalling Gitnow..."
-    command rm -f $fish_snippets/.gitnow
+function __gitnow_uninstall -e paket_uninstall
+    echo "GitNow is uninstalled successfully."
 end
 
 function gitnow -d "Gitnow: Speed up your Git workflow. 🐠" -a xversion

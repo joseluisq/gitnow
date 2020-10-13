@@ -7,15 +7,16 @@ function __gitnow_read_config -d "Reads a GitNow config file"
     # sets a clipboard program
     set gitnow_xpaste (__gitnow_get_clip_program)
 
-    # config file definition by default
+    # config file path used by default
     set -l config_file "$fish_snippets/.gitnow"
 
-    # default .gitnow file download used as workaround
+    # download the default .gitnow file
+    # used as workaround for Fisher. see https://github.com/jorgebucaran/fisher/pull/573
     if not test -e $config_file
-        curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/.gitnow
+        curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/conf.d/.gitnow
     end
 
-    # otherwise prefer custom config file
+    # prefer custom config file if it exists
     if test -e $GITNOW_CONFIG_FILE
         set config_file $GITNOW_CONFIG_FILE
     end

@@ -1,0 +1,22 @@
+[package]
+name = "gitnow"
+version = "2.5.0"
+authors = ["Jose Quintana <git.io/joseluisq>"]
+license = "MIT OR Apache-2.0"
+description = "Speed up your Git workflow. 🐠"
+repository = "https://github.com/joseluisq/gitnow"
+keywords = [
+    "git",
+    "git-workflow",
+    "fish-shell",
+    "fish-packages",
+    "keybindings",
+    "bitbucket",
+    "github"
+]
+
+include = [
+    "conf.d/.gitnow"
+]
+
+[dependencies]

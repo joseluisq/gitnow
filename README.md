@@ -2,24 +2,31 @@
 
 > Speed up your Git workflow. 🐠
 
-GitNow contains a command set that provides high-level operations on the top of Git. <br>
-A Fish shell alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
+GitNow contains a command set that provides high-level operations on the top of [Git](https://git-scm.com/book/en/v2). A [Fish shell](https://fishshell.com/) alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
 
 ## Install
 
-With [Fisher](https://github.com/jorgebucaran/fisherman):
-
 __Stable:__
+
+[Paket](https://github.com/joseluisq/paket)
+
+```sh
+paket add joseluisq/gitnow@2.5.1
+```
+
+[Fisher](https://github.com/jorgebucaran/fisherman)
+
 
 ```sh
 fisher add joseluisq/gitnow@2.5.1
 ```
 
-<small>_**Note:** Replace the number above with your preferred release._</small>
-
 __Latest changes:__
 
 ```sh
+paket add joseluisq/gitnow
+
+# Or
 fisher add joseluisq/gitnow
 ```
 
