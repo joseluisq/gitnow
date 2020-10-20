@@ -73,8 +73,8 @@ fisher add joseluisq/gitnow
 
 ## Keybindings configuration
 
-To configure keybindings just place the [.gitnow](./.gitnow) file in your home directory (`~/.gitnow`).
-The [.gitnow](./.gitnow) file contains a _[ keybindings ]_ section with default shortcuts (key-value pairs).
+To configure keybindings just copy the [.gitnow](conf.d/.gitnow) file and place it in your home directory (`~/.gitnow`).
+The [.gitnow](conf.d/.gitnow) file contains a _[ keybindings ]_ section with default shortcuts (key-value pairs).
 But you can add, edit or remove keybindings on demand. If you want custom keybindings for your commands just run [fish_key_reader](https://fishshell.com/docs/current/cmds/fish_key_reader.html) in your terminal, then press the key or key's combinations to get the right characters sequence and finally set it to your preferred command in your `~/.gitnow` file.
 
 ## Usage
