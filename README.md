@@ -14,11 +14,11 @@ __Stable:__
 paket add joseluisq/gitnow@2.5.1
 ```
 
-[Fisher](https://github.com/jorgebucaran/fisherman)
+[Fisher](https://github.com/jorgebucaran/fisher)
 
 
 ```sh
-fisher add joseluisq/gitnow@2.5.1
+fisher install joseluisq/gitnow@2.5.1
 ```
 
 __Latest changes:__
@@ -27,7 +27,7 @@ __Latest changes:__
 paket add joseluisq/gitnow
 
 # Or
-fisher add joseluisq/gitnow
+fisher install joseluisq/gitnow
 ```
 
 <small>_**Note:** Use that method if you don't want to wait for a new release._</small>
