@@ -5,8 +5,7 @@ before_install:
     - sudo apt-get update
     - sudo apt-get -y install fish
     - fish --version
-    - curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-    - fish -c "fisher -v"
+    - fish -c "curl -sL git.io/fisher | source && fisher install jorgebucaran/fisher"
 
 git:
   depth: 1
@@ -15,5 +14,5 @@ notifications:
   email: false
 
 script:
-    - fish -c "fisher add joseluisq/gitnow"
-    - fish -c "gitnow -v ; gitnow --version"
+    - fish -c "fisher install joseluisq/gitnow"
+    - fish -c "gitnow -v && gitnow --version"
