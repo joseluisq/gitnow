@@ -245,6 +245,22 @@ function release -d "GitNow: Creates a new Gitflow release branch from current b
     commandline -f repaint
 end
 
+function merge -d "GitNow: Merges given branch into the active one"
+    if not __gitnow_is_git_repository
+        __gitnow_msg_not_valid_repository "merge"
+        return
+    end
+
+    set -l len (count $argv)
+    set -l opts .
+    if test $len -gt 0
+        set opts $args
+    end
+
+    command git merge $opts
+    commandline -f repaint
+end
+
 function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes"
     if not __gitnow_is_git_repository
         __gitnow_msg_not_valid_repository "move"
