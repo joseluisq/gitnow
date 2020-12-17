@@ -345,7 +345,7 @@ __Additional options:__
 merge other_branch
 
 # Local branch ghost_branch was not found. Not possible to merge.
-move ghost_branch
+merge ghost_branch
 
 # With -a flag the conflicted merge will be aborted.
 merge -a
