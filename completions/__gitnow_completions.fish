@@ -4,6 +4,14 @@ source $__fish_data_dir/completions/git.fish
 
 complete -f -x -c merge -a '(__fish_git_branches)'
 
+complete -f -x -c merge \
+    -s h -l help \
+    -d "Show information about the options for this command"
+
+complete -f -x -c merge \
+    -s a -l abort \
+    -d "Abort conflicted merge"
+
 # Move command
 
 complete -f -x -c move -a '(__fish_git_branches)'

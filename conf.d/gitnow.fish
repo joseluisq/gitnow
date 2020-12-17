@@ -252,12 +252,48 @@ function merge -d "GitNow: Merges given branch into the active one"
     end
 
     set -l len (count $argv)
-    set -l opts .
-    if test $len -gt 0
-        set opts $args
+    if test $len -eq 0
+        echo "Merge: No argument given, needs one parameter"
+        return
     end
 
-    command git merge $opts
+    switch $argv[1]
+        case -a --abort
+            command git merge --abort
+            commandline -f repaint
+            return
+        case -h --help
+            echo "NAME"
+            echo "      Gitnow: merge - Merge given branch into the active one"
+            echo "EXAMPLES"
+            echo "      merge <branch to merge>"
+            echo "OPTIONS:"
+            echo "      -a --abort              Abort a conflicted merge"
+            echo "      -h --help               Show information about the options for this command"
+            return
+        case -\*
+        case '*'
+            set v_branch $argv[1]
+    end
+
+    set -l v_found (__gitnow_check_if_branch_exist $v_branch)
+
+    # Branch was not found
+    if test $v_found -eq 0;
+        echo "Local branch `$v_branch` was not found. Not possible to merge."
+
+        commandline -f repaint
+        return
+    end
+
+    # Detect merging current branch
+    if [ "$v_branch" = (__gitnow_current_branch_name) ]
+        echo "Branch `$v_branch` is the same as current branch. Nothing to do."
+        commandline -f repaint
+        return
+    end
+
+    command git merge $v_branch
     commandline -f repaint
 end
 
