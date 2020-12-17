@@ -73,10 +73,11 @@ function __gitnow_clone_msg
 end
 
 function __gitnow_check_if_branch_exist
+    set -l xfound 0
+
     if test (count $argv) -eq 1
         set -l xbranch $argv[1]
         set -l xbranch_list (__gitnow_current_branch_list)
-        set -l xfound 0
 
         for b in $xbranch_list
             if [ "$xbranch" = "$b" ]
@@ -84,11 +85,9 @@ function __gitnow_check_if_branch_exist
                 break
             end
         end
-
-        echo $xfound
-    else
-        echo "Provide a valid branch name."
     end
+
+    echo $xfound
 end
 
 function __gitnow_clone_params
