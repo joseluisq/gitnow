@@ -12,6 +12,10 @@ complete -f -x -c merge \
     -s a -l abort \
     -d "Abort conflicted merge"
 
+complete -f -x -c merge \
+    -s c -l continue \
+    -d "Continue merge"
+
 # Move command
 
 complete -f -x -c move -a '(__fish_git_branches)'

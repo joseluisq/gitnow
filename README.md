@@ -340,6 +340,7 @@ __Note:__ This command does a simple `git merge <other branch>`.
 __Additional options:__
 
 - Use `-a` (or `--abort`) flag instead of a branch name to abort a conflicted merge.
+- Use `-c` (or `--continue`) flag instead of a branch name to continue a merge.
 
 ```sh
 merge other_branch
