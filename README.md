@@ -1,4 +1,4 @@
-# GitNow [![Build Status](https://travis-ci.org/joseluisq/gitnow.svg?branch=master)](https://travis-ci.org/joseluisq/gitnow) [![Releases](https://img.shields.io/github/release/joseluisq/gitnow.svg?label=latest)](https://github.com/joseluisq/gitnow/releases)
+# GitNow [![Build Status](https://travis-ci.com/joseluisq/gitnow.svg?branch=master)](https://travis-ci.com/joseluisq/gitnow) [![Releases](https://img.shields.io/github/release/joseluisq/gitnow.svg?label=latest)](https://github.com/joseluisq/gitnow/releases)
 
 > Speed up your Git workflow. 🐠
 
@@ -11,14 +11,14 @@ __Stable:__
 [Paket](https://github.com/joseluisq/paket)
 
 ```sh
-paket add joseluisq/gitnow@2.5.1
+paket add joseluisq/gitnow@2.6.0
 ```
 
 [Fisher](https://github.com/jorgebucaran/fisher)
 
 
 ```sh
-fisher install joseluisq/gitnow@2.5.1
+fisher install joseluisq/gitnow@2.6.0
 ```
 
 __Latest changes:__
