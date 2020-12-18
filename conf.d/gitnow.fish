@@ -301,7 +301,7 @@ function merge -d "GitNow: Merges given branch into the active one"
 
     # No branch defined
     if not test -n "$v_branch"
-        echo "Provide a valid branch name to switch to."
+        echo "Provide a valid branch name to merge."
         commandline -f repaint
         return
     end
