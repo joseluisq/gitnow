@@ -1,11 +1,10 @@
-sudo: required
+language: minimal
 
-before_install:
-    - sudo add-apt-repository -y ppa:fish-shell/nightly-master
-    - sudo apt-get update
-    - sudo apt-get -y install fish
-    - fish --version
-    - fish -c "curl -sL git.io/fisher | source && fisher install jorgebucaran/fisher"
+services:
+  - docker
+
+os:
+  - linux
 
 git:
   depth: 1
@@ -13,6 +12,14 @@ git:
 notifications:
   email: false
 
-script:
-    - fish -c "fisher install joseluisq/gitnow"
-    - fish -c "gitnow -v && gitnow --version"
+jobs:
+  fast_finish: true
+  include:
+  - name: "paket"
+    env: GITNOW=paket
+    script:
+      - docker run -it --rm joseluisq/paket sh -c "fish -c 'paket add joseluisq/gitnow' && fish -c 'gitnow -v'"
+  - name: "fisher"
+    env: GITNOW=fisher
+    script:
+      - docker run -it --rm joseluisq/paket sh -c "apk add curl && fish -c 'curl -sL git.io/fisher | source && fisher install jorgebucaran/fisher' && fish -c 'fisher install joseluisq/gitnow && gitnow -v'"
