@@ -18,8 +18,8 @@ jobs:
   - name: "paket"
     env: GITNOW=paket
     script:
-      - docker run -it --rm joseluisq/paket sh -c "fish -c 'paket add joseluisq/gitnow' && fish -c 'gitnow -v'"
+      - docker run -it --rm joseluisq/paket sh -c "fish -c 'paket --version && paket add joseluisq/gitnow' && fish -c 'gitnow -v'"
   - name: "fisher"
     env: GITNOW=fisher
     script:
-      - docker run -it --rm joseluisq/paket sh -c "apk add curl && fish -c 'curl -sL git.io/fisher | source && fisher install jorgebucaran/fisher' && fish -c 'fisher install joseluisq/gitnow && gitnow -v'"
+      - docker run -it --rm joseluisq/paket sh -c "apk add curl && fish -c 'curl -sL git.io/fisher | source && fisher --version && fisher install jorgebucaran/fisher' && fish -c 'fisher install joseluisq/gitnow && gitnow -v'"
