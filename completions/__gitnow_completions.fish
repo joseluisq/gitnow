@@ -1,5 +1,21 @@
 source $__fish_data_dir/completions/git.fish
 
+# Merge command
+
+complete -f -x -c merge -a '(__fish_git_branches)'
+
+complete -f -x -c merge \
+    -s h -l help \
+    -d "Show information about the options for this command"
+
+complete -f -x -c merge \
+    -s a -l abort \
+    -d "Abort conflicted merge"
+
+complete -f -x -c merge \
+    -s c -l continue \
+    -d "Continue merge"
+
 # Move command
 
 complete -f -x -c move -a '(__fish_git_branches)'
@@ -11,7 +27,7 @@ complete -f -x -c move \
 complete -f -x -c move \
     -s n -l no-apply-stash \
     -a '(__fish_git_branches)' \
-    -d "Switch to a local branch but without applying current stash" 
+    -d "Switch to a local branch but without applying current stash"
 
 complete -f -x -c move \
     -s u -l upstream \

@@ -50,6 +50,7 @@ fisher install joseluisq/gitnow
 | [push](#push) | Alt + P | Push commit changes to remote repository. |
 | [upstream](#upstream) | Alt + U | Commit all changes and push them to remote server. |
 | [move](#move) | | Moves from current branch to another but stashing your changes. |
+| [merge](#merge) | | Merges a local branch into the active one. |
 | [assume](#assume) | | Ignores changes in certain files temporarily. |
 | [logs](#logs) | Alt + L | Shows logs in a fancy way. |
 | __Gitflow__ | | |
@@ -307,7 +308,7 @@ upstream
 
 Switch from current branch to another but stashing uncommitted changes
 
-__Note:__ This command does `git stash` then `git checkout <other_branch>` and finally `git stash pop` (possible to disable). It also takes care that `<other_branch>` matches with the existing local branches. 
+__Note:__ This command does `git stash` then `git checkout <other_branch>` and finally `git stash pop` (possible to disable). It also takes care that `<other_branch>` matches with the existing local branches.
 
 __Additional options:__
 
@@ -328,6 +329,27 @@ move -n feature/new_remote_branch
 
 # Possible to combine two option flags
 move -un feature/another_remote_branch
+```
+
+### merge
+
+Merge a local branch into the active one
+
+__Note:__ This command does a simple `git merge <other branch>`.
+
+__Additional options:__
+
+- Use `-a` (or `--abort`) flag instead of a branch name to abort a conflicted merge.
+- Use `-c` (or `--continue`) flag instead of a branch name to continue a merge.
+
+```sh
+merge other_branch
+
+# Local branch ghost_branch was not found. Not possible to merge.
+merge ghost_branch
+
+# With -a flag the conflicted merge will be aborted.
+merge -a
 ```
 
 ### assume
