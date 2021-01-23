@@ -1,4 +1,4 @@
-# GitNow [![Build Status](https://travis-ci.com/joseluisq/gitnow.svg?branch=master)](https://travis-ci.com/joseluisq/gitnow) [![Releases](https://img.shields.io/github/release/joseluisq/gitnow.svg?label=latest)](https://github.com/joseluisq/gitnow/releases)
+# GitNow ![CI](https://github.com/joseluisq/gitnow/workflows/CI/badge.svg?branch=master) [![Releases](https://img.shields.io/github/release/joseluisq/gitnow.svg?label=latest)](https://github.com/joseluisq/gitnow/releases)
 
 > Speed up your Git workflow. 🐠
 
