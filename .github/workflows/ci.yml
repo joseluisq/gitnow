@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  paket:
+    name: Paket test
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        uses: addnab/docker-run-action@v1
+        with:
+          image: joseluisq/paket
+          shell: sh
+          run: fish -c 'paket --version && paket add joseluisq/gitnow' && fish -c 'gitnow -v'
+
+  fisher:
+    name: Fisher test
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        uses: addnab/docker-run-action@v1
+        with:
+          image: joseluisq/paket
+          shell: sh
+          run: apk add curl && fish -c 'curl -sL git.io/fisher | source && fisher --version && fisher install jorgebucaran/fisher' && fish -c 'fisher install joseluisq/gitnow && gitnow -v'
