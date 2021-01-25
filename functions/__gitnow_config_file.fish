@@ -70,7 +70,7 @@ function __gitnow_read_keybinding_line -d "Reads a keybinding line" -a line
     set -l seq (echo -n $values[2] | LC_ALL=C command tr -d '[:space:]')
 
     # skip out if key is not a valid command
-    if not type --quiet "$cmd"
+    if not type --query "$cmd"
         return
     end
 
