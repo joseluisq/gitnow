@@ -7,20 +7,36 @@ jobs:
     name: Paket test
     runs-on: ubuntu-latest
     steps:
-      - name: test
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: Test
         uses: addnab/docker-run-action@v1
         with:
           image: joseluisq/paket
-          shell: sh
-          run: fish -c 'paket --version && paket add joseluisq/gitnow' && fish -c 'gitnow -v'
+          options: -v ${{ github.workspace }}:/gitnow
+          shell: fish
+          run: |
+            fish -v
+            paket --version
+            paket add /gitnow
+            /gitnow/testing.fish
 
   fisher:
     name: Fisher test
     runs-on: ubuntu-latest
     steps:
-      - name: test
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: Test
         uses: addnab/docker-run-action@v1
         with:
           image: joseluisq/paket
-          shell: sh
-          run: apk add curl && fish -c 'curl -sL git.io/fisher | source && fisher --version && fisher install jorgebucaran/fisher' && fish -c 'fisher install joseluisq/gitnow && gitnow -v'
+          options: -v ${{ github.workspace }}:/gitnow
+          shell: fish
+          run: |
+            apk add curl
+            curl -sL git.io/fisher | source
+            fish -v
+            fisher --version
+            fisher install /gitnow
+            /gitnow/testing.fish
