@@ -3,7 +3,7 @@
 
 set -g gitnow_xpaste
 
-function __gitnow_read_config -d "Reads a GitNow config file"
+function __gitnow_read_config -d "Reads the GitNow config file"
     # sets a clipboard program
     set gitnow_xpaste (__gitnow_get_clip_program)
 
@@ -19,98 +19,121 @@ function __gitnow_read_config -d "Reads a GitNow config file"
     # prefer custom config file if it exists
     if test -e $GITNOW_CONFIG_FILE
         set config_file $GITNOW_CONFIG_FILE
+    else if not test -e $config_file
+        # otherwise checks if default `.gitnow` file exists
+        # TODO: think about to if we could make this file optional
+        echo "Gitnow: the default .gitnow file is not found or inaccessible!"
     end
 
-    # checks if .gitnow file exists
-    if test -e $config_file
-        # reads the .gitnow file line by line
-        set -l has_keybindings false
-        set -l f
-        set -l g
+    # parse .gitnow file content
 
-        for line in (cat $config_file)
-            # comments: skip out comment lines
-            set f (__gitnow_is_comment_line $line)
-            if test -n "$f" || test -z "$line"
-                continue
+    set -l v_section 0
+    set -l v_keybindings_str ""
+    set -l v_keybindings "keybindings"
+
+    while read -la l
+        set -l v_comment 0
+        set -l v_command_sep 0
+        set -l v_command_key ""
+        set -l v_command_val ""
+
+        echo $l | while read -n 1 -la c;
+            switch $c
+                case '['
+                    if test $v_comment -eq 1; continue; end
+
+                    if test $v_section -gt 0
+                        set v_section 0
+                        continue
+                    end
+
+                    if test $v_section -eq 0; set v_section 1; end
+                case ']'
+                    if test $v_comment -eq 1; continue; end
+
+                    if test $v_section -eq 1
+                        if [ "$v_keybindings_str" = "$v_keybindings" ]
+                            set v_section 2
+                            continue
+                        end
+                    end
+
+                    set v_section 0
+                case ' '
+                case '\n'
+                case '\t'
+                case '\r'
+                    continue
+                case '#'
+                    if test $v_comment -eq 0; set v_comment 1; end
+                    continue
+                case '*'
+                    if test $v_comment -eq 1; continue; end
+
+                    if test $v_section -eq 1
+                        set v_keybindings_str "$v_keybindings_str$c"
+                        continue
+                    end
+
+                    # A [keybindings] section was already found
+                    if test $v_section -eq 2
+                        switch $c
+                            case 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' '-'
+                                if test $v_command_sep -eq 0
+                                    set v_command_key "$v_command_key$c"
+                                    continue
+                                end
+
+                                if test $v_command_sep -eq 2
+                                    set v_command_val "$v_command_val$c"
+                                    continue
+                                end
+                            case \\
+                                if test $v_command_sep -eq 1
+                                    set v_command_sep 2
+                                end
+                                continue
+                            case '='
+                                set v_command_sep 1
+                            case '*'
+                                continue
+                        end
+                    end
             end
-
-            # section: keybindings (START)
-            set g (__gitnow_is_section_line $line)
-            if test -n "$g"
-                set has_keybindings true
-                continue
-            end
-
-            # section: read keybinding line
-            if test has_keybindings
-                __gitnow_read_keybinding_line $line
-            end
-
-            # TODO: continue reading other sections
         end
-    end
-end
 
-function __gitnow_is_comment_line -d "Checks if one line is a comment" -a line
-    echo -n $line | LC_ALL=C command awk '$0 ~ /^#/ {print}'
-end
+        if not [ "$v_command_key" = "" ]; and not [ "$v_command_val" = "" ]
+            set -l cmd
 
-function __gitnow_is_section_line -d "Checks if one line is a valid section" -a line
-    echo -n $line | LC_ALL=C command awk '$0 ~ /^\[\s?keybindings\s?\]$/ {print}'
-end
+            switch $v_command_key
+                case 'release' 'hotfix' 'feature' 'bugfix'
+                    # skip out if there is no a valid clipboard program
+                    if not test -n $gitnow_xpaste; continue; end
 
-function __gitnow_is_keybinding -d "Checks if one line is a valid keybinding char" -a line
-    echo -n $line | LC_ALL=C command grep -qE '^\\\\[a-zA-Z0-9]{1}[a-zA-Z0-9]?$'
-end
+                    set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key ($gitnow_xpaste); commandline -f repaint; else ; end\"")
+                case '*'
+                    # TODO: validate string commands with a list of available (allowed) commands only
+                    set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key; commandline -f repaint; else; end\"")
+            end
 
-function __gitnow_read_keybinding_line -d "Reads a keybinding line" -a line
-    set -l values (echo -n $line | LC_ALL=C command tr '=' '\n')
-    set -l cmd (echo -n $values[1] | LC_ALL=C command tr -d '[:space:]')
-    set -l seq (echo -n $values[2] | LC_ALL=C command tr -d '[:space:]')
-
-    # skip out if key is not a valid command
-    if not type -q "$cmd"
-        return
-    end
-
-    # skip out if value is not a valid keybinding
-    if not __gitnow_is_keybinding $seq
-        return
-    end
-
-    # finally bind corresponding keybinding
-    set -l execmd
-    if echo -n $cmd | LC_ALL=C command grep -qE '^(release|hotfix|feature|bugfix)$'
-        # Gitflow: `release`, `hotfix`, `feature`, `bugfix`
-        # those commands depend on one clipboard program
-
-        # skip out if there is no a valid clipboard program
-        if not test -n $gitnow_xpaste
-            return
+            eval $cmd
         end
-
-        set execmd (echo -n "bind $seq \"echo; if $cmd ($gitnow_xpaste); commandline -f repaint; else ; end\"")
-    else
-        set execmd (echo -n "bind $seq \"echo; if $cmd; commandline -f repaint; else; end\"")
-    end
-
-    eval $execmd
+    end < $config_file
 end
 
 function __gitnow_get_clip_program -d "Gets the current clip installed program"
-    set -l cpaste
+    set -l v_paste
 
     if type -q xclip
-        set cpaste "xclip -selection clipboard -o"
+        set v_paste "xclip -selection clipboard -o"
     else
         if type -q xsel
-            set cpaste "xsel --clipboard --output"
+            set v_paste "xsel --clipboard --output"
         end
         if type -q pbpaste
-            set cpaste "pbpaste"
+            set v_paste "pbpaste"
         end
     end
 
-    echo -n $cpaste
+    echo -n $v_paste
 end
