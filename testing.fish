@@ -14,7 +14,7 @@ if test $status -gt 0
 end
 
 # This is ad-hoc string check
-set -l err_str (echo $out | awk '$0 ~ /type: Unknown|fish: Unknown command:/ {print $1}')
+set -l err_str (echo $out | awk '$0 ~ /type: Unknown|fish: Unknown command:|source: Error/ {print $1}')
 
 if test -n "$err_str"
     echo "ERROR: Fish shell parsing error has occurred!"
