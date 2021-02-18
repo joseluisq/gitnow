@@ -426,28 +426,35 @@ function logs -d "Gitnow: Shows logs in a fancy way"
         return
     end
 
-    set -l args HEAD
+    set -l v_max_commits "80"
+    set -l v_args
 
-    if test -n "$argv"
-        set args $argv
+    for v in $argv
+        switch $v
+            case -h --help
+                echo "NAME"
+                echo "      Gitnow: logs - Show logs in a fancy way (first $v_max_commits commits by default)"
+                echo "EXAMPLES"
+                echo "      logs [git log options]"
+                echo "EXTRA OPTIONS:"
+                echo "      -h, --help      Show information about the options for this command"
+                return
+            case -\*
+            case '*'
+                set v_args $argv
+                break
+        end
     end
 
-    LC_ALL=C command git log $args --color --graph \
-        --pretty=format:"%Cred%h%C(reset) -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%C(reset) %C(brightmagenta dim)###%GK###%C(reset)%C(brightblack)@@%G?@@%C(reset)" --abbrev-commit \
-        | LC_ALL=C command sed -E 's/@@@@//' \
-        | LC_ALL=C command sed -E 's/@@([^"]*)@@/ (\1)/' \
-        | LC_ALL=C command sed -E "s/###([^\"]*)###([^\"]*)\(G\)/"(command tput setaf 2)"\1/" \
-        | LC_ALL=C command sed -E 's/###([^"]*)###/\1/' \
-        | LC_ALL=C command sed -E 's/\(B\)/(bad signature)/' \
-        | LC_ALL=C command sed -E 's/\(U\)/(good unknown validity signature)/' \
-        | LC_ALL=C command sed -E 's/\(X\)/(good expired signature)/' \
-        | LC_ALL=C command sed -E 's/\(Y\)/(good signature with expired key)/' \
-        | LC_ALL=C command sed -E 's/\(R\)/(good signature with revoked key)/' \
-        | LC_ALL=C command sed -E 's/\(E\)/(No checked signature)/' \
-        | LC_ALL=C command sed -E 's/\(N\)//' \
-        | command less -R
+    if test -n "$v_args"
+        set v_max_commits
+    else
+        set v_max_commits "-$v_max_commits"
+    end
 
-    commandline -f repaint
+    LC_ALL=C command git log $v_max_commits $v_args --color --graph \
+        --pretty=format:"%C(red)%h%C(reset)%C(yellow)%d%Creset %s %C(green italic)(%cr)%C(reset) %C(blue)%an%C(reset) %C(white dim)%GK %C(reset)" --abbrev-commit \
+        | command less -R
 end
 
 function tag -d "Gitnow: Tag commits following Semver"
