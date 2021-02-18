@@ -11,14 +11,14 @@ __Stable:__
 [Paket](https://github.com/joseluisq/paket)
 
 ```sh
-paket add joseluisq/gitnow@2.6.0
+paket add joseluisq/gitnow@2.7.0
 ```
 
 [Fisher](https://github.com/jorgebucaran/fisher)
 
 
 ```sh
-fisher install joseluisq/gitnow@2.6.0
+fisher install joseluisq/gitnow@2.7.0
 ```
 
 __Latest changes:__
