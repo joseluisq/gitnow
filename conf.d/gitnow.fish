@@ -1,13 +1,13 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
-function __gitnow_install -e paket_install
+function __gitnow_install -e gitnow_install
     echo (gitnow -v)" is installed and ready to use!"
     echo "Just run the `gitnow` command if you want explore the API."
 end
 
-function __gitnow_uninstall -e paket_uninstall
-    echo "GitNow is uninstalled successfully."
+function __gitnow_uninstall -e gitnow_uninstall
+    echo "GitNow was uninstalled successfully."
 end
 
 function gitnow -d "Gitnow: Speed up your Git workflow. 🐠" -a xversion

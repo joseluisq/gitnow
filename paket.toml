@@ -19,4 +19,9 @@ include = [
     "conf.d/.gitnow"
 ]
 
+[events]
+after-install = "gitnow_install"
+after-update = "gitnow_update"
+before-uninstall = "gitnow_uninstall"
+
 [dependencies]
