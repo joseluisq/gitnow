@@ -8,7 +8,7 @@ set -q fish_functions; or set -g fish_functions "$fish_config/functions"
 set -q fish_completions; or set -g fish_completions "$fish_config/completions"
 set -q GITNOW_CONFIG_FILE; or set -g GITNOW_CONFIG_FILE ~/.gitnow
 
-set -g gitnow_version 2.6.0
+set -g gitnow_version 2.7.0
 
 if functions -q __fundle_plugins_dir
     set -l fundledir (__fundle_plugins_dir)

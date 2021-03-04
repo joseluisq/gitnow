@@ -27,6 +27,7 @@ fundle plugin 'joseluisq/gitnow' --url 'git@github.com:joseluisq/gitnow.git#tags
 # Note that this version doesn't support Fundle install. Until a release does, you should use the "Latest changes" install below.
 ```
 
+
 __Latest changes:__
 
 ```sh
