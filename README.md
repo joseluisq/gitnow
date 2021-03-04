@@ -21,6 +21,13 @@ paket add joseluisq/gitnow@2.7.0
 fisher install joseluisq/gitnow@2.7.0
 ```
 
+[Fundle](https://github.com/danhper/fundle)
+```sh
+fundle plugin joseluisq/gitnow --url 'git@github.com:joseluisq/gitnow.git#tags/2.7.0'
+# Note that version 2.7.0 doesn't support installation via Fundle.
+# Until a stable release that does comes out, you should use the "Latest changes" install below.
+```
+
 __Latest changes:__
 
 ```sh
@@ -28,6 +35,9 @@ paket add joseluisq/gitnow
 
 # Or
 fisher install joseluisq/gitnow
+
+# Or
+fundle plugin joseluisq/gitnow
 ```
 
 <small>_**Note:** Use that method if you don't want to wait for a new release._</small>
