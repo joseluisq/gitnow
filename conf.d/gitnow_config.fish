@@ -1,8 +1,14 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
-set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
-set -q fish_config; or set -g fish_config $XDG_CONFIG_HOME/fish
+if set -q __fish_config_dir
+    set -g fish_config "$__fish_config_dir"
+else
+    set -q XDG_CONFIG_HOME
+        and set -g fish_config "$XDG_CONFIG_HOME/fish"
+        or set -g fish_config "~/.config/fish"
+end
+
 set -q fish_snippets; or set -g fish_snippets "$fish_config/conf.d"
 set -q fish_functions; or set -g fish_functions "$fish_config/functions"
 set -q fish_completions; or set -g fish_completions "$fish_config/completions"
