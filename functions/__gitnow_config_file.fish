@@ -6,25 +6,25 @@ set -g gitnow_xpaste
 set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
 
 function __gitnow_read_config -d "Reads the GitNow config file"
-    # sets a clipboard program
+    # Sets a clipboard program
     set gitnow_xpaste (__gitnow_get_clip_program)
 
-    # config file path used by default
+    # Config file path used by default
     set -l config_file "$fish_snippets/.gitnow"
 
-    # download the default .gitnow file
-    # used as workaround for Fisher. see https://github.com/jorgebucaran/fisher/pull/573
+    # Download the default .gitnow file
+    # Used as workaround for Fisher. see https://github.com/jorgebucaran/fisher/pull/573
     if not test -e $config_file
         curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/conf.d/.gitnow
     end
 
-    # prefer custom config file if it exists
+    # Prefer custom config file if it exists
     if test -e $GITNOW_CONFIG_FILE
         set config_file $GITNOW_CONFIG_FILE
     else if not test -e $config_file
-        # otherwise checks if default `.gitnow` file exists
-        # TODO: think about to if we could make this file optional
-        echo "Gitnow: the default .gitnow file is not found or inaccessible!"
+        # Otherwise checks if default `.gitnow` file exists,
+        # if doesn't then skip out file parsing
+        return
     end
 
     # Parse `.gitnow` file content
