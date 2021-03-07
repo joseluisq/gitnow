@@ -3,6 +3,8 @@
 
 set -g gitnow_xpaste
 
+set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
+
 function __gitnow_read_config -d "Reads the GitNow config file"
     # sets a clipboard program
     set gitnow_xpaste (__gitnow_get_clip_program)
@@ -25,7 +27,7 @@ function __gitnow_read_config -d "Reads the GitNow config file"
         echo "Gitnow: the default .gitnow file is not found or inaccessible!"
     end
 
-    # parse .gitnow file content
+    # Parse `.gitnow` file content
 
     set -l v_section 0
     set -l v_keybindings_str ""
@@ -76,6 +78,7 @@ function __gitnow_read_config -d "Reads the GitNow config file"
                     end
 
                     # A [keybindings] section was already found
+                    # NOTE: only alphabetic chars and hyphens are supported
                     if test $v_section -eq 2
                         switch $c
                             case 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' '-'
@@ -107,17 +110,29 @@ function __gitnow_read_config -d "Reads the GitNow config file"
 
             switch $v_command_key
                 case 'release' 'hotfix' 'feature' 'bugfix'
-                    # skip out if there is no a valid clipboard program
+                    # Skip out if there is no a valid clipboard program
                     if not test -n $gitnow_xpaste; continue; end
 
                     set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key ($gitnow_xpaste); commandline -f repaint; else ; end\"")
                 case '*'
-                    # TODO: validate string commands with a list of available (allowed) commands only
-                    set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key; commandline -f repaint; else; end\"")
+                    # Check command key against a list of valid commands
+                    set -l v_valid 0
+                    for v in $gitnow_commands
+                        if [ "$v" = "$v_command_key" ]
+                            set v_valid 1
+                            break
+                        end
+                    end
+
+                    # If command key is not valid then just skip out
+                    if test $v_valid -eq 0; continue; end
+
+                    set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key; commandline -f repaint; else ; end\"")
             end
 
             eval $cmd
         end
+
     end < $config_file
 end
 
@@ -126,13 +141,10 @@ function __gitnow_get_clip_program -d "Gets the current clip installed program"
 
     if type -q xclip
         set v_paste "xclip -selection clipboard -o"
-    else
-        if type -q xsel
-            set v_paste "xsel --clipboard --output"
-        end
-        if type -q pbpaste
-            set v_paste "pbpaste"
-        end
+    else if type -q xsel
+        set v_paste "xsel --clipboard --output"
+    else if type -q pbpaste
+        set v_paste "pbpaste"
     end
 
     echo -n $v_paste
