@@ -2,7 +2,8 @@
 
 > Speed up your Git workflow. 🐠
 
-GitNow contains a command set that provides high-level operations on the top of [Git](https://git-scm.com/book/en/v2). A [Fish shell](https://fishshell.com/) alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
+GitNow contains a command set that provides high-level operations on the top of [Git](https://git-scm.com/book/en/v2). <br>
+A [Fish shell](https://fishshell.com/) alternative inspired by [git-friendly](https://github.com/jamiew/git-friendly).
 
 ## Install
 
@@ -11,21 +12,20 @@ __Stable:__
 [Paket](https://github.com/joseluisq/paket)
 
 ```sh
-paket add joseluisq/gitnow@2.7.0
+paket add joseluisq/gitnow@2.8.0
 ```
 
 [Fisher](https://github.com/jorgebucaran/fisher)
 
 
 ```sh
-fisher install joseluisq/gitnow@2.7.0
+fisher install joseluisq/gitnow@2.8.0
 ```
 
 [Fundle](https://github.com/danhper/fundle)
+
 ```sh
-fundle plugin joseluisq/gitnow --url 'git@github.com:joseluisq/gitnow.git#tags/2.7.0'
-# Note that version 2.7.0 doesn't support installation via Fundle.
-# Until a stable release that does comes out, you should use the "Latest changes" install below.
+fundle plugin joseluisq/gitnow --url 'git@github.com:joseluisq/gitnow.git#tags/2.8.0'
 ```
 
 __Latest changes:__
