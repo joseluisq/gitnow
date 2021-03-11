@@ -375,6 +375,7 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
     # Fetch branch from remote
     if test -n "$v_upstream"
         set -l v_remote (__gitnow_current_remote)
+        command git fetch $v_remote $v_branch:refs/remotes/$v_remote/$v_branch
         command git checkout --track $v_remote/$v_branch
         commandline -f repaint
         return
