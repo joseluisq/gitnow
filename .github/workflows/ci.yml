@@ -7,7 +7,7 @@ jobs:
     name: Paket test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
+      - name: Checkout
         uses: actions/checkout@v2
       - name: Test
         uses: addnab/docker-run-action@v1
@@ -19,13 +19,13 @@ jobs:
             fish -v
             paket --version
             paket add /gitnow
-            /gitnow/testing.fish
+            /gitnow/testing/test.fish
 
   fisher:
     name: Fisher test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
+      - name: Checkout
         uses: actions/checkout@v2
       - name: Test
         uses: addnab/docker-run-action@v1
@@ -39,4 +39,4 @@ jobs:
             fish -v
             fisher --version
             fisher install /gitnow
-            /gitnow/testing.fish
+            /gitnow/testing/test.fish
