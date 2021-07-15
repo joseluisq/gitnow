@@ -141,6 +141,8 @@ function __gitnow_get_clip_program -d "Gets the current clip installed program"
 
     if type -q xclip
         set v_paste "xclip -selection clipboard -o"
+    else if type -q wl-clipboard
+        set v_paste "wl-paste"
     else if type -q xsel
         set v_paste "xsel --clipboard --output"
     else if type -q pbpaste
