@@ -131,7 +131,7 @@ function pull -d "Gitnow: Pull changes from remote server but stashing uncommitt
 
     echo "⚡️ Pulling changes..."
 
-    set -l xdefaults --rebase --autostash
+    set -l xdefaults --rebase --autostash --tags
 
     if test $len -gt 2
         set xcmd $argv
