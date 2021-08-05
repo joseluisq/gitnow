@@ -202,7 +202,7 @@ function push -d "Gitnow: Push commit changes to remote repository"
                     echo "NAME"
                     echo "      Gitnow: push - Push current branch to default origin"
                     echo "OPTIONS:"
-                    echo "      -t --tags               (auto mode) include annotated tags the relate to the commits"
+                    echo "      -t --tags               (auto mode) include annotated tags that relate to the commits"
                     echo "      -h --help               Show information about the options for this command"
                     return
                 case -\*
