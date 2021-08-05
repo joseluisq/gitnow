@@ -176,12 +176,12 @@ function push -d "Gitnow: Push commit changes to remote repository"
     set -l xorigin (__gitnow_current_remote)
     set -l xbranch (__gitnow_current_branch_name)
 
-    echo "🚀 Pushing changes..."
 
     if test (count $opts) -eq 0
         set opts $xorigin $xbranch
         set -l xremote_url (command git config --get "remote.$xorigin.url")
 
+        echo "🚀 Pushing changes..."
         echo "Mode: Auto"
         echo "Remote URL: $xorigin ($xremote_url)"
         echo "Remote branch: $xbranch"
@@ -194,6 +194,7 @@ function push -d "Gitnow: Push commit changes to remote repository"
                     set opts $xorigin $xbranch --follow-tags
                     set -l xremote_url (command git config --get "remote.$xorigin.url")
 
+                    echo "🚀 Pushing changes..."
                     echo "Mode: Auto (incl. tags)"
                     echo "Remote URL: $xorigin ($xremote_url)"
                     echo "Remote branch: $xbranch"
