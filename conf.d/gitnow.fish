@@ -185,6 +185,13 @@ function push -d "Gitnow: Push commit changes to remote repository"
         echo "Mode: Auto"
         echo "Remote URL: $xorigin ($xremote_url)"
         echo "Remote branch: $xbranch"
+    else if test (count $opts) -eq 1; and [ "$opts[1]" = "--tags" ]
+        set opts $xorigin $xbranch --follow-tags
+        set -l xremote_url (command git config --get "remote.$xorigin.url")
+
+        echo "Mode: Auto (incl. annotated tags in reference to the commits)"
+        echo "Remote URL: $xorigin ($xremote_url)"
+        echo "Remote branch: $xbranch"
     else
         echo "Mode: Manual"
     end
