@@ -213,10 +213,6 @@ function push -d "Gitnow: Push commit changes to remote repository"
         end
     end
 
-    # if test "$v_mode" = "auto";
-    #     # Do something
-    # end
-
     echo
 
     command git push --set-upstream $opts
