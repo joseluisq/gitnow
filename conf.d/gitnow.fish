@@ -177,26 +177,42 @@ function push -d "Gitnow: Push commit changes to remote repository"
     set -l xbranch (__gitnow_current_branch_name)
 
     echo "🚀 Pushing changes..."
-
     if test (count $opts) -eq 0
         set opts $xorigin $xbranch
         set -l xremote_url (command git config --get "remote.$xorigin.url")
-
         echo "Mode: Auto"
         echo "Remote URL: $xorigin ($xremote_url)"
         echo "Remote branch: $xbranch"
-    else if test (count $opts) -eq 1; and [ "$opts[1]" = "--tags" ]
-        set opts $xorigin $xbranch --follow-tags
-        set -l xremote_url (command git config --get "remote.$xorigin.url")
-
-        echo "Mode: Auto (incl. annotated tags in reference to the commits)"
-        echo "Remote URL: $xorigin ($xremote_url)"
-        echo "Remote branch: $xbranch"
     else
-        echo "Mode: Manual"
+        set -l v_mode "auto"
+
+        for v in $argv
+            switch $v
+                case -t --tags
+                    set opts $xorigin $xbranch --follow-tags
+                    set -l xremote_url (command git config --get "remote.$xorigin.url")
+
+                    echo "Mode: Auto (incl. tags)"
+                    echo "Remote URL: $xorigin ($xremote_url)"
+                    echo "Remote branch: $xbranch"
+                case -h --help
+                    echo "NAME"
+                    echo "      Gitnow: push - Push current branch to default origin"
+                    echo "OPTIONS:"
+                    echo "      -t --tags               (auto mode) include annotated tags the relate to the commits"
+                    echo "      -h --help               Show information about the options for this command"
+                    return
+                case -\*
+                case '*'
+                    set -l v_mode "manual"
+                    echo "Mode: Manual"
+            end
+        end
     end
 
-    echo
+    # if test "$v_mode" = "auto";
+    #     # Do something
+    # end
 
     command git push --set-upstream $opts
     commandline -f repaint
