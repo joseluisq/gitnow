@@ -177,9 +177,11 @@ function push -d "Gitnow: Push commit changes to remote repository"
     set -l xbranch (__gitnow_current_branch_name)
 
     echo "🚀 Pushing changes..."
+
     if test (count $opts) -eq 0
         set opts $xorigin $xbranch
         set -l xremote_url (command git config --get "remote.$xorigin.url")
+
         echo "Mode: Auto"
         echo "Remote URL: $xorigin ($xremote_url)"
         echo "Remote branch: $xbranch"
@@ -213,6 +215,8 @@ function push -d "Gitnow: Push commit changes to remote repository"
     # if test "$v_mode" = "auto";
     #     # Do something
     # end
+
+    echo
 
     command git push --set-upstream $opts
     commandline -f repaint
