@@ -495,6 +495,8 @@ function tag -d "Gitnow: Tag commits following Semver"
     set -l v_preminor
     set -l v_prepatch
 
+    set -l opts
+
     # NOTE: this function only gets the latest *Semver release version* but no suffixed ones or others
     set -l v_latest (__gitnow_get_latest_semver_release_tag)
 
@@ -506,6 +508,8 @@ function tag -d "Gitnow: Tag commits following Semver"
                 set v_minor $v
             case -z --patch
                 set v_patch $v
+            case -a --annotate
+                set opts $opts $v
 
             # TODO: pre-release versions are not supported yet
             # case -a --premajor
@@ -537,6 +541,7 @@ function tag -d "Gitnow: Tag commits following Semver"
                 echo "      -y --minor         Tag auto-incrementing a minor version number"
                 echo "      -z --patch         Tag auto-incrementing a patch version number"
                 echo "      -l --latest        Show only the latest Semver release tag version (no suffixed ones or others)"
+                echo "      -a --annotate      Create as annotated tag"
                 echo "      -h --help          Show information about the options for this command"
 
                 # TODO: pre-release versions are not supported yet
@@ -552,7 +557,7 @@ function tag -d "Gitnow: Tag commits following Semver"
     end
 
     # List all tags in a lexicographic order and treating tag names as versions
-    if test -z $argv
+    if test -z $argv[1]
         __gitnow_get_tags_ordered
         return
     end
@@ -560,7 +565,7 @@ function tag -d "Gitnow: Tag commits following Semver"
     # Major version tags
     if test -n "$v_major"
         if not test -n "$v_latest"
-            command git tag v1.0.0
+            command git tag $opts v1.0.0
             echo "First major tag \"v1.0.0\" was created."
             return
         else
@@ -577,7 +582,7 @@ function tag -d "Gitnow: Tag commits following Semver"
             set x (__gitnow_increment_number $x)
             set -l xyz "$prefix$x.0.0"
 
-            command git tag $xyz
+            command git tag $opts $xyz
             echo "Major tag \"$xyz\" was created."
             return
         end
@@ -587,7 +592,7 @@ function tag -d "Gitnow: Tag commits following Semver"
     # Minor version tags
     if test -n "$v_minor"
         if not test -n "$v_latest"
-            command git tag v0.1.0
+            command git tag $opts v0.1.0
             echo "First minor tag \"v0.1.0\" was created."
             return
         else
@@ -605,7 +610,7 @@ function tag -d "Gitnow: Tag commits following Semver"
             set y (__gitnow_increment_number $y)
             set -l xyz "$prefix$x.$y.0"
 
-            command git tag $xyz
+            command git tag $opts $xyz
             echo "Minor tag \"$xyz\" was created."
             return
         end
@@ -615,7 +620,7 @@ function tag -d "Gitnow: Tag commits following Semver"
     # Patch version tags
     if test -n "$v_patch"
         if not test -n "$v_latest"
-            command git tag v0.0.1
+            command git tag $opts v0.0.1
             echo "First patch tag \"v0.1.0\" was created."
             return
         else
@@ -637,7 +642,7 @@ function tag -d "Gitnow: Tag commits following Semver"
                 set s (__gitnow_increment_number $s)
                 set -l xyz "$prefix$x.$y.$s"
 
-                command git tag $xyz
+                command git tag $opts $xyz
                 echo "Patch tag \"$xyz\" was created."
             else
                 echo "No patch version found."
