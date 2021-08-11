@@ -557,7 +557,7 @@ function tag -d "Gitnow: Tag commits following Semver"
     end
 
     # List all tags in a lexicographic order and treating tag names as versions
-    if test -z $argv[1]
+    if test -z "$argv"
         __gitnow_get_tags_ordered
         return
     end
