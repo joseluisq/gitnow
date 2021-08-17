@@ -15,7 +15,6 @@ function gitnow -d "Gitnow: Speed up your Git workflow. 🐠" -a xversion
         echo "GitNow version $gitnow_version"
     else
         __gitnow_manual | command less -r
-        commandline -f repaint
     end
 end
 
@@ -26,7 +25,6 @@ function state -d "Gitnow: Show the working tree status in compact way"
     end
 
     command git status -sb
-    commandline -f repaint
 end
 
 function stage -d "Gitnow: Stage files in current working directory"
@@ -43,7 +41,6 @@ function stage -d "Gitnow: Stage files in current working directory"
     end
 
     command git add $opts
-    commandline -f repaint
 end
 
 function unstage -d "Gitnow: Unstage files in current working directory"
@@ -60,7 +57,6 @@ function unstage -d "Gitnow: Unstage files in current working directory"
     end
 
     command git reset $opts
-    commandline -f repaint
 end
 
 function show -d "Gitnow: Show commit detail objects"
@@ -77,7 +73,6 @@ function show -d "Gitnow: Show commit detail objects"
         command git show --compact-summary --patch HEAD
     end
 
-    commandline -f repaint
 end
 
 function untracked -d "Gitnow: Check for untracked files and directories on current working directory"
@@ -88,7 +83,6 @@ function untracked -d "Gitnow: Check for untracked files and directories on curr
 
     command git clean --dry-run -d
 
-    commandline -f repaint
 end
 
 function commit -d "Gitnow: Commit changes to the repository"
@@ -105,7 +99,6 @@ function commit -d "Gitnow: Commit changes to the repository"
         command git commit
     end
 
-    commandline -f repaint
 end
 
 function commit-all -d "Gitnow: Add and commit all changes to the repository"
@@ -161,7 +154,6 @@ function pull -d "Gitnow: Pull changes from remote server but stashing uncommitt
     end
 
     command git pull $xcmd $xdefaults
-    commandline -f repaint
 end
 
 # Git push with --set-upstream
@@ -216,7 +208,6 @@ function push -d "Gitnow: Push commit changes to remote repository"
     echo
 
     command git push --set-upstream $opts
-    commandline -f repaint
 end
 
 function upstream -d "Gitnow: Commit all changes and push them to remote server"
@@ -236,7 +227,6 @@ function feature -d "GitNow: Creates a new Gitflow feature branch from current b
     end
 
     __gitnow_gitflow_branch "feature" $xbranch
-    commandline -f repaint
 end
 
 function hotfix -d "GitNow: Creates a new Gitflow hotfix branch from current branch" -a xbranch
@@ -246,7 +236,6 @@ function hotfix -d "GitNow: Creates a new Gitflow hotfix branch from current bra
     end
 
     __gitnow_gitflow_branch "hotfix" $xbranch
-    commandline -f repaint
 end
 
 function bugfix -d "GitNow: Creates a new Gitflow bugfix branch from current branch" -a xbranch
@@ -256,7 +245,6 @@ function bugfix -d "GitNow: Creates a new Gitflow bugfix branch from current bra
     end
 
     __gitnow_gitflow_branch "bugfix" $xbranch
-    commandline -f repaint
 end
 
 function release -d "GitNow: Creates a new Gitflow release branch from current branch" -a xbranch
@@ -266,7 +254,6 @@ function release -d "GitNow: Creates a new Gitflow release branch from current b
     end
 
     __gitnow_gitflow_branch "release" $xbranch
-    commandline -f repaint
 end
 
 function merge -d "GitNow: Merges given branch into the active one"
@@ -311,7 +298,6 @@ function merge -d "GitNow: Merges given branch into the active one"
     if test "$v_abort";
         echo "Abort the current merge"
         command git merge --abort
-        commandline -f repaint
         return
     end
 
@@ -319,14 +305,12 @@ function merge -d "GitNow: Merges given branch into the active one"
     if test "$v_continue";
         echo "Continue the current merge"
         command git merge --continue
-        commandline -f repaint
         return
     end
 
     # No branch defined
     if not test -n "$v_branch"
         echo "Provide a valid branch name to merge."
-        commandline -f repaint
         return
     end
 
@@ -336,19 +320,16 @@ function merge -d "GitNow: Merges given branch into the active one"
     if test $v_found -eq 0;
         echo "Local branch `$v_branch` was not found. Not possible to merge."
 
-        commandline -f repaint
         return
     end
 
     # Detect merging current branch
     if [ "$v_branch" = (__gitnow_current_branch_name) ]
         echo "Branch `$v_branch` is the same as current branch. Nothing to do."
-        commandline -f repaint
         return
     end
 
     command git merge $v_branch
-    commandline -f repaint
 end
 
 function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes"
@@ -390,7 +371,6 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
     if not test -n "$v_branch"
         echo "Provide a valid branch name to switch to."
 
-        commandline -f repaint
         return
     end
 
@@ -401,7 +381,6 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
         set -l v_remote (__gitnow_current_remote)
         command git fetch $v_remote $v_branch:refs/remotes/$v_remote/$v_branch
         command git checkout --track $v_remote/$v_branch
-        commandline -f repaint
         return
     end
 
@@ -412,14 +391,12 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
         echo "Branch `$v_branch` was not found locally. No possible to switch."
         echo "Tip: Use -u (--upstream) flag to fetch a remote branch."
 
-        commandline -f repaint
         return
     end
 
     # Prevent same branch switching
     if [ "$v_branch" = (__gitnow_current_branch_name) ]
         echo "Branch `$v_branch` is the same as current branch. Nothing to do."
-        commandline -f repaint
         return
     end
 
@@ -442,7 +419,6 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
         echo "Stashed changes applied."
     end
 
-    commandline -f repaint
 end
 
 function logs -d "Gitnow: Shows logs in a fancy way"
@@ -659,7 +635,6 @@ function tag -d "Gitnow: Tag commits following Semver"
     # TODO: Prepatch version tags
 
 
-    commandline -f repaint
 end
 
 function assume -d "Gitnow: Ignore files temporarily"
@@ -700,12 +675,10 @@ function github -d "Gitnow: Clone a GitHub repository using SSH"
     set -l repo (__gitnow_clone_params $argv)
     __gitnow_clone_repo $repo "github"
 
-    commandline -f repaint
 end
 
 function bitbucket -d "Gitnow: Clone a Bitbucket Cloud repository using SSH"
     set -l repo (__gitnow_clone_params $argv)
     __gitnow_clone_repo $repo "bitbucket"
 
-    commandline -f repaint
 end
