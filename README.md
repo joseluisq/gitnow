@@ -12,20 +12,20 @@ __Stable:__
 [Paket](https://github.com/joseluisq/paket)
 
 ```sh
-paket add joseluisq/gitnow@2.8.0
+paket add joseluisq/gitnow@2.9.0
 ```
 
 [Fisher](https://github.com/jorgebucaran/fisher)
 
 
 ```sh
-fisher install joseluisq/gitnow@2.8.0
+fisher install joseluisq/gitnow@2.9.0
 ```
 
 [Fundle](https://github.com/danhper/fundle)
 
 ```sh
-fundle plugin joseluisq/gitnow --url 'git@github.com:joseluisq/gitnow.git#tags/2.8.0'
+fundle plugin joseluisq/gitnow --url 'git@github.com:joseluisq/gitnow.git#tags/2.9.0'
 ```
 
 __Latest changes:__
