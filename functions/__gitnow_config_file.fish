@@ -111,9 +111,8 @@ function __gitnow_read_config -d "Reads the GitNow config file"
             switch $v_command_key
                 case 'release' 'hotfix' 'feature' 'bugfix'
                     # Skip out if there is no a valid clipboard program
-                    if not test -n $gitnow_xpaste; continue; end
 
-                    set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key ($gitnow_xpaste); commandline -f repaint; else ; end\"")
+                    set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key (__gitnow_get_user_input); commandline -f repaint; else ; end\"")
                 case '*'
                     # Check command key against a list of valid commands
                     set -l v_valid 0
@@ -150,4 +149,19 @@ function __gitnow_get_clip_program -d "Gets the current clip installed program"
     end
 
     echo -n $v_paste
+end
+
+function __gitnow_get_user_input -d "Read for branch name"
+    echo -n (__gitnow_slugify (read))
+end
+
+function __gitnow_slugify -d "Slugify string"
+    set -l v_read
+    set v_read (echo -n $argv | iconv -t ascii//TRANSLIT | sed -E 's/[^a-zA-Z0-9-]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z)
+
+    if test $status = 0
+        echo -n $v_read
+    else
+        echo "Can't slugify given string \\$argv"
+    end
 end
