@@ -74,7 +74,7 @@ fundle plugin joseluisq/gitnow
 
 **Note:**
 
-- (1) This command key binding will creates a new branch taking as name some text of the clipboard.
+- (1) This command key binding can creates a new branch taking as name some text of the clipboard (optional).
 
 ## Tips
 
@@ -82,10 +82,19 @@ fundle plugin joseluisq/gitnow
 - SSH setup is required for using `github` and `bitbucket` commands.
 - Take advantage of keybindings in order to get faster operations.
 
-## Keybindings configuration
+## Gitnow configuration file
 
-To configure keybindings just copy the [.gitnow](conf.d/.gitnow) file and place it in your home directory (`~/.gitnow`).
-The [.gitnow](conf.d/.gitnow) file contains a _[ keybindings ]_ section with default shortcuts (key-value pairs).
+To configure Gitnow just copy the [.gitnow](conf.d/.gitnow) default file and place it in your home directory (`~/.gitnow`).
+
+### Options
+
+The **_[ options ]_** section contains some options in order to adjust centain Gitnow behaviour.
+
+For more details about the options please take a look at [.gitnow](conf.d/.gitnow) file content.
+
+### Keybindings
+
+The [.gitnow](conf.d/.gitnow) file contains a **_[ keybindings ]_** section with default shortcuts (key-value pairs).
 But you can add, edit or remove keybindings on demand. If you want custom keybindings for your commands just run [fish_key_reader](https://fishshell.com/docs/current/cmds/fish_key_reader.html) in your terminal, then press the key or key's combinations to get the right characters sequence and finally set it to your preferred command in your `~/.gitnow` file.
 
 ## Usage
