@@ -1,3 +1,9 @@
+[ options ]
+
+# Read text from system clipboard or from the standard input
+# only when using Gitflow keybindings
+clipboard = false
+
 [ keybindings ]
 
 # Alt + S
