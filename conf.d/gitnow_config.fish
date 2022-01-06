@@ -1,7 +1,7 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
-set -g gitnow_version 2.9.0
+set -g gitnow_version 2.10.0
 
 if set -q __fish_config_dir
     set -g fish_config "$__fish_config_dir"
