@@ -1,7 +1,7 @@
 [package]
 name = "gitnow"
 version = "2.10.0"
-authors = ["Jose Quintana <git.io/joseluisq>"]
+authors = ["Jose Quintana <joseluisq.net>"]
 license = "MIT OR Apache-2.0"
 description = "Speed up your Git workflow. 🐠"
 repository = "https://github.com/joseluisq/gitnow"

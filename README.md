@@ -507,4 +507,4 @@ git config --global user.bitbucket "your_username"
 ## License
 MIT license
 
-© 2016-present [Jose Quintana](http://git.io/joseluisq)
+© 2016-present [Jose Quintana](http://github.com/joseluisq)

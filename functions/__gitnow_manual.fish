@@ -110,6 +110,6 @@ function __gitnow_manual -d "Gitnow: Manual page like"
     echo "      GitNow licensed under the MIT License "(set_color --bold)https://github.com/joseluisq/gitnow/blob/master/LICENSE.md(set_color normal)
     echo
     echo (set_color --bold)"AUTHOR"(set_color normal)
-    echo "      (c) 2016-present Jose Quintana "(set_color --bold)"https://git.io/joseluisq"(set_color normal)
+    echo "      (c) 2016-present Jose Quintana "(set_color --bold)"https://github.com/joseluisq"(set_color normal)
     echo
 end
