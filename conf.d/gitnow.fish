@@ -1,6 +1,9 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
+# Default global variables
+set -g g_current_branch
+
 function __gitnow_install -e gitnow_install
     echo (gitnow -v)" is installed and ready to use!"
     echo "Just run the `gitnow` command if you want explore the API."
@@ -72,7 +75,6 @@ function show -d "Gitnow: Show commit detail objects"
     else
         command git show --compact-summary --patch HEAD
     end
-
 end
 
 function untracked -d "Gitnow: Check for untracked files and directories on current working directory"
@@ -98,7 +100,6 @@ function commit -d "Gitnow: Commit changes to the repository"
     else
         command git commit
     end
-
 end
 
 function commit-all -d "Gitnow: Add and commit all changes to the repository"
@@ -332,7 +333,7 @@ function merge -d "GitNow: Merges given branch into the active one"
     command git merge $v_branch
 end
 
-function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes"
+function move -d "GitNow: Switch from current branch to another but stashing uncommitted changes" -a args
     if not __gitnow_is_git_repository
         __gitnow_msg_not_valid_repository "move"
         return
@@ -341,6 +342,7 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
     set -l v_upstream
     set -l v_no_apply_stash
     set -l v_branch
+    set -l v_prev
 
     for v in $argv
         switch $v
@@ -351,14 +353,18 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
             case -nu -un
                 set v_upstream "-u"
                 set v_no_apply_stash "-n"
+            case -p --prev
+                set v_prev "true"
             case -h --help
                 echo "NAME"
                 echo "      Gitnow: move - Switch from current branch to another but stashing uncommitted changes"
                 echo "EXAMPLES"
                 echo "      move <branch to switch to>"
+                echo "      move -"
                 echo "OPTIONS:"
                 echo "      -n --no-apply-stash     Switch to a local branch but without applying current stash"
                 echo "      -u --upstream           Fetch a remote branch and switch to it applying current stash. It can be combined with --no-apply-stash"
+                echo "      -p --prev               Switch to a previous branch if different than the current one (equivalent to \"move -\"). It uses `--no-apply-stash` option by default."
                 echo "      -h --help               Show information about the options for this command"
                 return
             case -\*
@@ -367,10 +373,22 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
         end
     end
 
+    # Move to prev branch either via the --prev option or the "-" shorthand char 
+    if begin test -n "$v_prev"; or [ "$args" = "-" ]; end
+        if begin test -z "$g_current_branch"; or [ "$g_current_branch" = (__gitnow_current_branch_name) ]; end
+            echo "Previous branch not found or the same as current one. Nothing to do."
+            echo "Tip: Previous branch switching only works via the `move` command."
+            return
+        end
+
+        echo "Previous branch found, switching to `$g_current_branch` (using `--no-apply-stash` option)."
+        move -n $g_current_branch
+        return
+    end
+
     # No branch defined
     if not test -n "$v_branch"
         echo "Provide a valid branch name to switch to."
-
         return
     end
 
@@ -390,7 +408,6 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
     if begin test $v_found -eq 0; and test $v_fetched -eq 0; end
         echo "Branch `$v_branch` was not found locally. No possible to switch."
         echo "Tip: Use -u (--upstream) flag to fetch a remote branch."
-
         return
     end
 
@@ -407,18 +424,18 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
         command git stash
     end
 
+    set g_current_branch (__gitnow_current_branch_name)
     command git checkout $v_branch
 
     # --no-apply-stash
     if test -n "$v_no_apply_stash"
-        echo "Stashed changes were not applied. Use `git stash pop` to apply them."
+        echo "Changes were stashed but not applied by default. Use `git stash pop` to apply them."
     end
 
     if begin test $v_uncommited; and not test -n "$v_no_apply_stash"; end
         command git stash pop
-        echo "Stashed changes applied."
+        echo "Stashed changes were applied."
     end
-
 end
 
 function logs -d "Gitnow: Shows logs in a fancy way"
@@ -564,7 +581,6 @@ function tag -d "Gitnow: Tag commits following Semver"
         end
     end
 
-
     # Minor version tags
     if test -n "$v_minor"
         if not test -n "$v_latest"
@@ -628,13 +644,10 @@ function tag -d "Gitnow: Tag commits following Semver"
         end
     end
 
-
     # TODO: pre-release versions are not supported yet
     # TODO: Premajor version tags
     # TODO: Preminor version tags
     # TODO: Prepatch version tags
-
-
 end
 
 function assume -d "Gitnow: Ignore files temporarily"
@@ -674,11 +687,9 @@ end
 function github -d "Gitnow: Clone a GitHub repository using SSH"
     set -l repo (__gitnow_clone_params $argv)
     __gitnow_clone_repo $repo "github"
-
 end
 
 function bitbucket -d "Gitnow: Clone a Bitbucket Cloud repository using SSH"
     set -l repo (__gitnow_clone_params $argv)
     __gitnow_clone_repo $repo "bitbucket"
-
 end
