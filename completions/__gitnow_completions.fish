@@ -25,6 +25,10 @@ complete -f -x -c move \
     -d "Show information about the options for this command"
 
 complete -f -x -c move \
+    -s p -l prev \
+    -d "Switch to a previous branch using the `--no-apply-stash` option (equivalent to \"move -\")"
+
+complete -f -x -c move \
     -s n -l no-apply-stash \
     -a '(__fish_git_branches)' \
     -d "Switch to a local branch but without applying current stash"
