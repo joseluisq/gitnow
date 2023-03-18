@@ -3,7 +3,7 @@
 
 set -g gitnow_xpaste
 
-set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
+set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'commit-all' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
 
 function __gitnow_read_config -d "Reads the GitNow config file"
     # Sets a clipboard program
