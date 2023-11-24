@@ -1,19 +1,16 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
-set -g gitnow_xpaste
-
-set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'commit-all' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
-
-function __gitnow_read_config -d "Reads the GitNow config file"
+function __gitnow_load_config -d "Reads the GitNow configuration file"
     # Sets a clipboard program
-    set gitnow_xpaste (__gitnow_get_clip_program)
+    set g_xpaste (__gitnow_get_clip_program)
 
     # Config file path used by default
     set -l config_file "$fish_snippets/.gitnow"
 
-    # Download the default .gitnow file
-    # Used as workaround for Fisher. see https://github.com/jorgebucaran/fisher/pull/573
+    # Download the default `.gitnow` file.
+    # NOTE: this is only used as a workaround for Fisher.
+    #   See https://github.com/jorgebucaran/fisher/pull/573
     if not test -e $config_file
         curl -sSo $config_file https://raw.githubusercontent.com/joseluisq/gitnow/master/conf.d/.gitnow
     end
@@ -23,7 +20,7 @@ function __gitnow_read_config -d "Reads the GitNow config file"
         set config_file $GITNOW_CONFIG_FILE
     else if not test -e $config_file
         # Otherwise checks if default `.gitnow` file exists,
-        # if doesn't then skip out file parsing
+        # if doesn't exist then skip out file parsing
         return
     end
 
@@ -154,8 +151,8 @@ function __gitnow_read_config -d "Reads the GitNow config file"
                 case 'release' 'hotfix' 'feature' 'bugfix'
                     # Read text from clipboard if there is a valid clipboard program
                     # and if the "clipboard" option is "true"
-                    if test -n $gitnow_xpaste; and test $v_clipboard -eq 1
-                        set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key ($gitnow_xpaste); commandline -f repaint; else ; end\"")
+                    if test -n $g_xpaste; and test $v_clipboard -eq 1
+                        set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key ($g_xpaste); commandline -f repaint; else ; end\"")
                     else
                         # Otherwise read text from standard input
                         set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key (read); commandline -f repaint; else ; end\"")
@@ -180,20 +177,4 @@ function __gitnow_read_config -d "Reads the GitNow config file"
         end
 
     end < $config_file
-end
-
-function __gitnow_get_clip_program -d "Gets the current clip installed program"
-    set -l v_paste
-
-    if type -q xclip
-        set v_paste "xclip -selection clipboard -o"
-    else if type -q wl-clipboard
-        set v_paste "wl-paste"
-    else if type -q xsel
-        set v_paste "xsel --clipboard --output"
-    else if type -q pbpaste
-        set v_paste "pbpaste"
-    end
-
-    echo -n $v_paste
 end
