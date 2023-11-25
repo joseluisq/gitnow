@@ -1,7 +1,25 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
+set -g gitnow_version 2.11.0
+
 # Default global variables
+set -q GITNOW_CONFIG_FILE; or set -g GITNOW_CONFIG_FILE ~/.gitnow
+set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'commit-all' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
+
+if set -q __fish_config_dir
+    set -g fish_config "$__fish_config_dir"
+else
+    set -q XDG_CONFIG_HOME
+        and set -g fish_config "$XDG_CONFIG_HOME/fish"
+        or set -g fish_config "~/.config/fish"
+end
+
+set -q fish_snippets; or set -g fish_snippets "$fish_config/conf.d"
+
+__gitnow_load_config
+
+# Other specific global variables
 set -g g_current_branch
 
 function __gitnow_install -e gitnow_install
