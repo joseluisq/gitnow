@@ -1,6 +1,6 @@
 [package]
 name = "gitnow"
-version = "2.11.0"
+version = "2.12.0"
 authors = ["Jose Quintana <joseluisq.net>"]
 license = "MIT OR Apache-2.0"
 description = "Speed up your Git workflow. 🐠"
