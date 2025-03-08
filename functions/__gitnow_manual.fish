@@ -71,6 +71,9 @@ function __gitnow_manual -d "Gitnow: Manual page like"
     echo "      "(set_color --bold)"release"(set_color normal)
     echo "        Create a new Gitflow release branch from the current branch."
     echo
+    echo "      "(set_color --bold)"chore"(set_color normal)
+    echo "        Create a new Gitflow chore branch from the current branch."
+    echo
     echo "      "(set_color --bold)"logs"(set_color normal)
     echo "        Show logs in a fancy way."
     echo

@@ -148,7 +148,7 @@ function __gitnow_load_config -d "Reads the GitNow configuration file"
             set -l cmd
 
             switch $v_command_key
-                case 'release' 'hotfix' 'feature' 'bugfix'
+                case 'release' 'hotfix' 'feature' 'bugfix' 'chore'
                     # Read text from clipboard if there is a valid clipboard program
                     # and if the "clipboard" option is "true"
                     if test -n $g_xpaste; and test $v_clipboard -eq 1

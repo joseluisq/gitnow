@@ -17,7 +17,6 @@ paket add joseluisq/gitnow@2.12.0
 
 [Fisher](https://github.com/jorgebucaran/fisher)
 
-
 ```sh
 fisher install joseluisq/gitnow@2.12.0
 ```
@@ -68,11 +67,12 @@ fundle plugin joseluisq/gitnow
 | [hotfix](#hotfix) (1) | Alt + H | Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | [bugfix](#bugfix) (1) | | Creates a new _bugfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | [release](#release) (1) | | Creates a new _release_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
+| [chore](#chore) (1) | | Creates a new _chore_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | __Bonus__ | | |
 | [github](#github) | | Clone a _GitHub_ repository using SSH. |
 | [bitbucket](#bitbucket) | | Clone a _Bitbucket Cloud_ repository using SSH. |
 
-**Note:**
+__Note:__
 
 - (1) This command key binding can creates a new branch taking as name some text of the clipboard (optional).
 
@@ -88,13 +88,13 @@ To configure Gitnow just copy the [.gitnow](conf.d/.gitnow) default file and pla
 
 ### Options
 
-The **_[ options ]_** section contains some options in order to adjust centain Gitnow behaviour.
+The ___[ options ]___ section contains some options in order to adjust centain Gitnow behaviour.
 
 For more details about the options please take a look at [.gitnow](conf.d/.gitnow) file content.
 
 ### Keybindings
 
-The [.gitnow](conf.d/.gitnow) file contains a **_[ keybindings ]_** section with default shortcuts (key-value pairs).
+The [.gitnow](conf.d/.gitnow) file contains a ___[ keybindings ]___ section with default shortcuts (key-value pairs).
 But you can add, edit or remove keybindings on demand. If you want custom keybindings for your commands just run [fish_key_reader](https://fishshell.com/docs/current/cmds/fish_key_reader.html) in your terminal, then press the key or key's combinations to get the right characters sequence and finally set it to your preferred command in your `~/.gitnow` file.
 
 ## Usage
@@ -237,7 +237,7 @@ tag
 
 #### Get latest Semver release tag name
 
-> **Note:** This option gets only the latest *Semver release version* tag name but no any suffixed version ones or another kind of version names. The same apply when you create correlative Semver tags. See next section.
+> __Note:__ This option gets only the latest _Semver release version_ tag name but no any suffixed version ones or another kind of version names. The same apply when you create correlative Semver tags. See next section.
 
 ```sh
 tag --latest
@@ -245,7 +245,7 @@ tag --latest
 
 #### Create Semver correlative tag names
 
-> **Note:** Following commands take care about optional `v` prefixed tag names.
+> __Note:__ Following commands take care about optional `v` prefixed tag names.
 > So for example if a `v1.0.0` is found as latest major then the next correlative tag name major will be `v2.0.0`.
 > Otherwise for example if a `1.0.0` is found as latest minor then the next correlative tag name minor will be `1.1.0`.
 
@@ -442,6 +442,19 @@ release "This is my New release Branch"
 # > release/this_is_my_new_bugfix_branch
 ```
 
+### chore
+
+Creates a new chore ([Conventional Commits](https://www.conventionalcommits.org)) branch from current branch.
+
+__Note:__ Your new branch will always be lowercase without special characters or whitespaces (underscores instead).
+
+```sh
+chore fix1
+# > chore/fix1
+chore "This is my New Chore Branch"
+# > chore/this_is_my_new_chore_branch
+```
+
 ### logs
 
 Shows logs in a fancy way.
@@ -505,6 +518,7 @@ git config --global user.bitbucket "your_username"
 [Pull requests](https://github.com/joseluisq/gitnow/pulls) and [issues](https://github.com/joseluisq/gitnow/issues) are welcome.
 
 ## License
+
 MIT license
 
 © 2016-present [Jose Quintana](http://github.com/joseluisq)

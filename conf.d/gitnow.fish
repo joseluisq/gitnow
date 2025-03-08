@@ -5,7 +5,7 @@ set -g gitnow_version 2.12.0
 
 # Default global variables
 set -q GITNOW_CONFIG_FILE; or set -g GITNOW_CONFIG_FILE ~/.gitnow
-set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'commit-all' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
+set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'chore' 'commit' 'commit-all' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
 
 if set -q __fish_config_dir
     set -g fish_config "$__fish_config_dir"
@@ -273,6 +273,15 @@ function release -d "GitNow: Creates a new Gitflow release branch from current b
     end
 
     __gitnow_gitflow_branch "release" $xbranch
+end
+
+function chore -d "GitNow: Creates a new Gitflow chore branch from current branch" -a xbranch
+    if not __gitnow_is_git_repository
+        __gitnow_msg_not_valid_repository "chore"
+        return
+    end
+
+    __gitnow_gitflow_branch "chore" $xbranch
 end
 
 function merge -d "GitNow: Merges given branch into the active one"
