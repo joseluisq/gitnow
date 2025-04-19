@@ -24,3 +24,9 @@ complete -f -x -c move \
     -s u -l upstream \
     -a '(__fish_git_branches)' \
     -d "Fetch a remote branch and switch to it applying current stash"
+
+complete -f -x -c move \
+    -s r -l remote-branch \
+    -n 'contains -- -u (commandline -opc); or contains -- --upstream (commandline -opc)' \
+    -a '(__fish_git_branches)' \
+    -d "Use a custom remote branch path like '<origin>/<master>' when wanting to switch."

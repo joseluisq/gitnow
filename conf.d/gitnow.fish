@@ -359,6 +359,8 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
 
     set -l v_upstream
     set -l v_no_apply_stash
+    set -l v_remote
+    set -l v_remote_v
     set -l v_branch
     set -l v_prev
 
@@ -368,9 +370,18 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
                 set v_upstream $v
             case -n --no-apply-stash
                 set v_no_apply_stash $v
+            case -r --remote
+                set v_remote $v
             case -nu -un
                 set v_upstream "-u"
                 set v_no_apply_stash "-n"
+            case -nur -unr
+                set v_upstream "-u"
+                set v_no_apply_stash "-n"
+                set v_remote "-r"
+            case -ur
+                set v_upstream "-u"
+                set v_remote "-r"
             case -p --prev
                 set v_prev "true"
             case -h --help
@@ -382,12 +393,18 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
                 echo "OPTIONS:"
                 echo "      -n --no-apply-stash     Switch to a local branch but without applying current stash"
                 echo "      -u --upstream           Fetch a remote branch and switch to it applying current stash. It can be combined with --no-apply-stash"
+                echo "      -r --remote-branch      Use a custom remote branch path like '<origin>/<master>' when wanting to switch. It requires the '-u, --upstream' option."
                 echo "      -p --prev               Switch to a previous branch if different than the current one (equivalent to \"move -\"). It uses `--no-apply-stash` option by default."
                 echo "      -h --help               Show information about the options for this command"
                 return
             case -\*
             case '*'
-                set v_branch $v
+                if begin test -n "$v_remote"; and not test -n "$v_remote_v"; end
+                    set v_remote_v (command echo "$v" | cut -d '/' -f 1)
+                    set v_branch (command echo "$v" | cut -d '/' -f 2)
+                else
+                    set v_branch $v
+                end
         end
     end
 
@@ -414,9 +431,18 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
 
     # Fetch branch from remote
     if test -n "$v_upstream"
-        set -l v_remote (__gitnow_current_remote)
-        command git fetch $v_remote $v_branch:refs/remotes/$v_remote/$v_branch
-        command git checkout --track $v_remote/$v_branch
+        echo "Switching to the specified remote branch."
+
+        set -l remote "$v_remote_v"
+        if test -n "$remote"
+            echo "A specific remote is provided, using '$remote'..."
+        else 
+            set remote (__gitnow_current_remote)
+            echo "Using the default remote '$remote'..."
+        end
+
+        command git fetch $remote $v_branch:refs/remotes/$remote/$v_branch
+        command git checkout --track $remote/$v_branch
         return
     end
 
