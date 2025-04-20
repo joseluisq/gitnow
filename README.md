@@ -1,4 +1,4 @@
-# GitNow ![CI](https://github.com/joseluisq/gitnow/workflows/CI/badge.svg?branch=master) [![Releases](https://img.shields.io/github/release/joseluisq/gitnow.svg?label=latest)](https://github.com/joseluisq/gitnow/releases)
+# GitNow [![CI](https://github.com/joseluisq/gitnow/actions/workflows/ci.yml/badge.svg)](https://github.com/joseluisq/gitnow/actions/workflows/ci.yml) [![Releases](https://img.shields.io/github/release/joseluisq/gitnow.svg?label=latest)](https://github.com/joseluisq/gitnow/releases)
 
 > Speed up your Git workflow. 🐠
 
@@ -12,20 +12,20 @@ __Stable:__
 [Paket](https://github.com/joseluisq/paket)
 
 ```sh
-paket add joseluisq/gitnow@2.12.0
+paket add joseluisq/gitnow@2.13.0
 ```
 
 [Fisher](https://github.com/jorgebucaran/fisher)
 
 
 ```sh
-fisher install joseluisq/gitnow@2.12.0
+fisher install joseluisq/gitnow@2.13.0
 ```
 
 [Fundle](https://github.com/danhper/fundle)
 
 ```sh
-fundle plugin joseluisq/gitnow --url 'git@github.com:joseluisq/gitnow.git#tags/2.12.0'
+fundle plugin joseluisq/gitnow --url 'git@github.com:joseluisq/gitnow.git#tags/2.13.0'
 ```
 
 __Latest changes:__

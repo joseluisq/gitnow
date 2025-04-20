@@ -1,7 +1,7 @@
 # GitNow — Speed up your Git workflow. 🐠
 # https://github.com/joseluisq/gitnow
 
-set -g gitnow_version 2.12.0
+set -g gitnow_version 2.13.0
 
 # Default global variables
 set -q GITNOW_CONFIG_FILE; or set -g GITNOW_CONFIG_FILE ~/.gitnow
