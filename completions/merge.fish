@@ -5,7 +5,7 @@
 
 __gitnow_load_git_functions
 
-complete -f -x -c merge -a '(__fish_git_branches)'
+complete -f -k -x -c merge -a '(__fish_git_branches)'
 
 complete -f -x -c merge \
     -s h -l help \
