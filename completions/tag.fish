@@ -5,10 +5,10 @@
 
 __gitnow_load_git_functions
 
-complete -f -x -c tag \
+complete -f -k -x -c tag \
     -d "List all tags in a lexicographic order and treating tag names as versions"
 
-complete -f -x -c tag -a '(__fish_git_tags)'
+complete -f -k -x -c tag -a '(__fish_git_tags)'
 
 complete -f -x -c tag \
     -s h -l help \
