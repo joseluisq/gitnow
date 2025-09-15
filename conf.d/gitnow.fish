@@ -239,6 +239,15 @@ function upstream -d "Gitnow: Commit all changes and push them to remote server"
     push
 end
 
+function branch -d "GitNow: Creates a new Gitflow branch from current branch" -a xbranch
+    if not __gitnow_is_git_repository
+        __gitnow_msg_not_valid_repository "branch"
+        return
+    end
+
+    __gitnow_check_create_branch "$xbranch"
+end
+
 function feature -d "GitNow: Creates a new Gitflow feature branch from current branch" -a xbranch
     if not __gitnow_is_git_repository
         __gitnow_msg_not_valid_repository "feature"
