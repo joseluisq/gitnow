@@ -391,6 +391,19 @@ assume Cargo.toml README.md
 assume -n Cargo.toml README.md
 ```
 
+### branch
+
+Creates a new branch ([Gitflow](https://github.com/nvie/gitflow)) from current branch.
+
+__Note:__ Your new branch will always be lowercase without special characters or whitespaces (underscores instead).
+
+```sh
+branch CODE-1234
+# > code-1234
+branch "This is my New Branch"
+# > this_is_my_new_branch
+```
+
 ### feature
 
 Creates a new feature ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch.
