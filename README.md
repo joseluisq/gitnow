@@ -64,6 +64,7 @@ fundle plugin joseluisq/gitnow
 | [assume](#assume) | | Ignores changes in certain files temporarily. |
 | [logs](#logs) | Alt + L | Shows logs in a fancy way. |
 | __Gitflow__ | | |
+| [branch](#branch) (1) | | Creates a new branch from current branch. |
 | [feature](#feature) (1) | Alt + F | Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | [hotfix](#hotfix) (1) | Alt + H | Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | [bugfix](#bugfix) (1) | | Creates a new _bugfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |

@@ -4,11 +4,15 @@
 function __gitnow_check_create_branch -a xbranch
     set -l xfound (__gitnow_check_if_branch_exist $xbranch)
 
-    if test $xfound -eq 1
-        echo "Branch `$xbranch` already exists. Nothing to do."
+    if test -n "$xbranch"
+        if test $xfound -eq 1
+            echo "Branch `$xbranch` already exists. Nothing to do."
+        else
+            command git stash
+            __gitnow_new_branch_switch "$xbranch"
+            command git stash pop
+        end
     else
-        command git stash
-        __gitnow_new_branch_switch "$xbranch"
-        command git stash pop
+        echo "Branch name is required."
     end
 end

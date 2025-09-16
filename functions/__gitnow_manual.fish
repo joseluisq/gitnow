@@ -59,6 +59,9 @@ function __gitnow_manual -d "Gitnow: Manual page like"
     echo "      "(set_color --bold)"assume"(set_color normal)
     echo "        Ignore changes in certain files temporarily."
     echo
+    echo "      "(set_color --bold)"branch"(set_color normal)
+    echo "        Create a new branch from the current branch."
+    echo
     echo "      "(set_color --bold)"feature"(set_color normal)
     echo "        Create a new Gitflow feature branch from the current branch."
     echo
