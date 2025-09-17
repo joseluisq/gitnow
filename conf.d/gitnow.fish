@@ -5,7 +5,7 @@ set -g gitnow_version 2.13.0
 
 # Default global variables
 set -q GITNOW_CONFIG_FILE; or set -g GITNOW_CONFIG_FILE ~/.gitnow
-set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'commit-all' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
+set -g gitnow_commands 'all' 'assume' 'bitbucket' 'bugfix' 'commit' 'commit-all' 'branch' 'feature' 'github' 'gitnow' 'hotfix' 'logs' 'merge' 'move' 'pull' 'push' 'release' 'show' 'stage' 'state' 'tag' 'unstage' 'untracked' 'upstream'
 
 if set -q __fish_config_dir
     set -g fish_config "$__fish_config_dir"
@@ -237,6 +237,15 @@ function upstream -d "Gitnow: Commit all changes and push them to remote server"
 
     commit-all
     push
+end
+
+function branch -d "GitNow: Creates a new Gitflow branch from current branch" -a xbranch
+    if not __gitnow_is_git_repository
+        __gitnow_msg_not_valid_repository "branch"
+        return
+    end
+
+    __gitnow_check_create_branch "$xbranch"
 end
 
 function feature -d "GitNow: Creates a new Gitflow feature branch from current branch" -a xbranch

@@ -64,6 +64,7 @@ fundle plugin joseluisq/gitnow
 | [assume](#assume) | | Ignores changes in certain files temporarily. |
 | [logs](#logs) | Alt + L | Shows logs in a fancy way. |
 | __Gitflow__ | | |
+| [branch](#branch) (1) | | Creates a new branch from current branch. |
 | [feature](#feature) (1) | Alt + F | Creates a new _feature_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | [hotfix](#hotfix) (1) | Alt + H | Creates a new _hotfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
 | [bugfix](#bugfix) (1) | | Creates a new _bugfix_ ([Gitflow](https://github.com/nvie/gitflow)) branch from current branch. |
@@ -388,6 +389,19 @@ assume Cargo.toml README.md
 
 # b) Revert file ignored changes
 assume -n Cargo.toml README.md
+```
+
+### branch
+
+Creates a new branch ([Gitflow](https://github.com/nvie/gitflow)) from current branch.
+
+__Note:__ Your new branch will always be lowercase without special characters or whitespaces (underscores instead).
+
+```sh
+branch CODE-1234
+# > code-1234
+branch "This is my New Branch"
+# > this_is_my_new_branch
 ```
 
 ### feature
