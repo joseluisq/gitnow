@@ -2,7 +2,7 @@
 # https://github.com/joseluisq/gitnow
 
 function __gitnow_load_git_functions -d "Gitnow: Load fish git functions on demand"
-    if begin not type -q __fish_git_branches; or not type -q __fish_git_tags; end
-        source $__fish_data_dir/completions/git.fish
+    if not functions -q __fish_git_branches __fish_git_tags
+        complete -C"git " >/dev/null 2>&1
     end
 end
