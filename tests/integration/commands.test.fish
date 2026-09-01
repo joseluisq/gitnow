@@ -95,6 +95,14 @@ it "keeps slash hierarchy and dots"
 branch "Feat/Login.Page" >/dev/null 2>&1
 expect (current_branch) --to-equal feat/login.page
 
+it "lists branch names verbatim (regression: BSD sed stripped leading t)"
+expect (__gitnow_current_branch_list) --to-contain master my_branch feat/login.page
+expect (__gitnow_current_branch_list) --not-to-match '^\*|^\s'
+branch tricky >/dev/null 2>&1
+expect (__gitnow_check_if_branch_exist tricky) --to-equal 1
+expect (__gitnow_check_if_branch_exist opic) --to-equal 0
+move master >/dev/null 2>&1
+
 describe "gitflow branches"
 
 it "feature creates a lowercase prefixed branch"

@@ -13,6 +13,12 @@ expect "$(__gitnow_slugify "My FEATURE")" --to-equal my_feature
 
 it "transliterates unicode to ascii"
 expect "$(__gitnow_slugify "Ñandú Café")" --to-equal nandu_cafe
+expect "$(__gitnow_slugify "Ærøskøbing Straße Œuvre")" --to-equal aeroskobing_strasse_oeuvre
+expect "$(__gitnow_slugify "ÀÉÎÕÜ")" --to-equal aeiou
+
+it "maps other non-ascii characters to underscores"
+expect "$(__gitnow_slugify "日本 x")" --to-equal x
+expect "$(__gitnow_slugify "a→b")" --to-equal a_b
 
 it "preserves slash and dot (valid in git refs)"
 expect "$(__gitnow_slugify "Fix/v1.2")" --to-equal fix/v1.2
