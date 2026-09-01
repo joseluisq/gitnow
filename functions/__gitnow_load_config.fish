@@ -151,7 +151,7 @@ function __gitnow_load_config -d "Reads the GitNow configuration file"
                 case 'release' 'hotfix' 'feature' 'bugfix'
                     # Read text from clipboard if there is a valid clipboard program
                     # and if the "clipboard" option is "true"
-                    if test -n $g_xpaste; and test $v_clipboard -eq 1
+                    if test -n "$g_xpaste"; and test $v_clipboard -eq 1
                         set cmd (echo -n "bind \\$v_command_val \"echo; if $v_command_key ($g_xpaste); commandline -f repaint; else ; end\"")
                     else
                         # Otherwise read text from standard input

@@ -3,5 +3,7 @@
 
 # adapted from https://gist.github.com/oneohthree/f528c7ae1e701ad990e6
 function __gitnow_slugify
-    echo $argv | LC_ALL=C command iconv -t ascii//TRANSLIT | LC_ALL=C command sed -E 's/[^a-zA-Z0-9\-]+/_/g' | LC_ALL=C command sed -E 's/^(-|_)+|(-|_)+$//g'
+    # Lowercase + ASCII transliteration; `/` and `.` are preserved since they
+    # are valid in git branch names (e.g. `fix/v1.2`).
+    string join ' ' -- $argv | command iconv -f UTF-8 -t ascii//TRANSLIT | string lower | string replace -ra '[^a-z0-9./-]+' '_' | string replace -ra '^[-_./]+|[-_./]+$' ''
 end

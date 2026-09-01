@@ -9,8 +9,16 @@ function __gitnow_gitflow_branch -a xprefix -a xbranch
     if test $xfound -eq 1
         echo "Branch `$xbranch_full` already exists. Nothing to do."
     else
-        command git stash
+        set -l v_uncommited (__gitnow_has_uncommited_changes)
+
+        if test -n "$v_uncommited"
+            command git stash
+        end
+
         __gitnow_new_branch_switch "$xbranch_full"
-        command git stash pop
+
+        if test -n "$v_uncommited"
+            command git stash pop
+        end
     end
 end

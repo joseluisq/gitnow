@@ -12,7 +12,7 @@ if set -q __fish_config_dir
 else
     set -q XDG_CONFIG_HOME
         and set -g fish_config "$XDG_CONFIG_HOME/fish"
-        or set -g fish_config "~/.config/fish"
+        or set -g fish_config "$HOME/.config/fish"
 end
 
 set -q fish_snippets; or set -g fish_snippets "$fish_config/conf.d"
@@ -29,6 +29,10 @@ end
 
 function __gitnow_uninstall -e gitnow_uninstall
     echo "GitNow was uninstalled successfully."
+end
+
+function __gitnow_update -e gitnow_update
+    echo (gitnow -v)" is updated and ready to use!"
 end
 
 function gitnow -d "Gitnow: Speed up your Git workflow. 🐠" -a xversion
@@ -197,8 +201,6 @@ function push -d "Gitnow: Push commit changes to remote repository" -w 'git push
         echo "Remote URL: $xorigin ($xremote_url)"
         echo "Remote branch: $xbranch"
     else
-        set -l v_mode "auto"
-
         for v in $argv
             switch $v
                 case -t --tags
@@ -218,7 +220,6 @@ function push -d "Gitnow: Push commit changes to remote repository" -w 'git push
                     return
                 case -\*
                 case '*'
-                    set -l v_mode "manual"
                     echo "Mode: Manual"
             end
         end
@@ -436,8 +437,6 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
         return
     end
 
-    set -l v_fetched 0
-
     # Fetch branch from remote
     if test -n "$v_upstream"
         echo "Switching to the specified remote branch."
@@ -458,7 +457,7 @@ function move -d "GitNow: Switch from current branch to another but stashing unc
     set -l v_found (__gitnow_check_if_branch_exist $v_branch)
 
     # Branch was not found
-    if begin test $v_found -eq 0; and test $v_fetched -eq 0; end
+    if test $v_found -eq 0
         echo "Branch `$v_branch` was not found locally. No possible to switch."
         echo "Tip: Use -u (--upstream) flag to fetch a remote branch."
         return
@@ -666,7 +665,7 @@ function tag -d "Gitnow: Tag commits following Semver"
     if test -n "$v_patch"
         if not test -n "$v_latest"
             command git tag $opts v0.0.1
-            echo "First patch tag \"v0.1.0\" was created."
+            echo "First patch tag \"v0.0.1\" was created."
             return
         else
             set -l vstr (__gitnow_get_valid_semver_release_value $v_latest)
