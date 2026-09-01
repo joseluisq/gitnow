@@ -6,7 +6,9 @@
 
 echo "Testing GitNow files..."
 
-set -l out (fish -c 'source' 2>&1)
+# `source` with no args reads stdin — close it explicitly or this blocks
+# forever when the caller keeps stdin open (e.g. some CI runners).
+set -l out (fish -c 'source' < /dev/null 2>&1)
 
 if test $status -gt 0
     echo "ERROR: Fish shell error signal was emitted!"

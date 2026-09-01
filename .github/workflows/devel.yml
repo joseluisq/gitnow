@@ -1,0 +1,117 @@
+name: devel
+
+on: [push, pull_request]
+
+env:
+  # Test framework: https://github.com/joseluisq/fishtest (pinned)
+  FISHTEST_REF: v0.0.1
+
+jobs:
+  lint:
+    name: Lint (fish 4)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install fish 4
+        run: |
+          sudo add-apt-repository -y ppa:fish-shell/release-4
+          sudo apt-get update -qq
+          sudo apt-get install -y fish
+          fish --version
+      # fish -n checks a single script per invocation (extra arguments
+      # become $argv), so each file gets its own call.
+      - name: Syntax check
+        shell: bash -O globstar -e {0}
+        run: |
+          for f in conf.d/*.fish functions/*.fish completions/*.fish testing/*.fish tests/**/*.fish; do
+            fish --no-execute "$f" || exit 1
+          done
+      # Advisory until Phase 3 lands canonical fish_indent formatting;
+      # drop `continue-on-error` there so formatting drift blocks merge.
+      - name: Format check (advisory)
+        continue-on-error: true
+        run: fish_indent --check conf.d/*.fish functions/*.fish completions/*.fish
+
+  test:
+    name: Test suite (fish 4, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install fish 4
+        run: |
+          if [ "${{ matrix.os }}" = "ubuntu-24.04" ]; then
+            sudo add-apt-repository -y ppa:fish-shell/release-4
+            sudo apt-get update -qq
+            sudo apt-get install -y fish
+          elif [ "${{ matrix.os }}" = "macos-14" ]; then
+            brew install fish
+          fi
+          fish --version
+      - name: Install FishTest
+        run: |
+          git clone --quiet --depth 1 --branch "$FISHTEST_REF" https://github.com/joseluisq/fishtest.git "$RUNNER_TEMP/fishtest"
+          "$RUNNER_TEMP/fishtest/bin/fishtest" --version
+      - name: Run test suite
+        run: '"$RUNNER_TEMP/fishtest/bin/fishtest" --color tests'
+      - name: Startup profile (informational)
+        run: |
+          fish --profile "$RUNNER_TEMP/gitnow.prof" -c 'set -g fish_snippets $PWD/conf.d; source conf.d/gitnow.fish'
+          sort -nrk 2 "$RUNNER_TEMP/gitnow.prof" | head -n 15
+
+  # TODO(phase-3): once the Fish >= 4.0 startup guard lands, add a minimal
+  # Fish 3.x job asserting that sourcing conf.d prints the guard message
+  # cleanly and defines nothing.
+
+  paket:
+    name: Paket install and test
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install and test
+        uses: addnab/docker-run-action@v3
+        with:
+          image: joseluisq/paket
+          options: -v ${{ github.workspace }}:/gitnow
+          shell: fish
+          run: |
+            fish --version
+            paket --version
+            git config --global --add safe.directory /gitnow
+            paket add joseluisq/fishtest
+            paket add /gitnow
+            /gitnow/testing/test.fish
+            cd /gitnow
+            fishtest --color tests
+
+  fisher:
+    name: Fisher install and test
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install and test
+        uses: addnab/docker-run-action@v3
+        with:
+          image: joseluisq/paket
+          options: -v ${{ github.workspace }}:/gitnow
+          shell: fish
+          run: |
+            apk add --no-cache curl git
+            fish --version
+            curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
+            fisher --version
+            git config --global --add safe.directory /gitnow
+            fisher install joseluisq/fishtest
+            fisher install /gitnow
+            /gitnow/testing/test.fish
+            cd /gitnow
+            fishtest --color tests
